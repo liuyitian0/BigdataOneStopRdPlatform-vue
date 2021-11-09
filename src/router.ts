@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import Index from './Index.vue';
 import DataLineage from './DataLineage.vue';
 import Abc from './Abc.vue';
-import Graph from './Graph.vue';
+import Graph from './components/Graph.vue';
 
 Vue.use(Router);
 

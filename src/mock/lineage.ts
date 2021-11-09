@@ -228,42 +228,6 @@ MockLineages.mock('api/getLineagesMenuData', 'get', () => ([
       label: 'mdp_cusdm_nature',
       id: 'learn6',
       icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
-    }, {
-      label: 'mdp_cusdm_nature',
-      id: 'learn6',
-      icon: 'el-icon-star-off',
     }],
   }]
 ));
