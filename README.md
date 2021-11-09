@@ -1,7 +1,7 @@
 # BigdataOneStopRdPlatfrom
 
 ## 功能点
-![image](https://github.com/liuyitian0/BigdataOneStopRdPlatform-vue/tree/main/src/assets/Readme.png)
+![image](https://github.com/liuyitian0/BigdataOneStopRdPlatform-vue/main/src/assets/Readme.png)
 
 #### 菜单节点区域
 - [x] 从菜单中拖动一个节点到主设计区域，可放置该节点
