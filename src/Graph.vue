@@ -1,7 +1,7 @@
 <template>
   <div class="wrrap">
     <div class="head">
-      <input class="banner_input1" type="text" v-model.trim="message" placeholder="dcl_zssys_web_ply_base" />
+      <input class="banner_input1" type="text" v-model.trim="message" placeholder="请输入表名..." />
       <el-button class="banner_Btn1" @click="getdata()"> 获取血缘 </el-button>
     </div>
     <div id="container" class="graph"></div>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { Graph } from '@antv/x6';
+
 const data = {
   nodes: [
     {
@@ -41,7 +41,21 @@ const data = {
       y: 100,    
       width: 300, 
       height: 40,
-      label: 'dw_zssys_web_ply_tgt_obj_02_noact',
+      attrs: {
+        body: {
+          fill: '#FFFFFF',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'dw_zssys_web_ply_tgt_obj_02_noact',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node3',
@@ -49,7 +63,21 @@ const data = {
       y: 200,      
       width: 300,   
       height: 40,  
-      label: 'dw_zssys_web_ply_risk_qust_14', 
+      attrs: {
+        body: {
+          fill: '#FFFFFF',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'dw_zssys_web_ply_risk_qust_14',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node4', 
@@ -61,21 +89,39 @@ const data = {
         body: {
           fill: '#2ECC71',
           stroke: '#000',
+          rx: 22,
+          ry: 22,
         },
         label: {
           text: 'dw_zssys_web_ply_base_cha_noact',
           fill: '#333',
-          fontSize: 13,
-        }
-      }  
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node5', 
       x: 340,      
       y: 400,      
       width: 300,   
-      height: 40,  
-      label: 'mdp_policy_policy_base', 
+      height: 40,
+      attrs: {
+        body: {
+          fill: '#FFFFFF',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'mdp_policy_policy_base',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node6', 
@@ -87,11 +133,15 @@ const data = {
         body: {
           fill: '#2ECC71',
           stroke: '#000',
+          rx: 22,
+          ry: 22,
         },
         label: {
           text: 'mdp_salefee_accurued_policy_fee',
           fill: '#333',
-          fontSize: 13,
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
         }
       } 
     },
@@ -101,7 +151,21 @@ const data = {
       y: 600,      
       width: 300,   
       height: 40,  
-      label: 'mdp_policy_latest_policy_base', 
+      attrs: {
+        body: {
+          fill: '#FFFFFF',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'mdp_policy_latest_policy_base',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node8', 
@@ -109,15 +173,43 @@ const data = {
       y: 700,      
       width: 300,   
       height: 40,  
-      label: 'mdp_cusdm_journey', 
+      attrs: {
+        body: {
+          fill: '#FFFFFF',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'mdp_cusdm_journey',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node9', 
       x: 830,      
       y: 300,      
       width: 300,   
-      height: 40,  
-      label: 'mdp_cusdm_asset_details—9', 
+      height: 40,   
+      attrs: {
+        body: {
+          fill: '#FFFFFF',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'mdp_cusdm_asset_details—9',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node10', 
@@ -125,7 +217,21 @@ const data = {
       y: 540,      
       width: 300,   
       height: 40,  
-      label: 'mdp_salefee_accurued_policy_fee(6-10)', 
+      attrs: {
+        body: {
+          fill: '#2ECC71',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'mdp_salefee_accurued_policy_fee(6-10)',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node11', 
@@ -133,7 +239,21 @@ const data = {
       y: 650,      
       width: 300,
       height: 40,  
-      label: 'mdp_salefee_accurued_policy_fee(11)', 
+      attrs: {
+        body: {
+          fill: '#2ECC71',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'mdp_salefee_accurued_policy_fee(11)',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      },
     },
     {
       id: 'node12', 
@@ -141,7 +261,21 @@ const data = {
       y: 750,      
       width: 300,   
       height: 40,  
-      label: 'mdp_salefee_accurued_policy_fee(12)', 
+      attrs: {
+        body: {
+          fill: '#FFFFFF',
+          stroke: '#000',
+          rx: 22,
+          ry: 22,
+        },
+        label: {
+          text: 'mdp_salefee_accurued_policy_fee(12)',
+          fill: '#333',
+          fontSize: 16,
+          fontWeight: 'bold',
+          fontVariant: 'small-caps',
+        },
+      }, 
     },
   ],
 
@@ -250,12 +384,17 @@ const data = {
 
 export default {
   name: "index",
+  data(){
+    return{
+      message: 'dcl_zssys_web_ply_base',
+    }
+  },
   methods: {
-    getdata () {
-    this.init();
+    getdata (e) {
+      this.init();
     },
     init() {
-      const graph = new Graph({
+      var graph = new X6.Graph({
         container: document.getElementById('container'),
       });
       graph.fromJSON(data)

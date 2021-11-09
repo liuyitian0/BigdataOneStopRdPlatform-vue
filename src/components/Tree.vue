@@ -62,6 +62,7 @@ export default Vue.extend({
       activeName: 'first',
       toolBarShow: 'component',
       dialogTableVisible: false,
+      defaultProps : {},
     };
   },
   watch: {

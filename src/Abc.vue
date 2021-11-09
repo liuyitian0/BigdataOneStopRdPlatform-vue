@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { Graph } from '@antv/x6';
+
 const data = {
   nodes: [
     {
@@ -140,7 +140,7 @@ export default {
     this.init();
     },
     init() {
-      const graph = new Graph({
+      var graph = new X6.Graph({
         container: document.getElementById('container'),
       });
       graph.fromJSON(data)

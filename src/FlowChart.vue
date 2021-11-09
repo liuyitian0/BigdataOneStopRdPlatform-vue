@@ -17,7 +17,7 @@
                :render-content="renderContentFunction"
                :filter-node-method="filterNode"
                ref="tree2"
-               :props="defaultPropss"
+               :props="defaultProps"
                ></el-tree>
     </el-aside>
     <el-main>
