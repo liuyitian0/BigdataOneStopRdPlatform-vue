@@ -9,14 +9,14 @@
       </div>
 
       <el-tree :data="nodeData"
-               node-key="id"
-               :default-expanded-keys="['source','preHandle','sign','learn']"
+               node-key="id-tree1"
                :render-content="renderContentFunction"
                :filter-node-method="filterNode"
-               ref="tree2"
-               :props="defaultProps">
+               ref="tree1"
+               :props="defaultProps"
+               @node-click="getCurrentNode"
+               >
       </el-tree>
-
     </el-aside>
     <el-main>
           <el-main>
@@ -46,11 +46,12 @@ export default Vue.extend({
       toolBarShow: 'component',
       dialogTableVisible: false,
       defaultProps : {},
+      leafVal : null,
     };
   },
   watch: {
     filterText(val: string) {
-      this.$refs.tree2.filter(val);
+      this.$refs.tree1.filter(val);
     },
   },
   mounted() {
@@ -109,7 +110,7 @@ export default Vue.extend({
               marginTop: '4px',
               height: '30px',
               lineHeight: '30px',
-              width: '140px',
+              width: '240px',
               borderRadius: '4px',
               position: 'relative',
               outline: 'none',
@@ -135,6 +136,10 @@ export default Vue.extend({
           ]),
         ]),
       ]);
+    },
+    getCurrentNode() {
+      // this.filterText = this.$refs.tree1.getCurrentNode().label;
+      this.$emit('getCurrentNode');
     },
     filterNode(value:string, data:any) {
       if (!value) return true;

@@ -25,7 +25,7 @@
       <router-link class="navItem"
                    to="/DataLineage">数据血缘</router-link>
       <router-link class="navItem"
-                   to="/operation">运维监控</router-link>
+                   to="/Abc">运维监控</router-link>
       <router-link class="navItem"
                    to="/Graph">Flink流平台</router-link>
       <el-dropdown>

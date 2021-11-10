@@ -1,172 +1,69 @@
 <template>
-  <div class="wrrap">
-    <div class="head">
-      <el-button class="banner_Btn1" @click="getdata()"> 获取血缘 </el-button>
-    </div>
-    <div id="container" class="graph"></div>
+ <div>
+  <div>
+    <el-button style="margin:10px 280px" type="primary" @click="zoomOut()">zoomOut</el-button>
+    <el-button type="primary" @click="zoomIn()">zoomIn</el-button>
   </div>
+  <div id="container"></div>
+ </div>
 </template>
 
 <script>
 
 const data = {
+  // 节点
   nodes: [
     {
-      id: 'node1', 
-      x: 40, 
-      y: 500,     
-      width: 200,   
-      height: 40, 
-      label: 'dcl_zssys_web_ply_base',
+      id: 'node1', // String，可选，节点的唯一标识
+      x: 40,       // Number，必选，节点位置的 x 值
+      y: 40,       // Number，必选，节点位置的 y 值
+      width: 80,   // Number，可选，节点大小的 width 值
+      height: 40,  // Number，可选，节点大小的 height 值
+      label: 'hello', // String，节点标签
+      shape: 'ellipse',
     },
     {
-      id: 'node2',
-      x: 310,   
-      y: 100,    
-      width: 300, 
-      height: 40,
-      label: 'dw_zssys_web_ply_tgt_obj_02_noact',
-    },
-    {
-      id: 'node3',
-      x: 320,   
-      y: 200,      
-      width: 300,   
-      height: 40,  
-      label: 'dw_zssys_web_ply_risk_qust_14', 
-    },
-    {
-      id: 'node4', 
-      x: 330,      
-      y: 300,      
-      width: 300,   
-      height: 40,  
-      label: 'dw_zssys_web_ply_base_cha_noact', 
-    },
-    {
-      id: 'node5', 
-      x: 340,      
-      y: 400,      
-      width: 300,   
-      height: 40,  
-      label: 'mdp_policy_policy_base', 
-    },
-    {
-      id: 'node6', 
-      x: 350,      
-      y: 500,      
-      width: 300,   
-      height: 40,  
-      label: 'mdp_salefee_accurued_policy_fee', 
-    },
-    {
-      id: 'node7', 
-      x: 350,      
-      y: 600,      
-      width: 300,   
-      height: 40,  
-      label: 'mdp_policy_latest_policy_base', 
-    },
-    {
-      id: 'node8', 
-      x: 350,      
-      y: 700,      
-      width: 300,   
-      height: 40,  
-      label: 'mdp_cusdm_journey', 
-    },
-    {
-      id: 'node9', 
-      x: 830,      
-      y: 300,      
-      width: 300,   
-      height: 40,  
-      label: 'mdp_cusdm_asset_details—9', 
-    },
-    {
-      id: 'node10', 
-      x: 800,      
-      y: 500,      
-      width: 300,   
-      height: 40,  
-      label: 'mdp_salefee_accurued_policy_fee(6-10)', 
+      id: 'node2', // String，节点的唯一标识
+      x: 160,      // Number，必选，节点位置的 x 值
+      y: 180,      // Number，必选，节点位置的 y 值
+      width: 80,   // Number，可选，节点大小的 width 值
+      height: 40,  // Number，可选，节点大小的 height 值
+      label: 'world', // String，节点标签
     },
   ],
-
+  // 边
   edges: [
     {
-      source: 'node1',  
-      target: 'node2',
-    },
-    {
-      source: 'node1', 
-      target: 'node3', 
-    },
-    {
-      source: 'node1', 
-      target: 'node4', 
-    },
-    {
-      source: 'node1', 
-      target: 'node5', 
-    },
-    {
-      source: 'node1', 
-      target: 'node6', 
-    },
-    {
-      source: 'node1', 
-      target: 'node7', 
-    },
-    {
-      source: 'node1', 
-      target: 'node8', 
-    },
-    {
-      source: 'node4', 
-      target: 'node9', 
-    },
-    {
-      source: 'node6', 
-      target: 'node10', 
+      source: 'node1', // String，必须，起始节点 id
+      target: 'node2', // String，必须，目标节点 id
     },
   ],
 };
 
 export default {
-  name: "index",
   methods: {
-    getdata () {
-    this.init();
+    zoomOut () {
+      graph.translate(-80, -40);
     },
-    init() {
-      var graph = new X6.Graph({
-        container: document.getElementById('container'),
-      });
-      graph.fromJSON(data)
-    }
-  }
+    zoomIn (){
+      graph.zoom(-0.2);
+    },
+  },
+  mounted () {
+  const graph = new X6.Graph({
+    container: document.getElementById('container'),
+    width: 1800,
+    height: 800,
+    background: {
+      color: '#fffbe6',
+    },
+    grid: {
+      size: 10,      // 网格大小 10px
+      visible: true, // 渲染网格背景
+    },
+  });
+  graph.fromJSON(data);
+  // graph.zoom(0.8);
+ }
 }
 </script>
-
-<style scoped>
-.wrrap {
-  width: 100%;
-  height: 100%;
-  background-color: red;
-}
-.head {
-  width: 100%;
-  height: 48px;
-  background-color:blue;
-}
-.graph {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  background-color: rgb(79, 89, 128);
-}
-.banner_Btn1 {
-  margin-left: 500px;
-}
-</style>

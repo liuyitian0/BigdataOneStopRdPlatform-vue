@@ -4,10 +4,10 @@
       <Navigation></Navigation>
     </div>
     <div class="tree">
-      <Tree></Tree>
+      <Tree @getCurrentNode="getCurrentNode"></Tree>
     </div>
     <div class="right-main">
-      <Graph></Graph>
+      <Graph ref="childGraph"></Graph>
     </div>
   </el-container>
 </template>
@@ -31,6 +31,11 @@ export default {
       data: null,
     };
   },
+  methods: {
+    getCurrentNode(){
+      this.$refs.childGraph.init();
+    }
+  }
 
 };
 </script>
