@@ -1,25 +1,28 @@
 <template>
-  <div class="wrrap">
-    <div class="head">
+  <div class="wrrap"> 
+    <div class="operate">
       <input class="banner_input1" type="text" v-model.trim="message" placeholder="请输入表名..." />
       <el-button class="banner_Btn1" @click="getdata()"> 获取血缘 </el-button>
-      <el-tooltip content="放大">
-        <el-button icon="el-icon-zoom-in" @click="zoomOut" circle></el-button>
+      <el-tooltip content="放大" effect="light">
+        <el-button icon="el-icon-zoom-in" circle></el-button>
       </el-tooltip>
-      <el-tooltip content="缩小">
-        <el-button icon="el-icon-zoom-out" @click="zoomIn" circle></el-button>
+      <el-tooltip content="缩小" effect="light">
+        <el-button icon="el-icon-zoom-out" circle></el-button>
       </el-tooltip>
-      <el-tooltip content="自动布局">
+      <el-tooltip content="自动布局" effect="light">
         <el-button icon="el-icon-bangzhu" circle></el-button>
       </el-tooltip>
-      <el-tooltip content="适应画布">
+      <el-tooltip content="适应画布" effect="light">
         <el-button icon="el-icon-money" circle></el-button>
       </el-tooltip>
-      <el-tooltip content="全屏">
+      <el-tooltip content="全屏" effect="light">
         <el-button icon="el-icon-full-screen" circle></el-button>
       </el-tooltip>
+      <p>treeLabel:*{{ tablabel }}*</p>
     </div>
-    <div id="container" class="graph">
+    <div>
+      <div id="container"></div>
+      <div ref="miniMapContainerRef" class="miniMap"></div>
     </div>
   </div>
 </template>
@@ -401,9 +404,12 @@ const data = {
 
 export default {
   name: "index",
+  props: {
+    tablabel: String,
+  },
   data(){
     return{
-      message: 'dcl_zssys_web_ply_base',
+      message: null,
     }
   },
   methods: {
@@ -411,12 +417,37 @@ export default {
       this.init();
     },
     init(value) {
-      var graph = new X6.Graph({
+      const miniMapContainerRef = this.$refs.miniMapContainerRef
+      const graph = new X6.Graph({
         container: document.getElementById('container'),
+        width: 3600,
+        height: 3600,
+        background: {
+          color: '#ffffff',
+        },
+        grid: {
+          size: 10,      // 网格大小 10px
+          visible: true, // 渲染网格背景
+        },
+        scroller: {
+          enabled: true,
+          pageVisible: true,
+          pageBreak: true,
+          pannable: true,
+        },
+        minimap: {
+          enabled: true,
+          container: miniMapContainerRef,
+        }
+
       });
       graph.fromJSON(data)
     },
-
+    // 放大
+    // zoominfn() {
+    //   this.graph.zoom(0.1);
+    //   this.canzoomout = true;
+    // },
   }
 }
 </script>
@@ -425,24 +456,26 @@ export default {
 .wrrap {
   width: 100%;
   height: 100%;
+  background-color:#ffffff;
 }
 .head {
   width: 100%;
   height: 58px;
-  background-color: #fff;
-  /* background-color: rgb(79, 89, 128); */
+  background-color: #ffffff;
 }
-.graph {
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-  /* background-color: red; */
+.miniMap {
+  position: fixed;
+  z-index: 333;
+  bottom: 15px;
+  right: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
 }
+
 .banner_Btn1 {
   margin-left: 30px;
 }
 .banner_input1 {
-  margin-left: 100px;
+  margin-left: 30px;
   margin-top: 10px;
   width: 300px;
   height: 36px;

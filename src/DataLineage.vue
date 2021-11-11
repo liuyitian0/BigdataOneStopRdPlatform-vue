@@ -6,9 +6,7 @@
     <div class="tree">
       <Tree @getCurrentNode="getCurrentNode"></Tree>
     </div>
-    <div class="right-main">
-      <Graph ref="childGraph"></Graph>
-    </div>
+      <Graph ref="childGraph" :tablabel="tablabel"></Graph>
   </el-container>
 </template>
 
@@ -28,12 +26,14 @@ export default {
   data () {
     return {
       message: '',
-      data: null,
+      tablabel: null,
     };
   },
   methods: {
-    getCurrentNode(){
+    getCurrentNode(treelabel){
+      // console.log(treelabel)
       this.$refs.childGraph.init();
+      this.tablabel = treelabel;
     }
   }
 
@@ -41,10 +41,4 @@ export default {
 </script>
 
 <style lang="scss">
-.right-main {
-  // background-color: #ccc;
-  background-color: red;
-  width: 100%;
-  // color: #ffffff;
-}
 </style>

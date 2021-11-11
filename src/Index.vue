@@ -39,7 +39,8 @@ export default {
 <style lang="scss">
 .indexWrap{
   .fy_el-aside {
-    background: #21232b;
+    // background: #21232b;
+    background-color: rgb(79, 89, 128);
     overflow-x: hidden;
     .el-menu--collapse {
       width: 48px;

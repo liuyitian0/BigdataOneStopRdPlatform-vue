@@ -139,7 +139,7 @@ export default Vue.extend({
     },
     getCurrentNode() {
       // this.filterText = this.$refs.tree1.getCurrentNode().label;
-      this.$emit('getCurrentNode');
+      this.$emit('getCurrentNode',this.$refs.tree1.getCurrentNode().label);
     },
     filterNode(value:string, data:any) {
       if (!value) return true;
