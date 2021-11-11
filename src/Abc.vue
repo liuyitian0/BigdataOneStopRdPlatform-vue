@@ -1,9 +1,5 @@
 <template>
  <div>
-  <div>
-    <el-button style="margin:10px 280px" type="primary" @click="zoomOut()">zoomOut</el-button>
-    <el-button type="primary" @click="zoomIn()">zoomIn</el-button>
-  </div>
   <div id="container"></div>
  </div>
 </template>
@@ -42,28 +38,59 @@ const data = {
 
 export default {
   methods: {
-    zoomOut () {
-      graph.translate(-80, -40);
-    },
-    zoomIn (){
-      graph.zoom(-0.2);
-    },
   },
   mounted () {
   const graph = new X6.Graph({
     container: document.getElementById('container'),
-    width: 1800,
-    height: 800,
-    background: {
-      color: '#fffbe6',
-    },
-    grid: {
-      size: 10,      // 网格大小 10px
-      visible: true, // 渲染网格背景
-    },
+    // width: 1800,
+    // height: 800,
+    // background: {
+    //   color: '#fffbe6',
+    // },
+    // grid: {
+    //   size: 10,      // 网格大小 10px
+    //   visible: true, // 渲染网格背景
+    // },
+    // snapline: {
+    //   enabled: true,
+    // },
+    // scroller: {
+    //   enabled: true,
+    //   className: 'my-scroller',
+    //   pannable: true,
+    // },
+    // minimap: {
+    //   enabled: true,
+    //   container: minimapContainer,
+    // },
+
+    scroller: {
+    enabled: true,
+  },
+  minimap: {
+    enabled: true,
+    container: minimapContainer,
+    graphOptions: {
+      async: true,
+      getCellView(cell) {
+        // 用指定的 View 替换节点默认的 View
+        if (cell.isNode()) {
+          return SimpleNodeView
+        }
+      },
+      createCellView(cell) {
+        // 在小地图中不渲染边
+        if (cell.isEdge()) {
+          return null
+        }
+      },
+    }
+  }
+  
   });
   graph.fromJSON(data);
   // graph.zoom(0.8);
+  
  }
 }
 </script>

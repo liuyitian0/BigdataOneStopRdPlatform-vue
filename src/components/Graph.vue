@@ -26,7 +26,6 @@
 
 <script>
 
-import GraphTS from '../Graph/index';
 
 const data = {
   nodes: [
@@ -417,12 +416,7 @@ export default {
       });
       graph.fromJSON(data)
     },
-    zoomOut() {
-      GraphTS.zoomOut();
-    },
-    zoomIn() {
-      GraphTS.zoomIn();
-    },
+
   }
 }
 </script>
