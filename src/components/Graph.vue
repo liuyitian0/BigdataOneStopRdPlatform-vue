@@ -28,7 +28,7 @@
 </template>
 
 <script>
-
+import GetDataGraph from '@/utils/GetDataGraph';
 
 const data = {
   nodes: [
@@ -414,9 +414,9 @@ export default {
   },
   methods: {
     getdata (e) {
-      this.init();
+      this.init(tablabel);
     },
-    init(value) {
+    init(tablabel) {
       const miniMapContainerRef = this.$refs.miniMapContainerRef
       const graph = new X6.Graph({
         container: document.getElementById('container'),
@@ -441,13 +441,19 @@ export default {
         }
 
       });
+
+      //调用公共方法,获取单个表的数据
+      this.getdatagraphloop(tablabel)
       graph.fromJSON(data)
     },
-    // 放大
-    // zoominfn() {
-    //   this.graph.zoom(0.1);
-    //   this.canzoomout = true;
-    // },
+    getdatagraphloop(table) {
+      if(Array.isArray)  {
+        // let n1 = getDrawGraph.node.id;
+        // let n1 = getDrawGraph.node.text;
+        // let e1 = getDrawGraph.edge.source;
+        // let e1 = getDrawGraph.edge.target;
+      }
+    }
   }
 }
 </script>
