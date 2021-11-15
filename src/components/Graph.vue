@@ -18,7 +18,7 @@
       <el-tooltip content="全屏" effect="light">
         <el-button icon="el-icon-full-screen" circle></el-button>
       </el-tooltip>
-      <p>treeLabel:*{{ tablabel }}*</p>
+      <!-- <p>treeLabel:*{{ tablabel }}*</p> -->
     </div>
     <div>
       <div id="container"></div>

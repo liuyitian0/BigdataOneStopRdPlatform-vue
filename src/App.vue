@@ -9,7 +9,7 @@
                    active-class="active"
                    to="/index">IDE</router-link>
       <router-link class="navItem"
-                   to="/operation">调度中心</router-link>
+                   to="/scheduler">调度中心</router-link>
       <router-link class="navItem"
                    to="/index">数据交换</router-link>
       <router-link class="navItem"
