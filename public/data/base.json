@@ -1,9 +1,61 @@
-[{"dcl_zssys_web_ply_base":"dw_zssys_web_ply_risk_qust_14"},
-{"dcl_zssys_web_ply_base":"dw_zssys_web_ply_base_cha_noact"},
-{"dw_zssys_web_ply_base_cha_noact":"mdp_policy_policy_base"},
-{"mdp_policy_policy_base":"mdp_salefee_accurued_policy_fee"},
-{"mdp_policy_policy_base":"mdp_policy_latest_policy_base"},
-{"mdp_policy_latest_policy_base":"mdp_cusdm_journey"},
-{"mdp_policy_policy_base":"mdp_objdm_obj_vhl"},
-{"mdp_objdm_obj_vhl":"mdp_cusdm_asset_details"},
-{"dcl_zssys_web_ply_base":"dw_zssys_web_ply_tgt_obj_02_noact"}]
+[
+  {
+    "name":"dcl_zssys_web_ply_base",
+    "value":[
+        {"s":"ods_zssys_web_ply_base","t":"dcl_zssys_web_ply_base","type":"leaf"},
+        {"s":"ods_zssys_web_ply_base","t":"ods_zssys_web_ply_base","type":"node"}
+      ]
+  },{
+    "name":"dcl_zssys_web_ply_vhl",
+    "value":[
+      {"s":"dw_zssys_web_ply_risk_qust_13","t":"dw_zssys_web_ply_risk_qust_14","type":"leaf"},
+      {"s":"dw_zssys_web_ply_risk_qust_12","t":"dw_zssys_web_ply_risk_qust_13","type":"leaf"},
+      {"s":"dcl_zssys_web_ply_vhl","t":"dw_zssys_web_ply_risk_qust_12","type":"leaf"},
+      {"s":"ods_zssys_web_ply_vhl","t":"dcl_zssys_web_ply_vhl","type":"leaf"},
+      {"s":"ods_zssys_web_ply_vhl","t":"ods_zssys_web_ply_vhl","type":"node"}
+    ]
+  },{
+    "name":"dcl_zssys_web_prd_cvrg",
+    "value":[
+      {"s":"ods_zssys_web_prd_cvrg","t":"ods_zssys_web_prd_cvrg","type":"node"},
+      {"s":"ods_zssys_web_prd_cvrg","t":"dcl_zssys_web_prd_cvrg","type":"node"},
+      {"s":"dcl_zssys_web_prd_cvrg","t":"dw_zssys_web_ply_risk_qust_13","type":"node"},
+      {"s":"dcl_zssys_web_prd_cvrg","t":"dw_zssys_web_ply_risk_qust_12","type":"node"},
+      {"s":"dw_zssys_web_ply_risk_qust_13","t":"dw_zssys_web_ply_risk_qust_14","type":"leaf"},
+      {"s":"dw_zssys_web_ply_risk_qust_12","t":"dw_zssys_web_ply_risk_qust_15","type":"leaf"}
+    ]
+  },{
+    "name":"mdp_objdm_web_ply_ent_tgt_01",
+    "value":[
+      {"s":"zssy_md","t":"zssy_md","type":"node"},
+      {"s":"zssy_md","t":"dim_d_sm","type":"node"},
+      {"s":"zssy_md","t":"dim_g_ns","type":"node"},
+      {"s":"dim_d_sm","t":"mdp_objdm_web_ply_ent_tgt_01","type":"node"},
+      {"s":"dim_g_ns","t":"mdp_objdm_web_ply_ent_tgt_01","type":"node"},
+      {"s":"zssys_web_ply_vhl","t":"zssys_web_ply_vhl","type":"leaf"},
+      {"s":"zssys_web_ply_vhl","t":"dcl_zssys_web_ply_vhl","type":"leaf"},
+      {"s":"zssy_md","t":"dim_c_vhl","type":"leaf"},
+      {"s":"dim_c_vhl","t":"dw_zssys_web_ply_vhl_noact","type":"leaf"},
+      {"s":"dcl_zssys_web_ply_vhl","t":"dw_zssys_web_ply_vhl_noact","type":"leaf"},
+      {"s":"dw_zssys_web_ply_vhl_noact","t":"dw_logic_objoneid_policy","type":"leaf"},
+      {"s":"dw_logic_objoneid_policy","t":"mdp_objdm_web_ply_ent_tgt_01","type":"leaf"},
+      {"s":"zssys_web_ply_base","t":"zssys_web_ply_base","type":"leaf"},
+      {"s":"zssys_web_ply_base","t":"dcl_zssys_web_ply_base","type":"leaf"},
+      {"s":"dcl_zssys_web_ply_base","t":"dw_zssys_web_ply_base_vhl_noact","type":"leaf"},
+      {"s":"dw_zssys_web_ply_base_vhl_noact","t":"dw_logic_objoneid_policy_rel","type":"leaf"},
+      {"s":"dim_master_data_code_table_orc","t":"dw_zssys_web_ply_vhl_noact","type":"leaf"},
+      {"s":"dim_master_data_code_table_orc","t":"dim_master_data_code_table_orc","type":"leaf"},
+      {"s":"dw_zssys_web_ply_vhl_noact","t":"dw_logic_objoneid_policy_rel","type":"leaf"},
+      {"s":"dw_logic_objoneid_policy_rel","t":"mdp_objdm_web_ply_ent_tgt_01","type":"leaf"},
+      {"s":"zssys_web_ply_base","t":"dcl_zssys_web_ply_base","type":"leaf"},
+      {"s":"dcl_zssys_web_ply_base","t":"dw_zssys_web_ply_ent_tgt_01","type":"leaf"},
+      {"s":"dw_zssys_web_ply_ent_tgt_01","t":"mdp_objdm_web_ply_ent_tgt_01","type":"leaf"},
+      {"s":"zssys_web_ply_ent_tgt","t":"zssys_web_ply_ent_tgt","type":"leaf"},
+      {"s":"zssys_web_ply_ent_tgt","t":"dcl_zssys_web_ply_ent_tgt","type":"leaf"},
+      {"s":"dcl_zssys_web_ply_ent_tgt","t":"dw_zssys_web_ply_ent_tgt_01","type":"leaf"},
+      {"s":"dw_zssys_web_ply_ent_tgt_01","t":"mdp_objdm_web_ply_ent_tgt_01","type":"leaf"},
+      {"s":"zssy_md","t":"dw_zssys_web_ply_ent_tgt_01","type":"leaf"},
+      {"s":"dw_zssys_web_ply_ent_tgt_01","t":"mdp_objdm_web_ply_ent_tgt_01","type":"leaf"}
+    ]
+  }
+]

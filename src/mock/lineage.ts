@@ -217,7 +217,7 @@ MockLineages.mock('api/getLineagesMenuData', 'get', () => ([
       label: 'mdp_cusdm_clientoneid_mobilelog',
       id: 'learn5',
     }, {
-      label: 'mdp_cusdm_nature',
+      label: 'mdp_objdm_web_ply_ent_tgt_01',
       id: 'learn6',
       icon: 'el-icon-star-off',
     }, {

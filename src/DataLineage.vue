@@ -32,7 +32,7 @@ export default {
   methods: {
     getCurrentNode(treelabel){
       // console.log(treelabel)
-      this.$refs.childGraph.init();
+      this.$refs.childGraph.init(treelabel);
       this.tablabel = treelabel;
     }
   }

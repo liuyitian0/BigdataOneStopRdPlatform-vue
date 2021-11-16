@@ -1,13 +1,12 @@
-export function getDrawGraph() {
+// export function GetDataGraph(s:String,t:String,ix:number,iy:number,type:String) {
+export function GetDataGraph(s:String,t:String,ix:number,iy:number) {
 
- 
   let node = {
-    shape: 'rect',
-    id: null,  //node1
-    x: 40, 
-    y: 500,     
-    width: 200,   
-    height: 40, 
+    id: t,  //node1
+    x: ix, 
+    y: iy,     
+    width: 280,   
+    height: 38, 
     attrs: {
       body: {
         fill: '#F39C12',
@@ -16,9 +15,9 @@ export function getDrawGraph() {
         ry: 22,
       },
       label: {
-        text: null,// dcl_zssys_web_ply_base
+        text: t,// dcl_zssys_web_ply_base
         fill: '#333',
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
         fontVariant: 'small-caps',
       },
@@ -27,8 +26,8 @@ export function getDrawGraph() {
   
    let  edge =   
       {
-        source: null,  //node1
-        target: null,  //node2
+        source: s,  //node1
+        target: t,  //node2
         attrs: {
           line: {
             stroke: 'orange',
