@@ -1,10 +1,11 @@
 // export function GetDataGraph(s:String,t:String,ix:number,iy:number,type:String) {
-export function GetDataGraph(s:String,t:String,ix:number,iy:number) {
+// export function GetDataGraph(s:String,t:String,ix:number,iy:number) {
+export function GetDataGraph(s:String,t:String) {
 
   let node = {
     id: t,  //node1
-    x: ix, 
-    y: iy,     
+    // x: ix, 
+    // y: iy,     
     width: 280,   
     height: 38, 
     attrs: {
@@ -30,7 +31,7 @@ export function GetDataGraph(s:String,t:String,ix:number,iy:number) {
         target: t,  //node2
         attrs: {
           line: {
-            stroke: 'orange',
+            stroke: 'green',
           },
         },
       }

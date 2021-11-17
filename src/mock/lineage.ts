@@ -195,7 +195,7 @@ MockLineages.mock('api/getLineagesMenuData', 'get', () => ([
       label: 'dw_zssys_web_ply_insured_act',
       id: 'sign3',
     }, {
-      label: 'dw_zssys_web_ply_insured_noact',
+      label: 'dw_zssys_web_ply_ent_tgt_01',
       id: 'sign4',
     }],
   }, {
@@ -221,13 +221,18 @@ MockLineages.mock('api/getLineagesMenuData', 'get', () => ([
       id: 'learn6',
       icon: 'el-icon-star-off',
     }, {
-      label: 'mdp_cusdm_nature',
+      label: 'mdp_cusdm_clientoneid_mobile',
       id: 'learn6',
       icon: 'el-icon-star-off',
     }, {
-      label: 'mdp_cusdm_nature',
+      label: 'mdp_output_report_cus_mutual_num',
       id: 'learn6',
       icon: 'el-icon-star-off',
-    }],
+    }, {
+      label: 'abc',
+      id: 'learn6',
+      icon: 'el-icon-star-off',
+    }
+    ],
   }]
 ));

@@ -6,8 +6,18 @@
       <el-tooltip content="放大" effect="light">
         <el-button icon="el-icon-zoom-in" circle></el-button>
       </el-tooltip>
+        <!-- <div class="tool" @click="mapZoom('+')" title="放大视图">
+          <i class="el-icon-zoom-in"></i>
+        </div>
+        <div class="tool" @click="mapZoom('-')" title="缩小视图">
+          <i class="el-icon-zoom-out"></i>
+        </div>
+        <div class="tool" @click="mapZoom()" title="重置视图">
+          <i class="el-icon-full-screen"></i>
+        </div> -->
+
       <el-tooltip content="缩小" effect="light">
-        <el-button icon="el-icon-zoom-out" circle></el-button>
+        <el-button icon="el-icon-zoom-out"  @click="zoomin()" circle></el-button>
       </el-tooltip>
       <el-tooltip content="自动布局" effect="light">
         <el-button icon="el-icon-bangzhu" circle></el-button>
@@ -29,7 +39,7 @@
 
 <script>
 import { GetDataGraph } from '@/utils/GetDataGraph';
-
+import { DagreLayout } from '@antv/layout';
 
 export default {
   name: "index",
@@ -43,8 +53,8 @@ export default {
       alldata:{},
       resdata:{},
       graph: null,
-      ix: 300,
-      iy: 300,
+      // ix: 700,
+      // iy: 700,
     }
   },
   mounted(){
@@ -64,6 +74,21 @@ export default {
     getdata (e) {
       this.init();
     },
+    mapZoom(type) {
+      if (type == '+') {
+        this.graph.zoom(0.1)
+        this.graph_zoom += 0.1
+      } else if (type == '-') {
+        this.graph.zoom(-0.1)
+        this.graph_zoom -= 0.1
+      } else {
+        this.graph.zoom(
+          this.graph_zoom <= 0 ? Math.abs(this.graph_zoom) : -this.graph_zoom
+        )
+        this.graph.centerContent() //画布居中
+        this.graph_zoom = 0
+      }
+    },
     getRoundXY(min,max){ 
     switch(arguments.length){ 
         case 1: 
@@ -75,19 +100,19 @@ export default {
             default: 
                 return 0; 
             break; 
-    } 
-   },
+    }
+    },
     init(tablelable) {
-      let alldata = {}; let node = []; let edge = [];
+      this.alldata = {}; this.node = [];  this.edge = []; this.jsondata = [];
+      this.graph = {}; this.miniMapContainerRef = null; this.newModel = {};
       //调用公共方法,获取单个表的数据
       this.jsondata = require('../../public/data/base.json');
       this.jsondata.forEach((item,index)=>{
         if (item.name === tablelable) {
           this.resdata = item.value ;
-          // console.log('ix:',this.ix);
           this.resdata.forEach( (subitem,index) => {
-          this.node.push(GetDataGraph(subitem.s,subitem.t,this.getRoundXY(-300,this.iy),this.getRoundXY(this.ix,-300))[0]);
-          this.edge.push(GetDataGraph(subitem.s,subitem.t,this.getRoundXY(-300,this.iy),this.getRoundXY(this.ix,-300))[1]);
+          this.node.push(GetDataGraph(subitem.s,subitem.t)[0]);
+          this.edge.push(GetDataGraph(subitem.s,subitem.t)[1]);
           });
         }
       });
@@ -99,6 +124,7 @@ export default {
               container: document.getElementById('container'),
               width: 4600,
               height: 4600,
+              snapline: true,
               background: {
                 color: '#ffffff',
               },
@@ -115,10 +141,27 @@ export default {
               minimap: {
                 enabled: true,
                 container: miniMapContainerRef,
-              }
+              },
+              // rotating: {
+              //   enabled: true, // 是否开启节点旋转
+              //   grid: 45 // 每次旋转15度
+              // },
         });
-      
-        graph.fromJSON(this.alldata);
+
+        const dagreLayout = new DagreLayout({
+          type: 'dagre',
+          rankdir: 'LR',
+          align: 'UR',
+          ranksep: 100,
+          nodesep: 20,
+          controlPoints: true,
+        });
+        const newModel = dagreLayout.layout(this.alldata);
+        
+        graph.fromJSON(newModel);
+        // graph.centerContent()
+        // graph.centerContent({ padding: { rigth: 100 }})
+        // graph.centerContent();
         // console.log("alldata:",this.alldata)
       } //if
     },
