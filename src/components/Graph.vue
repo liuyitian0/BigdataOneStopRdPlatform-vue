@@ -2,7 +2,7 @@
   <div class="wrrap"> 
     <div class="operate">
       <input class="banner_input1" type="text" v-model.trim="message" placeholder="请输入表名..." />
-      <el-button class="banner_Btn1" @click="getdata()"> 获取血缘 </el-button>
+      <el-button class="banner_Btn1" @click="getLineagedata()"> 获取血缘 </el-button>
       <el-tooltip content="放大" effect="light">
         <el-button icon="el-icon-zoom-in" circle></el-button>
       </el-tooltip>
@@ -71,8 +71,9 @@ export default {
     // }
   },
   methods: {
-    getdata (e) {
-      this.init();
+    getLineagedata () {
+      this.init(this.message);
+      this.tablabel = this.message;
     },
     mapZoom(type) {
       if (type == '+') {
@@ -88,19 +89,6 @@ export default {
         this.graph.centerContent() //画布居中
         this.graph_zoom = 0
       }
-    },
-    getRoundXY(min,max){ 
-    switch(arguments.length){ 
-        case 1: 
-            return parseInt(Math.random()*min+1,10); 
-        break; 
-        case 2: 
-            return parseInt(Math.random()*(max-min+1)+min,10); 
-        break; 
-            default: 
-                return 0; 
-            break; 
-    }
     },
     init(tablelable) {
       this.alldata = {}; this.node = [];  this.edge = []; this.jsondata = [];
@@ -201,5 +189,8 @@ export default {
 }
 .span {
   margin-left: 300px;
+  font-size:20px;
+  font-weight: bold;
+  color: green;
 }
 </style>

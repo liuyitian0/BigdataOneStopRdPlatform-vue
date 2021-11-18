@@ -5,6 +5,7 @@ import DataLineage from './DataLineage.vue';
 import Abc from './Abc.vue';
 import Graph from './components/Graph.vue';
 import Scheduler from './Scheduler.vue';
+import Test from './Test.vue';
 
 Vue.use(Router);
 
@@ -38,6 +39,11 @@ export default new Router({
       path: '/scheduler',
       name: 'scheduler',
       component: Scheduler,
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test,
     },
   ],
 });

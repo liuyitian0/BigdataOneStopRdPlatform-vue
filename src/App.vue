@@ -21,7 +21,7 @@
       <router-link class="navItem"
                    to="/index">数据治理</router-link>
       <router-link class="navItem"
-                   to="/operation">alg平台</router-link>
+                   to="/Test">alg平台</router-link>
       <router-link class="navItem"
                    to="/DataLineage">数据血缘</router-link>
       <router-link class="navItem"

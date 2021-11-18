@@ -33,6 +33,7 @@ import Vue, { CreateElement } from 'vue';
 import API from '../api/lineages';
 import Tree from './Tree';
 
+
 export default Vue.extend({
   data() {
     return {
@@ -72,9 +73,10 @@ export default Vue.extend({
     API.getFlowChartData().then((data: any) => {
       Tree.loadData(data.data);
     });
-    API.getLineagesMenuData().then((data:any) => {
-      this.nodeData = data.data;
-    });
+    // API.getLineagesMenuData().then((data:any) => {
+    //   this.nodeData = data.data;
+    // });
+    this.nodeData = require('../../public/data/TreeDW.json');
   },
   methods: {
     renderContentFunction(h: CreateElement, { node, data }:{node:any, data:any}) {
