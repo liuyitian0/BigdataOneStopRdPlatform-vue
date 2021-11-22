@@ -3,7 +3,7 @@
     <el-aside class="index">
       
       <div class="searchbox">
-        <el-input placeholder="搜索" size="small" v-model="filterText">
+        <el-input placeholder="搜索" size="small" v-model="filterText" >
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
       </div>

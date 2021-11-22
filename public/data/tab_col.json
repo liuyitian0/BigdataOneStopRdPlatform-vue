@@ -1,0 +1,44 @@
+[
+  {
+    "name":"mdp_cusdm_vhlhumaninjury_detail",
+    "up":[
+        {
+            "s_col":"jycasetype",
+            "t_tab":"dcl_zsclm_c_loss_man",
+            "s_tab":"zsclm_c_loss_man",
+            "t_col":"jycasetype",
+            "type":"node"
+        },
+        {
+            "s_col":"jycasetype",
+            "t_tab":"dw_zsclm_c_loss_man_act",
+            "s_tab":"dcl_zsclm_c_loss_man",
+            "t_col":"hi_loss_type",
+            "type":"node"
+        },
+        {
+            "s_col":"hi_loss_type",
+            "t_tab":"mdp_cusdm_vhlhumaninjury_detail",
+            "s_tab":"dw_zsclm_c_loss_man_act",
+            "t_col":"hi_loss_type",
+            "type":"node"
+        },
+        {
+            "s_col":"null",
+            "t_tab":"zsclm_c_loss_man",
+            "s_tab":"zsclm_c_loss_man",
+            "t_col":"null",
+            "type":"node"
+        }
+    ],
+    "down":[
+        {
+            "s_col":"null",
+            "t_tab":"",
+            "s_tab":"",
+            "t_col":"null",
+            "type":"node"
+        }
+    ]
+}
+]

@@ -2219,7 +2219,8 @@
             {"label":"mdp_vhlobj_renewal_total_busi_detail","id":"1034","icon":"el-icon-magic-stick"},
             {"label":"mdp_vhlobj_renewal_waitrecall","id":"1035","icon":"el-icon-magic-stick"},
             {"label":"zsins_job_state_flag","id":"1036","icon":"el-icon-magic-stick"},
-            {"label":"zsins_job_state_flag_test","id":"1037","icon":"el-icon-magic-stick"}
+            {"label":"zsins_job_state_flag_test","id":"1037","icon":"el-icon-magic-stick"},
+            {"label":"mdp_channel_salesperson_basic","id":"1038","icon":"el-icon-magic-stick"}
         ]
 }
 ]
