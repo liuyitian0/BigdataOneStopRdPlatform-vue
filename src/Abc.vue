@@ -1,12 +1,13 @@
 <template>
     <div id="c1" class="index">
+
     </div>
 </template>
 
 
 <script>
 import { DagreLayout } from '@antv/layout';
-
+import { GetColRectDataGraph,GetColEdgeDataGraph } from '@/utils/GetColDataGraph';
 
 
 const LINE_HEIGHT = 24
@@ -136,33 +137,32 @@ export default {
           },
         });
 
-        // fetch('../public/data/er.json')
-        // .then((response) => response.json())
-        // .then((data) => {
-        //   const cells = []
-        //   data.forEach((item ) => {
-        //     if (item.shape === 'edge') {
-        //       cells.push(graph.createEdge(item))
-        //     } else {
-        //       cells.push(graph.createNode(item))
-        //     }
-        //   })
-        //   graph.resetCells(cells);
-        //   graph.zoomToFit({ padding: 10, maxScale: 1 });
-        // });
-
         this.jsondata = require('../public/data/er.json');
         const  cells = [];
         this.jsondata.forEach((data) => {
+          console.log('data:',data);
           if(data.shape === 'edge') {
             cells.push(graph.createEdge(data));
           } else {
             cells.push(graph.createNode(data));
           }
         });
-        console.log('cels:',cells);
-        graph.resetCells(cells);
+        // console.log('cels:',cells);
+        const dagreLayout = new DagreLayout({
+          type: 'dagre',
+          rankdir: 'LR',
+          align: 'UR',
+          ranksep: 100,
+          nodesep: 20,
+          controlPoints: true,
+        });
+      
+        graph.resetCells(cells)
         graph.zoomToFit({ padding: 10, maxscale: 1 });
+        // const newModel = dagreLayout.layout(graph.zoomToFit({ padding: 10, maxscale: 1 }));
+        // graph.fromJSON(newModel);
+        // graph.resetCells(cells);
+        // graph.zoomToFit({ padding: 10, maxscale: 1 });
       
       } // initGraph
   }
@@ -171,4 +171,11 @@ export default {
 
 
 <style scoped>
+#c1{
+  /* background-color: coral; */
+  width: 80%;
+  height: 70%;
+  top: 100px;
+  margin: 0 auto;
+}
 </style>

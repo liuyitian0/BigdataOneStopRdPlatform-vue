@@ -1,39 +1,52 @@
-export function GetColDataGraph(s:String,t:String) {
-
-  let node = {
-    id: t,  //node1
-    // x: ix, 
-    // y: iy,     
-    width: 280,   
-    height: 38, 
-    attrs: {
-      body: {
-        fill: '#F39C12',
-        stroke: '#000',
-        rx: 22,
-        ry: 22,
-      },
-      label: {
-        text: t,// dcl_zssys_web_ply_base
-        fill: '#333',
-        fontSize: 18,
-        fontWeight: 'bold',
-        fontVariant: 'small-caps',
-      },
-    },
-   }
+export function GetColRectDataGraph(id:String,labelTab:String,idsub:String,col:String,coltype:String) {
+    let rect =     {
+      "id":id,
+      "shape":"er-rect",
+      "label":labelTab,  
+      "width":150,
+      "height":24
+    }  
   
-   let  edge =   
+    let ports = [
       {
-        source: s,  //node1
-        target: t,  //node2
-        attrs: {
-          line: {
-            stroke: 'green',
-          },
-        },
+        "id":idsub,
+        "group":"list",
+        "attrs":{
+            "portNameLabel":{
+                "text":col
+            },
+            "portTypeLabel":{
+                "text":coltype
+            }
+        }
       }
+    ]
 
-  return [node,edge];
-  
-}
+  return [rect,ports];
+  };
+
+
+export function GetColEdgeDataGraph(sid:String,sidsub:String,tid:String,tidsub:String) {
+
+    let edge = {
+        "id":sid,
+        "shape":"edge",
+        "source":{
+            "cell":sid,
+            "port":sidsub
+        },
+        "target":{
+            "cell":tid,
+            "port":tidsub
+        },
+        "attrs":{
+            "line":{
+                "stroke":"#A2B1C3",
+                "strokeWidth":2
+            }
+        },
+        "zIndex":0
+    }
+
+    return [edge];
+ };
