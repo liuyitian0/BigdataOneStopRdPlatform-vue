@@ -1,43 +1,45 @@
-export function GetColRectDataGraph(id:String,labelTab:String,idsub:String,col:String,coltype:String) {
-    let rect =     {
-      "id":id,
+export function GetColRectDataGraph(tab:String,tabcol:String,col:String,x:String,y:String) {
+// export function GetColRectDataGraph(tab:String,tabcol:String,col:String) {
+    return  {
+      "id":tab,
       "shape":"er-rect",
-      "label":labelTab,  
-      "width":150,
-      "height":24
-    }  
-  
-    let ports = [
-      {
-        "id":idsub,
-        "group":"list",
-        "attrs":{
-            "portNameLabel":{
-                "text":col
-            },
-            "portTypeLabel":{
-                "text":coltype
+      "label":tab,  
+      "width":300,
+      "height":32,
+      "position": {
+        "x": x,
+        "y": y
+      },
+      "ports":[{
+            "id":tabcol,  
+            "group":"list",
+            "attrs":{
+                "portNameLabel":{
+                    "text":col
+                },
+                "portTypeLabel":{
+                    "text":"String"
+                }
             }
-        }
-      }
-    ]
+        }]
+    }  
 
-  return [rect,ports];
   };
 
 
-export function GetColEdgeDataGraph(sid:String,sidsub:String,tid:String,tidsub:String) {
+export function GetColEdgeDataGraph(tabjoin:String,stab:String,scol:String,ttab:String,tcol:String) {
 
-    let edge = {
-        "id":sid,
+    return {
+
+        "id":tabjoin,
         "shape":"edge",
         "source":{
-            "cell":sid,
-            "port":sidsub
+            "cell":stab,
+            "port":scol
         },
         "target":{
-            "cell":tid,
-            "port":tidsub
+            "cell":ttab,
+            "port":tcol
         },
         "attrs":{
             "line":{
@@ -45,8 +47,5 @@ export function GetColEdgeDataGraph(sid:String,sidsub:String,tid:String,tidsub:S
                 "strokeWidth":2
             }
         },
-        "zIndex":0
     }
-
-    return [edge];
  };

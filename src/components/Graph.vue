@@ -1,8 +1,8 @@
 <template>
   <div class="wrrap"> 
 
-    <el-tabs type="border-card" v-model="activeName"  style="height: 100%;" >
-      <el-tab-pane label="表血缘" name="first" style="height: 100%;" > 
+    <el-tabs type="border-card" v-model="activeName"  style="height: 100%;width: 100%">
+      <el-tab-pane label="表血缘" name="first"  > 
         <input class="banner_input1" type="text" v-model.trim="message" placeholder="表名..." />
         <el-button class="banner_Btn1" @click="getTabLineagedata()"> 获取血缘 </el-button>
         <el-tooltip content="放大" effect="light">
@@ -21,7 +21,7 @@
         </div>
       </el-tab-pane>
        
-      <el-tab-pane label="字段血缘" name="second" style="height: 100%;"> 
+      <el-tab-pane  label="字段血缘" name="second" > 
         <input class="banner_input1" type="text" v-model.trim="tab" placeholder="表名..." />
         <input class="banner_input1_col" type="text" v-model.trim="col" placeholder="字段列..." />
 
@@ -35,18 +35,11 @@
         </el-select>
 
         <el-button class="banner_Btn1" @click="getColLineagedata(tab,col)"> 获取血缘 </el-button>
-        <!-- <el-tooltip content="放大" effect="light">
-          <el-button icon="el-icon-zoom-in" circle></el-button>
-        </el-tooltip>
-        <el-tooltip content="缩小" effect="light">
-          <el-button icon="el-icon-zoom-out"  @click="zoomin()" circle></el-button>
-        </el-tooltip> -->
-
-
         <i class="el-icon-location"> {{ tab }}.{{ col }} </i>
-        <div>
-          <div id="container2"></div>
-          <div ref="miniMapContainerRef" class="miniMap"></div>
+
+        <div >
+          <div id="container2">
+          </div>
         </div>
       </el-tab-pane>
 
@@ -59,6 +52,16 @@
 
 import { GetDataGraph } from '@/utils/GetDataGraph';
 import { DagreLayout } from '@antv/layout';
+// import { Model } from '@antv/x6';
+import { GetColRectDataGraph,GetColEdgeDataGraph } from '@/utils/GetColDataGraph';
+
+const LINE_HEIGHT = 32
+const NODE_WIDTH = 300
+
+// const erdata: X6.Model.FromJSONData = {
+//   nodes: [],
+//   edges: [],
+// }
 
 export default {
   name: "index",
@@ -74,7 +77,7 @@ export default {
       activeName: '',
       tab: null,
       col: null,
-      value: '选项1',
+      value: '选项2',
       selectLable: [],
       options:[
         {
@@ -158,73 +161,182 @@ export default {
         const newModel = dagreLayout.layout(this.alldata);
         
         graph.fromJSON(newModel);
-        // graph.centerContent()
-        // graph.centerContent({ padding: { rigth: 100 }})
-        // graph.centerContent();
-        // console.log("alldata:",this.alldata)
+
       } //if
     },
     canvnsCol(tab,col,selectlabel) {
-      this.alldata = {}; this.node = [];  this.edge = []; this.jsondata = [];this.resdata = {};
-      this.graph = {}; this.miniMapContainerRef = null; this.newModel = {};
-      //调用公共方法,获取单个表的数据
-      this.jsondata = require('../../public/data/tab_col.json');
-      this.jsondata.forEach((item,index)=>{
-        
-        if(item.name === tab && selectlabel === '上游') {
-          this.resdata = item.up ;
-        } else {
-          this.resdata = item.down;
-        };
-        // console.log('selectlabel',selectlabel);
-        // console.log('resdata',this.resdata);
-        this.resdata.forEach( (subitem,index) => {
-          this.node.push(GetDataGraph(subitem.s,subitem.t)[0]);
-          this.edge.push(GetDataGraph(subitem.s,subitem.t)[1]);
-        });
 
+      X6.Graph.registerPortLayout(
+        'erPortPosition',
+        (portsPositionArgs) => {
+          return portsPositionArgs.map((_, index) => {
+            return {
+              position: {
+                x: 0,
+                y: (index + 1) * LINE_HEIGHT,
+              },
+              angle: 0,
+            }
+          })
+        },
+        true,
+      )
+
+      X6.Graph.registerNode(
+        'er-rect',
+        {
+          inherit: 'rect',
+          markup: [
+            {
+              tagName: 'rect',
+              selector: 'body',
+            },
+            {
+              tagName: 'text',
+              selector: 'label',
+            },
+          ],
+          attrs: {
+            rect: {
+              strokeWidth: 1,
+              stroke: '#5F95FF',
+              fill: '#5F95FF',
+            },
+            label: {
+              fontWeight: 'bold',
+              fill: '#ffffff',
+              fontSize: 14,
+            },
+          },
+          ports: {
+            groups: {
+              list: {
+                markup: [
+                  {
+                    tagName: 'rect',
+                    selector: 'portBody',
+                  },
+                  {
+                    tagName: 'text',
+                    selector: 'portNameLabel',
+                  },
+                  {
+                    tagName: 'text',
+                    selector: 'portTypeLabel',
+                  },
+                ],
+                attrs: {
+                  portBody: {
+                    width: NODE_WIDTH,
+                    height: LINE_HEIGHT,
+                    strokeWidth: 1,
+                    stroke: '#5F95FF',
+                    fill: '#EFF4FF',
+                    magnet: true,
+                  },
+                  portNameLabel: {
+                    ref: 'portBody',
+                    refX: 6,
+                    refY: 8,
+                    fontSize: 16,
+                  },
+                  portTypeLabel: {
+                    ref: 'portBody',
+                    refX: 250,
+                    refY: 8,
+                    fontSize: 14,
+                  },
+                },
+                position: 'erPortPosition',
+              },
+            },
+          },
+        },
+        true,
+      )
+        
+      const graph = new X6.Graph({
+        container: document.getElementById('container2'),
+        connecting: {
+          router: {
+            name: 'er',
+            args: {
+              offset: 25,
+              direction: 'H',
+            },
+          },
+          createEdge() {
+            return new Shape.Edge({
+              attrs: {
+                line: {
+                  stroke: '#A2B1C3',
+                  strokeWidth: 2,
+                },
+              },
+            })
+          },
+        },
       });
-      // this.alldata.nodes=this.node;
-      // this.alldata.edges=this.edge;
-      // if(this.alldata.nodes.length != 0) {
-      //   const miniMapContainerRef = this.$refs.miniMapContainerRef;
-      //   const graph = new X6.Graph({
-      //         container: document.getElementById('container2'),
-      //         width: 4600,
-      //         height: 4600,
-      //         snapline: true,
-      //         background: {
-      //           color: '#ffffff',
-      //         },
-      //         grid: {
-      //           size: 10,      // 网格大小 10px
-      //           visible: true, // 渲染网格背景
-      //         },
-      //         scroller: {
-      //           enabled: true,
-      //           pageVisible: true,
-      //           pageBreak: true,
-      //           pannable: true,
-      //         },
-      //         minimap: {
-      //           enabled: true,
-      //           container: miniMapContainerRef,
-      //         },
-      //   });
+       
+      this.jsondata = require('../../public/data/er.json');
+      const cells = []
+      // if (this.$refs.selectLable.selected.label === '上游'){
+      if (selectlabel === '上游'){
+              this.jsondata.up.forEach((item)=>{
+                let tabcol1 = item.t_tab + "." + item.t_col;
+                let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
+                // let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col);
+                // console.log("node:",resRectNode1);
+                cells.push(graph.createNode(resRectNode1));
 
-      //   const dagreLayout = new DagreLayout({
-      //     type: 'dagre',
-      //     rankdir: 'LR',
-      //     align: 'UR',
-      //     ranksep: 100,
-      //     nodesep: 20,
-      //     controlPoints: true,
-      //   });
-      //   const newModel = dagreLayout.layout(this.alldata);
-        
-      //   graph.fromJSON(newModel);
-      // } //if
-    },
+                let tabcol2 = item.s_tab + "." + item.s_col;
+                let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
+                // let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col);
+                // console.log("node:",resRectNode2);
+                cells.push(graph.createNode(resRectNode2));
+
+                let tabjoin = item.s_tab + "_" + item.t_tab;
+                let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
+                // console.log("resEdge:",resEdge);
+                cells.push(graph.createEdge(resEdge));
+
+                console.log("cells:",cells);
+              });
+        } 
+      else { 
+             this.jsondata.down.forEach((item)=>{
+                let tabcol1 = item.t_tab + "." + item.t_col;
+                let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
+                // let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col);
+                // console.log("node:",resRectNode1);
+                cells.push(graph.createNode(resRectNode1));
+
+                let tabcol2 = item.s_tab + "." + item.s_col;
+                let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
+                // let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col);
+                // console.log("node:",resRectNode2);
+                cells.push(graph.createNode(resRectNode2));
+
+                let tabjoin = item.s_tab + "_" + item.t_tab;
+                let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
+                // console.log("resEdge:",resEdge);
+                cells.push(graph.createEdge(resEdge));
+              });
+      }
+
+      const dagreLayout = new DagreLayout({
+        type: 'dagre',
+        rankdir: 'LR',
+        align: 'UR',
+        ranksep: 100,
+        nodesep: 35,
+      })
+      const model = dagreLayout.layout(cells)
+      graph.fromJSON(model)
+
+      graph.resetCells(cells)
+      // graph.zoomToFit({ padding: 10, maxScale: 1 })
+    } //canvnsCol
 
   }
 }
@@ -264,13 +376,21 @@ export default {
 }
 
 .el-icon-location {
-  margin-left: 200px;
-  font-size: 20px;
+  margin-left: 150px;
+  font-size: 18px;
   font-weight: bold;
   color: green;
 }
 .el-select {
   margin-left:10px;
   width: 126px;
+}
+
+#container2 {
+  /* background-color: coral; */
+  width: 1400px;
+  height: 760px;
+  /* top: 10px; */
+  /* margin: 0 auto; */
 }
 </style>

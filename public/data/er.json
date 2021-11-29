@@ -1,201 +1,42 @@
-[
-    {
-        "id":"1",
-        "shape":"er-rect",
-        "label":"zsclm_c_loss_man",  
-        "width":150,
-        "height":24,
-        "position": {
-            "x": 24,
-            "y": 150
-          },
-        "ports":[
-            {
-                "id":"1-1",
-                "group":"list",
-                "attrs":{
-                    "portNameLabel":{
-                        "text":"jycasetype"
-                    },
-                    "portTypeLabel":{
-                        "text":"STRING"
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "id":"2",
-        "shape":"er-rect",
-        "label":"dcl_zsclm_c_loss_man",
-        "width":150,
-        "height":24,
-        "position": {
-            "x": 250,
-            "y": 210
-          },
-        "ports":[
-            {
-                "id":"2-1",
-                "group":"list",
-                "attrs":{
-                    "portNameLabel":{
-                        "text":"jycasetype"
-                    },
-                    "portTypeLabel":{
-                        "text":"STRING"
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "id":"3",
-        "shape":"edge",
-        "source":{
-            "cell":"1",
-            "port":"1-1"
+{
+    "name":"mdp_channel_prpssalary",
+    "up":[
+        {
+            "s_col":"md_sub_cde",
+            "t_tab":"dim_i_sc",
+            "s_tab":"ods_zssy",
+            "t_col":"md_sub_cde",
+            "type":"node"
         },
-        "target":{
-            "cell":"2",
-            "port":"2-1"
+        {
+            "s_col":"md_sub_cde",
+            "t_tab":"dw_sales_prpssalary",
+            "s_tab":"dim_i_sc",
+            "t_col":"sale_payment_way",
+            "type":"node"
         },
-        "attrs":{
-            "line":{
-                "stroke":"#A2B1C3",
-                "strokeWidth":2
-            }
+        {
+            "s_col":"sale_payment_way",
+            "t_tab":"mdp_channel_prpssalary",
+            "s_tab":"dw_sales_prpssalary",
+            "t_col":"sale_payment_way_cnm",
+            "type":"node"
+        }
+    ],
+    "down":[
+        {
+            "s_col":"sale_payment_way_cnm",
+            "t_tab":"dw_prpssalary",
+            "s_tab":"mdp_channel_prpssalary",
+            "t_col":"way_cnm",
+            "type":"node"
         },
-        "zIndex":0
-    },
-    {
-        "id":"4",
-        "shape":"er-rect",
-        "label":"dw_zsclm_c_loss_man_act",
-        "width":150,
-        "height":24,
-        "position": {
-            "x": 380,
-            "y": 70
-          },
-        "ports":[
-            {
-                "id":"4-1",
-                "group":"list",
-                "attrs":{
-                    "portNameLabel":{
-                        "text":"jycasetype"
-                    },
-                    "portTypeLabel":{
-                        "text":"STRING"
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "id":"5",
-        "shape":"edge",
-        "source":{
-            "cell":"2",
-            "port":"2-1"
-        },
-        "target":{
-            "cell":"4",
-            "port":"4-1"
-        },
-        "attrs":{
-            "line":{
-                "stroke":"#A2B1C3",
-                "strokeWidth":2
-            }
-        },
-        "zIndex":0
-    },
-    {
-        "id":"6",
-        "shape":"er-rect",
-        "label":"mdp_cusdm_vhlhumaninjury_detail",
-        "width":150,
-        "height":24,
-        "position": {
-            "x": 580,
-            "y": 370
-          },
-        "ports":[
-            {
-                "id":"6-1",
-                "group":"list",
-                "attrs":{
-                    "portNameLabel":{
-                        "text":"hi_loss_type"
-                    },
-                    "portTypeLabel":{
-                        "text":"STRING"
-                    }
-                }
-            }
-        ]
-    },{
-        "id":"7",
-        "shape":"edge",
-        "source":{
-            "cell":"4",
-            "port":"4-1"
-        },
-        "target":{
-            "cell":"6",
-            "port":"6-1"
-        },
-        "attrs":{
-            "line":{
-                "stroke":"#A2B1C3",
-                "strokeWidth":2
-            }
-        },
-        "zIndex":0
-    }, {
-        "id":"8",
-        "shape":"er-rect",
-        "label":"dw_zsclm_c",
-        "width":150,
-        "height":24,
-        "position": {
-            "x": 80,
-            "y": 120
-          },
-        "ports":[
-            {
-                "id":"8-1",
-                "group":"list",
-                "attrs":{
-                    "portNameLabel":{
-                        "text":"casee"
-                    },
-                    "portTypeLabel":{
-                        "text":"STRING"
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "id":"9",
-        "shape":"edge",
-        "source":{
-            "cell":"8",
-            "port":"8-1"
-        },
-        "target":{
-            "cell":"4",
-            "port":"4-1"
-        },
-        "attrs":{
-            "line":{
-                "stroke":"#A2B1C3",
-                "strokeWidth":2
-            }
-        },
-        "zIndex":0
-    }
-]
+        {
+            "s_col":"way_cnm",
+            "t_tab":"mdp_cusdm_vhlhumaninjury_detail",
+            "s_tab":"dw_prpssalary",
+            "t_col":"hi_loss_type",
+            "type":"node"
+        }
+    ]
+}
