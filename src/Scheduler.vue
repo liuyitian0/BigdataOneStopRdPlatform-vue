@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="c000">
-      <div id="c6"> 
+      <div id="c6"> 目前定时 Flow 列表
       </div>
       <div id="c7">
       </div>
@@ -333,7 +333,7 @@ h1 {
    line-height: 400px;
 }
 #c4 {
-   background-color: cornflowerblue;
+   /* background-color: cornflowerblue; */
    margin-top: 88px;
    width: calc(50%);
    height: 450px;
@@ -345,7 +345,7 @@ h1 {
 
 
 #c5 {
-   background-color:darkseagreen;
+   /* background-color:mistyrose; */
    margin-top: 88px;
    width: calc(49%);
    height: 450px;
@@ -360,7 +360,8 @@ h1 {
    width: calc(25%);
    height: 450px;
    float: left;
-   
+   text-align:center;
+   line-height: 230px;
 }
 
 #c7 {
@@ -369,6 +370,8 @@ h1 {
    width: calc(25%);
    height: 450px;
    float: left;
+   text-align:center;
+   line-height: 30px;
 }
 #c8 {
    margin-top: 58px;
@@ -376,14 +379,17 @@ h1 {
    width: calc(25%);
    height: 450px;
    float: left;
+   text-align:center;
+   line-height: 30px;
 }
 #c9 {
    margin-top: 58px;
-   background-color:lime;
+   background-color:rosybrown;
    width: calc(24%);
    height: 450px;
-   float: left;
-   /* margin-bottom: 100px; */
+   float: left; 
+   text-align:center;
+   line-height: 230px;
 }
 #c10 {
    /* background-color:lightpink; */
