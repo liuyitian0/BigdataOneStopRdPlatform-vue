@@ -4,7 +4,7 @@
     <el-tabs type="border-card" v-model="activeName"  style="height: 100%;width: 100%">
       <el-tab-pane label="表血缘" name="first"  > 
         <input class="banner_input1" type="text" v-model.trim="message" placeholder="表名..." />
-        <el-button class="banner_Btn1" @click="getTabLineagedata()"> 获取血缘 </el-button>
+        <el-button  type="primary" class="banner_Btn1" @click="getTabLineagedata()"> 查看血缘 </el-button>
         <el-tooltip content="放大" effect="light">
           <el-button icon="el-icon-zoom-in" circle></el-button>
         </el-tooltip>
@@ -34,7 +34,7 @@
           </el-option>
         </el-select>
 
-        <el-button class="banner_Btn1" @click="getColLineagedata(tab,col)"> 获取血缘 </el-button>
+        <el-button type="primary" class="banner_Btn1" @click="getColLineagedata(tab,col)"> 查看血缘 </el-button>
         <i class="el-icon-location"> {{ tab }}.{{ col }} </i>
 
         <div >
@@ -52,16 +52,10 @@
 
 import { GetDataGraph } from '@/utils/GetDataGraph';
 import { DagreLayout } from '@antv/layout';
-// import { Model } from '@antv/x6';
 import { GetColRectDataGraph,GetColEdgeDataGraph } from '@/utils/GetColDataGraph';
 
 const LINE_HEIGHT = 32
 const NODE_WIDTH = 300
-
-// const erdata: X6.Model.FromJSONData = {
-//   nodes: [],
-//   edges: [],
-// }
 
 export default {
   name: "index",
@@ -70,6 +64,7 @@ export default {
     return{
       message: null,
       jsondata: [],
+      jsonERdata: {},
       node: [],
       edge: [],
       alldata:{},
@@ -165,7 +160,7 @@ export default {
       } //if
     },
     canvnsCol(tab,col,selectlabel) {
-
+      this.jsonERdata = {}; this.resEdge = {}; this.graph = null;
       X6.Graph.registerPortLayout(
         'erPortPosition',
         (portsPositionArgs) => {
@@ -276,68 +271,79 @@ export default {
             })
           },
         },
+        width: 4600,
+        height: 4600,
+        snapline: true,
+        background: {
+          color: '#ffffff',
+        },
+        grid: {
+          size: 10,      // 网格大小 10px
+          visible: true, // 渲染网格背景
+        },
+        scroller: {
+          enabled: true,
+          pageVisible: true,
+          pageBreak: true,
+          pannable: true,
+        },
       });
        
-      this.jsondata = require('../../public/data/er.json');
+      this.jsonERdata = require('../../public/data/er.json');
       const cells = []
+      this.jsonERdata.forEach((tables)=>{
       // if (this.$refs.selectLable.selected.label === '上游'){
-      if (selectlabel === '上游'){
-              this.jsondata.up.forEach((item)=>{
+      if (selectlabel === '上游' && tables.name === tab){
+              tables.up.forEach((item)=>{
+                if(col === item.t_col) {
                 let tabcol1 = item.t_tab + "." + item.t_col;
                 let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
-                // let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col);
-                // console.log("node:",resRectNode1);
                 cells.push(graph.createNode(resRectNode1));
 
                 let tabcol2 = item.s_tab + "." + item.s_col;
                 let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
-                // let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col);
-                // console.log("node:",resRectNode2);
                 cells.push(graph.createNode(resRectNode2));
 
                 let tabjoin = item.s_tab + "_" + item.t_tab;
                 let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
                 // console.log("resEdge:",resEdge);
                 cells.push(graph.createEdge(resEdge));
-
-                console.log("cells:",cells);
+                }
               });
         } 
-      else { 
-             this.jsondata.down.forEach((item)=>{
+      else if((selectlabel === '下游' && tables.name === tab)){ 
+             tables.down.forEach((item)=>{
+               if(col === item.s_col){
                 let tabcol1 = item.t_tab + "." + item.t_col;
                 let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
-                // let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col);
-                // console.log("node:",resRectNode1);
                 cells.push(graph.createNode(resRectNode1));
 
                 let tabcol2 = item.s_tab + "." + item.s_col;
                 let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
-                // let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col);
-                // console.log("node:",resRectNode2);
                 cells.push(graph.createNode(resRectNode2));
 
                 let tabjoin = item.s_tab + "_" + item.t_tab;
                 let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
-                // console.log("resEdge:",resEdge);
                 cells.push(graph.createEdge(resEdge));
+                }
               });
       }
 
-      const dagreLayout = new DagreLayout({
-        type: 'dagre',
-        rankdir: 'LR',
-        align: 'UR',
-        ranksep: 100,
-        nodesep: 35,
-      })
-      const model = dagreLayout.layout(cells)
-      graph.fromJSON(model)
+      // const dagreLayout = new DagreLayout({
+      //   type: 'dagre',
+      //   rankdir: 'LR',
+      //   align: 'UR',
+      //   ranksep: 100,
+      //   nodesep: 35,
+      // })
+      // const model = dagreLayout.layout(cells)
+      // graph.fromJSON(model)
 
       graph.resetCells(cells)
       // graph.zoomToFit({ padding: 10, maxScale: 1 })
-    } //canvnsCol
+      }) //forEach(tables)
 
+    } //canvnsCol
   }
 }
 </script>
@@ -362,14 +368,13 @@ export default {
 }
 .banner_input1 {
   margin-left: 10px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
   width: 280px;
   height: 36px;
   border-radius: 10px;
 }
 .banner_input1_col {
   margin-left: 10px;
-  margin-top: 5px;
   width: 150px;
   height: 36px;
   border-radius: 10px;
@@ -393,4 +398,16 @@ export default {
   /* top: 10px; */
   /* margin: 0 auto; */
 }
+
+.el-tabs__content{
+  padding: 1px;
+  background-color: lime;
+}
+
+/* #pane-first.el-tab-pane {
+  padding: 0px;
+  background-color: magenta;
+  margin-top: 1px;
+} */
+
 </style>

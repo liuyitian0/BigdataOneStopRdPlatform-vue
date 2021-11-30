@@ -1,19 +1,8 @@
 <template>
-    <!-- <div> -->
-    <div id="c1" class="index">
-    </div>
 
-      <!-- <div id="select">
-        <el-select ref='selectLable' v-model="value" placeholder="选择上下游">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </div> -->
-     <!-- </div> -->
+      <div id="c4">  核心表数据量/表主键监控
+      </div>
+ 
     
 </template>
 
@@ -41,197 +30,156 @@ export default {
           label: '上游'
         }
       ],
+      abc: [],
     }
   },
   mounted () {
-    this.initGraph();
+    this.initReport4();
   },
   methods : {
-      initGraph() {
+      initReport4 () {
+          // 'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+        // const abc = require('../public/data/aaa.json');
+        //     console.log("abc:",abc);
+        //     const container = document.getElementById('c4');
+        //     const s2DataConfig = {
+        //       fields: {
+        //         columns: ['province', 'city', 'type', 'price', 'cost'],
+        //       },
+        //       meta: [
+        //         {
+        //           field: 'province',
+        //           name: '省份',
+        //         },
+        //         {
+        //           field: 'city',
+        //           name: '城市',
+        //         },
+        //         {
+        //           field: 'type',
+        //           name: '商品类别',
+        //         },
+        //         {
+        //           field: 'price',
+        //           name: '价格',
+        //         },
+        //         {
+        //           field: 'cost',
+        //           name: '成本',
+        //         },
+        //       ],
+        //       abc,
+        //     };
+            
+        //     const s2Options = {
+        //       width: 600,
+        //       height: 480,
+        //       showSeriesNumber: true,
+        //     };
+        //     const s2 = new S2.TableSheet(container, s2DataConfig, s2Options);
 
-      X6.Graph.registerPortLayout(
-        'erPortPosition',
-        (portsPositionArgs) => {
-          return portsPositionArgs.map((_, index) => {
-            return {
-              position: {
-                x: 0,
-                y: (index + 1) * LINE_HEIGHT,
-              },
-              angle: 0,
-            }
-          })
-        },
-        true,
-      )
-
-
-      X6.Graph.registerNode(
-        'er-rect',
+        //     s2.render();
+ 
+           
+ 
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+)
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("data:",data);
+    const container = document.getElementById('c4');
+    const s2DataConfig = {
+      fields: {
+        columns: ['province', 'city', 'type', 'price', 'cost'],
+      },
+      meta: [
         {
-          inherit: 'rect',
-          markup: [
-            {
-              tagName: 'rect',
-              selector: 'body',
-            },
-            {
-              tagName: 'text',
-              selector: 'label',
-            },
-          ],
-          attrs: {
-            rect: {
-              strokeWidth: 1,
-              stroke: '#5F95FF',
-              fill: '#5F95FF',
-            },
-            label: {
-              fontWeight: 'bold',
-              fill: '#ffffff',
-              fontSize: 12,
-            },
-          },
-          ports: {
-            groups: {
-              list: {
-                markup: [
-                  {
-                    tagName: 'rect',
-                    selector: 'portBody',
-                  },
-                  {
-                    tagName: 'text',
-                    selector: 'portNameLabel',
-                  },
-                  {
-                    tagName: 'text',
-                    selector: 'portTypeLabel',
-                  },
-                ],
-                attrs: {
-                  portBody: {
-                    width: NODE_WIDTH,
-                    height: LINE_HEIGHT,
-                    strokeWidth: 1,
-                    stroke: '#5F95FF',
-                    fill: '#EFF4FF',
-                    magnet: true,
-                  },
-                  portNameLabel: {
-                    ref: 'portBody',
-                    refX: 6,
-                    refY: 6,
-                    fontSize: 10,
-                  },
-                  portTypeLabel: {
-                    ref: 'portBody',
-                    refX: 95,
-                    refY: 6,
-                    fontSize: 10,
-                  },
-                },
-                position: 'erPortPosition',
-              },
-            },
-          },
+          field: 'province',
+          name: '省份',
         },
-        true,
-      )
-        
-      const graph = new X6.Graph({
-        container: document.getElementById('c1'),
-        connecting: {
-          router: {
-            name: 'er',
-            args: {
-              offset: 25,
-              direction: 'H',
-            },
-          },
-          createEdge() {
-            return new Shape.Edge({
-              attrs: {
-                line: {
-                  stroke: '#A2B1C3',
-                  strokeWidth: 2,
-                },
-              },
-            })
-          },
+        {
+          field: 'city',
+          name: '城市',
         },
-      });
-       
-        this.jsondata = require('../public/data/er-gf.json');
-          const cells = []
-          this.jsondata.forEach((item) => {
-            if (item.shape === 'edge') {
-              console.log('edge:',item)
-              cells.push(graph.createEdge(item))
-            } else {
-              console.log('node:',item)
-              cells.push(graph.createNode(item))
-            }
-          graph.resetCells(cells)
-          graph.zoomToFit({ padding: 10, maxScale: 1 })
-        })
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
+      data,
+    };
+     
+    const s2Options = {
+      width: 700,
+      height: 400,
+      showSeriesNumber: true,
+    };
+    const s2 = new S2.TableSheet(container, s2DataConfig, s2Options);
+
+    s2.render();
+  });
 
 
-      // fetch('../public/data/er-gf.json')
-      // .then((response) => response.json())
-      // .then((data) => {
-      //   const cells = []
-      //   data.forEach((item) => {
-      //     if (item.shape === 'edge') {
-      //       cells.push(graph.createEdge(item))
-      //     } else {
-      //       cells.push(graph.createNode(item))
-      //     }
-      //   })
-      //   graph.resetCells(cells)
-      //   graph.zoomToFit({ padding: 10, maxScale: 1 })
-      // })  
-
-
-      //  if (this.$refs.selectLable.selected.label === '上游'){
-      //  if ('上游' === '上游'){
-      //     this.jsondata.up.forEach((item)=>{
-      //       let tabcol1 = item.t_tab + "." + item.t_col;
-      //       let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,24,150);
-      //       console.log("node:",resRectNode1);
-      //       cells.push(graph.createNode(resRectNode1));
-
-      //       let tabcol2 = item.s_tab + "." + item.s_col;
-      //       let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,250,210);
-      //       console.log("node:",resRectNode2);
-      //       cells.push(graph.createNode(resRectNode2));
-
-      //       let tabjoin = item.s_tab + "_" + item.t_tab;
-      //       let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
-      //       console.log("resEdge:",resEdge);
-      //       cells.push(graph.createEdge(resEdge));
-      //     });
-
-
-      //     graph.resetCells(cells)
-      //     graph.zoomToFit({ padding: 10, maxScale: 1 })
-      //   } 
-      //   else { 
-      //       console.log('jsondata:',this.jsondata.down) 
-      //     }
-
-      } // initGraph
+      // // let resTablejson = require('../public/data/table.json');
+      // let resTablejson = [{"tablename":"abc","tab_num":"23000","tab_key":"bk_id","day_inc_num":"1000"}];
+      // console.log('resTablejson:',resTablejson);
+      // const container = document.getElementById('c4');
+      // const s2DataConfig = {
+      //     fields: {
+      //       columns: ['tablename', 'tab_num', 'tab_key', 'day_inc_num'],
+      //     },
+      //     meta: [
+      //       {
+      //         field: 'tablename',
+      //         name: '表名',
+      //       },
+      //       {
+      //         field: 'tab_num',
+      //         name: '数据量',
+      //       },
+      //       {
+      //         field: 'tab_key',
+      //         name: '该表主键',
+      //       },
+      //       {
+      //         field: 'day_inc_num',
+      //         name: '昨日新增量',
+      //       }
+      //     ],
+      //     resTablejson,
+      //   };
+      // const s2Options = {
+      //     width: 850,
+      //     height: 400,
+      //     showSeriesNumber: true,
+      //   };
+      //   const s2 = new S2.TableSheet(container, s2DataConfig, s2Options);
+      //   s2.render();
   }
+}
 }
 </script>
 
 
 <style scoped>
-#c1{
-  /* background-color: coral; */
-  width: 100%;
-  height: 100%;
-  top: 10px;
-  margin: 0 auto;
+ #c4 {
+   background-color: cornflowerblue;
+   margin-top: 88px;
+   width: calc(60%);
+   height: 450px;
+   float: left;
+   text-align:center;
+   line-height: 30px;
+   padding-left: 5px;
 }
+
 </style>
