@@ -43,6 +43,8 @@
         </div>
       </el-tab-pane>
 
+      <el-tab-pane  label="补录/纠正" name="third" >
+      </el-tab-pane>
     </el-tabs>
 
   </div>
