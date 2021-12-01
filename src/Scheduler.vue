@@ -14,7 +14,7 @@
       </div>
       <div id="c2"> 调度运行时常/周
       </div>
-      <div id="c3"> 任务错误列表
+      <div id="c3"> 错误任务
       </div>
     </div>
 
@@ -58,14 +58,15 @@ export default {
   },
   mounted(){
     this.initReport1();
-    this.initReport5();
     this.initReport2();
+    this.initReport3();
     this.initReport4();
+    this.initReport5();
   },
   data () {
     return {
       data: [],
-      resTablejson: {},
+      resTablejson:Promise,
     };
   },
   methods: {
@@ -136,15 +137,14 @@ export default {
 
     },
     initReport2 () {
-      const Report2data = [{ year: '1991', value: 3 },
-              { year: '1992', value: 4 },
-              { year: '1993', value: 3.5 },
-              { year: '1994', value: 5 },
-              { year: '1995', value: 4.9 },
-              { year: '1996', value: 6 },
-              { year: '1997', value: 7 },
-              { year: '1998', value: 9 },
-              { year: '1999', value: 13 },
+      const Report2data = [
+              { year: '2021/05', value: 4 },
+              { year: '2021/06', value: 14 },
+              { year: '2021/07', value: 15 },
+              { year: '2021/08', value: 26 },
+              { year: '2021/09', value: 29 },
+              { year: '2021/10', value: 32 },
+              { year: '2021/11', value: 38 },
             ];
       const chart = new G2.Chart({
           container: 'c2',
@@ -173,13 +173,151 @@ export default {
       chart.render();
 
     },
+    initReport3 () {
+      const Report3data = [
+          { x: 40.5, y: 60.5, z: 35, name: 'dcl_wxc_cshop_activity_excel_reward', country: 'Finland' },
+          { x: 80.4, y: 102.5, z: 35, name: 'dcl_wxc_cshop_token_user_ext_info', country: 'Netherlands' },
+          { x: 74.2, y: 68.5, z: 35, name: 'dw_cshop_rbac_user', country: 'France' },
+          { x: 73.5, y: 83.1, z: 35, name: 'dw_sales_prpsfiveinsurancepayments', country: 'Norway' },
+          { x: 71, y: 93.2, z: 35, name: 'dw_zsclm_c_diagnose', country: 'United Kingdom' },
+          { x: 69.2, y: 57.6, z: 35, name: 'dw_zssys_web_clm_bank', country: 'Italy' },
+          { x: 68.6, y: 20, z: 35, name: 'dw_zszfb_web_ply_day', country: 'Russia' },
+          { x: 65.5, y: 126.4, z: 35, name: 'mdp_claim_clmntf_clmreg', country: 'United States' },
+          { x: 63.4, y: 51.8, z: 35, name: 'mdp_jg_east_bdxsryglb', country: 'Portugal' },
+          { x: 64, y: 82.9, z: 33.3, name: 'mdp_jg_ffmxb', country: 'New Zealand' }
+        ];
+     const chart = new G2.Chart({
+            container: 'c3',
+            // autoFit: true,
+            width: 1600,
+            height: 450,
+            padding: [20, 20, 50, 80],
+          });
+          chart.data(Report3data);
+          chart.scale({
+            // x: {
+            //   // alias: 'Daily fat intake', // 定义别名
+            //   tickInterval: 15, // 自定义刻度间距
+            //   max: 96, // 自定义最大值
+            //   min: 62 // 自定义最小是
+            // },
+            y: {
+              // alias: 'Daily sugar intake',
+              tickInterval: 50,
+              max: 100,
+              min: 0
+            },
+            // z: {
+            //   alias: 'Obesity(adults) %'
+            // }
+          });
+          // 开始配置坐标轴
+          // chart.axis('x', {
+            // label: {
+            //   formatter: val => {
+            //     return val + ' gr'; // 格式化坐标轴显示文本
+            //   }
+            // },
+            // grid: {
+            //   line: {
+            //     style: {
+            //       stroke: '#d9d9d9',
+            //       lineWidth: 1,
+            //       lineDash: [2, 2]
+            //     }
+            //   }
+            // }
+          // });
+          // chart.axis('y', {
+            // title: {
+            //   offset: 64
+            // },
+            // label: {
+            //   formatter: val => {
+            //     if (+val > 0) {
+            //       return val + ' gr';
+            //     } else {
+            //       return val;
+            //     }
+            //   }
+            // }
+          // });
+          chart.legend(false);
+          // chart.tooltip({
+          //   title: 'country',
+          //   showMarkers: false
+          // });
+          chart
+            .point()
+            .position('x*y')
+            // .color('#1890ff')
+            .color('rgb(252, 69, 2)')
+            .size('z', [10, 40])
+            .label('name', {
+              offset: 0, // 文本距离图形的距离
+              style: {
+                fill: '#1890FF',
+                stroke: '#fff',
+                lineWidth: 1,
+              }
+            })
+            .shape('circle')
+            // .tooltip('x*y*z')
+            .style({
+              lineWidth: 1,
+              stroke: '#1890ff',
+              fillOpacity: 0.7,
+            });
+          // chart.annotation().line({
+          //   top: true,
+          //   start: [65, 'min'],
+          //   end: [65, 'max'],
+          //   text: {
+          //     content: 'Safe fat intake 65g/day',
+          //     position: 'end',
+          //     autoRotate: false,
+          //     style: {
+          //       textAlign: 'start'
+          //     }
+          //   }
+          // });
+          // chart.annotation().line({
+          //   top: true,
+          //   start: ['min', 50],
+          //   end: ['max', 50],
+          //   text: {
+          //     content: 'Safe sugar intake 50g/day',
+          //     position: 'end',
+          //     style: {
+          //       textAlign: 'end'
+          //     }
+          //   }
+          // });
+          // chart.annotation().region({
+          //   start: ['0%', '0%'],
+          //   end: ['100%', '100%'],
+          //   style: {
+          //     lineWidth: 1,
+          //     fillOpacity: 0,
+          //     strokeOpacity: 1,
+          //     stroke: '#545454',
+          //   }
+          // });
+
+          chart.interaction('element-active');
+
+          chart.render();
+
+    },
     initReport4 () {
-        fetch(
-      'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data:",data);
+      // fetch('https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json')
+      // .then((res) => res.json())
+      // .then((data) => {
+      //   console.log("data:",data);
+
+      let resTablejson = require('../public/data/abc.json');
+       console.log('resTablejson:',resTablejson);
+
         const container = document.getElementById('c4');
         const s2DataConfig = {
           fields: {
@@ -207,7 +345,7 @@ export default {
               name: '成本',
             },
           ],
-          data,
+          resTablejson,
         };
         
         const s2Options = {
@@ -218,21 +356,22 @@ export default {
         const s2 = new S2.TableSheet(container, s2DataConfig, s2Options);
 
         s2.render();
-      });
+      // });
+
 
     },
     initReport5 () {
       const Report5data = [
-          { type: '汽车', value: 34 },
-          { type: '建材家居', value: 85 },
-          { type: '住宿旅游', value: 103 },
-          { type: '交通运输与仓储邮政', value: 142 },
-          { type: '建筑房地产', value: 251 },
-          { type: '教育', value: 367 },
-          { type: 'IT 通讯电子', value: 491 },
-          { type: '社会公共管理', value: 672 },
-          { type: '医疗卫生', value: 868 },
-          { type: '金融保险', value: 1234 },
+          { type: 'dw_zssys_web_clm_ply_base(乔峰)', value: 34 },
+          { type: 'dw_zssys_web_ply_ent_tgt_01(奥巴马)', value: 85 },
+          { type: 'dw_zssys_web_prd_prod(灭霸)', value: 103 },
+          { type: 'dw_zssys_web_ply_ent_tgt_obj_noact(小新)', value: 142 },
+          { type: 'dw_zszfb_web_ply_day(张无忌)', value: 251 },
+          { type: 'mdp_channel_salesperson_basic(郭靖)', value: 367 },
+          { type: 'mdp_vhlobj_renewal_already(令狐冲)', value: 491 },
+          { type: 'mdp_jg_zyyxsxzrxzyyxbdkzxxb(风青杨)', value: 672 },
+          { type: 'dcl_cem_t_cem_bill_detaildata(东方不败)', value: 868 },
+          { type: 'dcl_east_typ_basecode(逍遥子)', value: 1234 },
         ];
         const chart = new G2.Chart({
           container: 'c5',
@@ -308,7 +447,7 @@ h1 {
 #c1 {
    /* background-color: darkkhaki; */
    margin-top: 48px;
-   width: calc(25%);
+   width: calc(50%);
    height: 450px;
    float: left;
    text-align:center;
@@ -324,13 +463,13 @@ h1 {
    line-height: 30px;
 }
 #c3 {
-   margin-top: 48px;
-   background-color:coral;
-   width: calc(25%);
-   height: 450px;
+   margin-top: 88px;
+   /* background-color:coral; */
+   width: calc(100%);
+   height: 460px;
    float: left;
    text-align:center;
-   line-height: 400px;
+   line-height: 30px;
 }
 #c4 {
    /* background-color: cornflowerblue; */

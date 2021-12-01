@@ -5,12 +5,12 @@
       <el-tab-pane label="表血缘" name="first"  > 
         <input class="banner_input1" type="text" v-model.trim="message" placeholder="表名..." />
         <el-button  type="primary" class="banner_Btn1" @click="getTabLineagedata()"> 查看血缘 </el-button>
-        <el-tooltip content="放大" effect="light">
+        <!-- <el-tooltip content="放大" effect="light">
           <el-button icon="el-icon-zoom-in" circle></el-button>
         </el-tooltip>
         <el-tooltip content="缩小" effect="light">
           <el-button icon="el-icon-zoom-out"  @click="zoomin()" circle></el-button>
-        </el-tooltip>
+        </el-tooltip> -->
 
 
         <i class="el-icon-location"> {{ tablabel }}</i>
@@ -43,7 +43,7 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane  label="补录/纠正" name="third" >
+      <el-tab-pane  label="补录/纠正" name="third" > 功能待上线中 ...
       </el-tab-pane>
     </el-tabs>
 
@@ -162,7 +162,8 @@ export default {
       } //if
     },
     canvnsCol(tab,col,selectlabel) {
-      this.jsonERdata = {}; this.resEdge = {}; this.graph = null;
+      this.jsonERdata = {}; this.resEdge = {}; 
+    
       X6.Graph.registerPortLayout(
         'erPortPosition',
         (portsPositionArgs) => {
@@ -281,7 +282,7 @@ export default {
         },
         grid: {
           size: 10,      // 网格大小 10px
-          visible: true, // 渲染网格背景
+          visible: false, // 渲染网格背景
         },
         scroller: {
           enabled: true,
@@ -292,7 +293,7 @@ export default {
       });
        
       this.jsonERdata = require('../../public/data/er.json');
-      const cells = []
+      let cells = []
       this.jsonERdata.forEach((tables)=>{
       // if (this.$refs.selectLable.selected.label === '上游'){
       if (selectlabel === '上游' && tables.name === tab){
@@ -331,15 +332,6 @@ export default {
               });
       }
 
-      // const dagreLayout = new DagreLayout({
-      //   type: 'dagre',
-      //   rankdir: 'LR',
-      //   align: 'UR',
-      //   ranksep: 100,
-      //   nodesep: 35,
-      // })
-      // const model = dagreLayout.layout(cells)
-      // graph.fromJSON(model)
 
       graph.resetCells(cells)
       // graph.zoomToFit({ padding: 10, maxScale: 1 })
