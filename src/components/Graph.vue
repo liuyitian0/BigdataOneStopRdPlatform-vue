@@ -23,14 +23,23 @@
        
       <el-tab-pane  label="字段血缘" name="second" > 
         <input class="banner_input1" type="text" v-model.trim="tab" placeholder="表名..." />
-        <input class="banner_input1_col" type="text" v-model.trim="col" placeholder="字段列..." />
-
+         <input class="banner_input1_col" type="text" v-model.trim="col" placeholder="字段列..." />
+ 
         <el-select ref='selectLable' v-model="value" placeholder="选择上下游">
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value">
+          </el-option>
+        </el-select>
+
+        <el-select ref='selectLevel' v-model="value_level" placeholder="选择层级">
+          <el-option
+            v-for="item in options_level"
+            :key="item.value_level"
+            :label="item.label_level"
+            :value="item.value_level">
           </el-option>
         </el-select>
 
@@ -72,10 +81,12 @@ export default {
       alldata:{},
       resdata:{},
       activeName: '',
-      tab: null,
-      col: null,
-      value: '选项2',
+      tab: "dcl_zssys_web_ply_vhlowner",
+      col: "c_app_no",
+      value: '选项1',
+      value_level: '2',
       selectLable: [],
+      selectLevel: [],
       options:[
         {
           value: '选项1',
@@ -83,6 +94,18 @@ export default {
         }, {
           value: '选项2',
           label: '上游'
+        }
+      ],
+      options_level:[
+        {
+          value_level: '1',
+          label_level: '1层'
+        },{
+          value_level: '2',
+          label_level: '2层'
+        },{
+          value_level: '3',
+          label_level: '3层'
         }
       ],
     }
@@ -98,7 +121,7 @@ export default {
       this.tablabel = this.message;
     },
     getColLineagedata (tab,col) {
-      this.canvnsCol(this.tab,this.col,this.$refs.selectLable.selected.label);
+      this.canvnsCol(this.tab,this.col,this.$refs.selectLable.selected.label,this.$refs.selectLevel.selected.value);
       // console.log("slabel",this.$refs.selectLable.selected.label)
     },
     init(tablelable) {
@@ -161,9 +184,66 @@ export default {
 
       } //if
     },
-    canvnsCol(tab,col,selectlabel) {
+    recursiveColUP(tab,col){
       this.jsonERdata = {}; this.resEdge = {}; 
-    
+      this.tabjoin = null;  this.tabcol1 = null;
+      this.resRectNode1 =null;this.resRectNode2 =null;
+      this.jsonERdata = require('../../public/data/er.json');
+      this.jsonERdata.forEach((tables)=>{
+
+          if (tables.name === tab){
+              tables.up.forEach((item)=>{
+                      if(col === item.t_col) {
+                      let tabcol1 = item.t_tab + "." + item.t_col;
+                      let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
+                      cells.push(graph.createNode(resRectNode1));
+
+                      let tabcol2 = item.s_tab + "." + item.s_col;
+                      let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
+                      cells.push(graph.createNode(resRectNode2));
+
+                      let tabjoin = item.s_tab + "_" + item.t_tab;
+                      let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
+ 
+                      cells.push(graph.createEdge(resEdge));
+                      }
+                    });
+          } 
+      }) //forEach(tables)
+    },
+    recursiveColDOWN(tab,col,graph){
+      this.jsonERdata = {}; this.resEdge = {}; 
+      this.tabjoin = null;  this.tabcol1 = null;
+      this.resRectNode1 =null;this.resRectNode2 =null;
+      let cells = []; let reObj = new Map();
+      this.jsonERdata = require('../../public/data/er.json');
+      this.jsonERdata.forEach((tables)=>{
+
+       if( tables.name === tab){ 
+              tables.down.forEach((item)=>{
+                if(col === item.s_col){
+                  reObj.set(item.t_tab, item.t_col);
+                  let tabcol1 = item.t_tab + "." + item.t_col;
+                  let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
+                  cells.push(graph.createNode(resRectNode1));
+
+                  let tabcol2 = item.s_tab + "." + item.s_col;
+                  let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
+                  cells.push(graph.createNode(resRectNode2));
+
+                  let tabjoin = item.s_tab + "_" + item.t_tab;
+                  let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
+                  cells.push(graph.createEdge(resEdge));
+                }
+              });
+              // console.log("reObj:",reObj);
+      }  //if
+      }) //forEach
+     return [reObj,cells]
+    },
+
+    canvnsCol(tab,col,selectlabel,selectlevel) {
+      this.jsonERdata = {}; this.resEdge = {}; let resNext= []; let NextObj = {} 
       X6.Graph.registerPortLayout(
         'erPortPosition',
         (portsPositionArgs) => {
@@ -252,7 +332,7 @@ export default {
         },
         true,
       )
-        
+
       const graph = new X6.Graph({
         container: document.getElementById('container2'),
         connecting: {
@@ -292,50 +372,36 @@ export default {
         },
       });
        
-      this.jsonERdata = require('../../public/data/er.json');
-      let cells = []
-      this.jsonERdata.forEach((tables)=>{
-      // if (this.$refs.selectLable.selected.label === '上游'){
-      if (selectlabel === '上游' && tables.name === tab){
-              tables.up.forEach((item)=>{
-                if(col === item.t_col) {
-                let tabcol1 = item.t_tab + "." + item.t_col;
-                let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
-                cells.push(graph.createNode(resRectNode1));
+      let cells = []; let i =1;
+      if (selectlabel === '上游'){
+        this.recursiveColUP(tab,col);
+      }else{
+   
+        resNext =  this.recursiveColDOWN(tab,col,graph);
 
-                let tabcol2 = item.s_tab + "." + item.s_col;
-                let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
-                cells.push(graph.createNode(resRectNode2));
+        if(resNext.size != 0 ) {
+          NextObj = resNext[0];
+          cells = resNext[1];
 
-                let tabjoin = item.s_tab + "_" + item.t_tab;
-                let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
-                // console.log("resEdge:",resEdge);
-                cells.push(graph.createEdge(resEdge));
+          for (i=1; i<selectlevel; i++ ){
+            for (let [key, value] of NextObj) {         //遍历出下一层
+                // console.log(key, value);       
+                resNext =  this.recursiveColDOWN(key,value,graph);
+                NextObj = resNext[0];
+                // console.log("resNext[1]:",resNext[1])
+                for( let i of resNext[1]) {
+                  cells.push(i)
                 }
-              });
-        } 
-      else if((selectlabel === '下游' && tables.name === tab)){ 
-             tables.down.forEach((item)=>{
-               if(col === item.s_col){
-                let tabcol1 = item.t_tab + "." + item.t_col;
-                let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
-                cells.push(graph.createNode(resRectNode1));
-
-                let tabcol2 = item.s_tab + "." + item.s_col;
-                let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
-                cells.push(graph.createNode(resRectNode2));
-
-                let tabjoin = item.s_tab + "_" + item.t_tab;
-                let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
-                cells.push(graph.createEdge(resEdge));
-                }
-              });
+            }
+          }; //for
+        }else{
+          console.log("No Col Lineage")
+        }; //if
       }
 
+      // console.log("endcelles:", cells)
+      graph.resetCells(cells);
 
-      graph.resetCells(cells)
-      // graph.zoomToFit({ padding: 10, maxScale: 1 })
-      }) //forEach(tables)
 
     } //canvnsCol
   }

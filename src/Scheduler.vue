@@ -19,11 +19,11 @@
     </div>
 
     <div class="c00">
-      <div id="c4">  核心表数据量/表主键监控
-    </div>
+      <div id="c5"> 慢任务Top 10 (负责人)
+      </div>
     </div>
     <div class="c00">
-      <div id="c5"> 慢任务Top 10 (负责人)
+      <div id="c4">  核心表数据量/表主键监控
       </div>
     </div>
     <div class="c000">
@@ -175,138 +175,122 @@ export default {
     },
     initReport3 () {
       const Report3data = [
-          { x: 40.5, y: 60.5, z: 35, name: 'dcl_wxc_cshop_activity_excel_reward', country: 'Finland' },
-          { x: 80.4, y: 102.5, z: 35, name: 'dcl_wxc_cshop_token_user_ext_info', country: 'Netherlands' },
-          { x: 74.2, y: 68.5, z: 35, name: 'dw_cshop_rbac_user', country: 'France' },
-          { x: 73.5, y: 83.1, z: 35, name: 'dw_sales_prpsfiveinsurancepayments', country: 'Norway' },
-          { x: 71, y: 93.2, z: 35, name: 'dw_zsclm_c_diagnose', country: 'United Kingdom' },
-          { x: 69.2, y: 57.6, z: 35, name: 'dw_zssys_web_clm_bank', country: 'Italy' },
-          { x: 68.6, y: 20, z: 35, name: 'dw_zszfb_web_ply_day', country: 'Russia' },
-          { x: 65.5, y: 126.4, z: 35, name: 'mdp_claim_clmntf_clmreg', country: 'United States' },
-          { x: 63.4, y: 51.8, z: 35, name: 'mdp_jg_east_bdxsryglb', country: 'Portugal' },
-          { x: 64, y: 82.9, z: 33.3, name: 'mdp_jg_ffmxb', country: 'New Zealand' }
+          { type: 'dw_zssys_web_clm_bank', value: 35000},
+          { type: 'mdp_claim_clmntf_clmreg', value: 35000},
+          { type: 'mdp_jg_ffmxb', value: 35000},
+          { type: 'dw_cshop_rbac_user', value: 35000},
+          { type: 'dw_zsclm_c_diagnose', value: 35000},
+          { type: 'dcl_wxc_cshop_activity_excel_reward', value: 35000},
+          { type: 'mdp_jg_east_bdxsryglb', value: 35000},
+          { type: 'dcl_wxc_cshop_token_user_ext_info', value: 35000},
+          { type: 'dw_zszfb_web_ply_day', value: 35000},
+          { type: 'mdp_jg_east_zcxxb', value: 35000 }
         ];
-     const chart = new G2.Chart({
-            container: 'c3',
-            // autoFit: true,
-            width: 1600,
-            height: 450,
-            padding: [20, 20, 50, 80],
-          });
-          chart.data(Report3data);
-          chart.scale({
-            // x: {
-            //   // alias: 'Daily fat intake', // 定义别名
-            //   tickInterval: 15, // 自定义刻度间距
-            //   max: 96, // 自定义最大值
-            //   min: 62 // 自定义最小是
-            // },
-            y: {
-              // alias: 'Daily sugar intake',
-              tickInterval: 50,
-              max: 100,
-              min: 0
+ 
+    const chart = new G2.Chart({
+          container: 'c3',
+          autoFit: true,
+          height: 400,
+          padding: [20, 0, 50, 250],
+        });
+        chart.data(Report3data);
+        chart.scale({
+          value: {
+            max: 50000,
+            min: 0,
+            alias: ' ',
+          },
+        });
+        // chart.axis('name', {
+        //   tickLine: null,
+        //   line: null,
+        // });
+        chart.axis('value', {
+          label: null,
+          title: {
+            offset: 30,
+            style: {
+              fontWeight: 60,
+              fontSize: 12,
             },
-            // z: {
-            //   alias: 'Obesity(adults) %'
-            // }
-          });
-          // 开始配置坐标轴
-          // chart.axis('x', {
-            // label: {
-            //   formatter: val => {
-            //     return val + ' gr'; // 格式化坐标轴显示文本
-            //   }
-            // },
-            // grid: {
-            //   line: {
-            //     style: {
-            //       stroke: '#d9d9d9',
-            //       lineWidth: 1,
-            //       lineDash: [2, 2]
-            //     }
-            //   }
-            // }
-          // });
-          // chart.axis('y', {
-            // title: {
-            //   offset: 64
-            // },
-            // label: {
-            //   formatter: val => {
-            //     if (+val > 0) {
-            //       return val + ' gr';
-            //     } else {
-            //       return val;
-            //     }
-            //   }
-            // }
-          // });
-          chart.legend(false);
-          // chart.tooltip({
-          //   title: 'country',
-          //   showMarkers: false
-          // });
-          chart
-            .point()
-            .position('x*y')
-            // .color('#1890ff')
-            .color('rgb(252, 69, 2)')
-            .size('z', [10, 40])
-            .label('name', {
-              offset: 0, // 文本距离图形的距离
-              style: {
-                fill: '#1890FF',
-                stroke: '#fff',
-                lineWidth: 1,
-              }
-            })
-            .shape('circle')
-            // .tooltip('x*y*z')
-            .style({
-              lineWidth: 1,
-              stroke: '#1890ff',
-              fillOpacity: 0.7,
-            });
-          // chart.annotation().line({
-          //   top: true,
-          //   start: [65, 'min'],
-          //   end: [65, 'max'],
-          //   text: {
-          //     content: 'Safe fat intake 65g/day',
-          //     position: 'end',
-          //     autoRotate: false,
-          //     style: {
-          //       textAlign: 'start'
-          //     }
-          //   }
-          // });
-          // chart.annotation().line({
-          //   top: true,
-          //   start: ['min', 50],
-          //   end: ['max', 50],
-          //   text: {
-          //     content: 'Safe sugar intake 50g/day',
-          //     position: 'end',
-          //     style: {
-          //       textAlign: 'end'
-          //     }
-          //   }
-          // });
-          // chart.annotation().region({
-          //   start: ['0%', '0%'],
-          //   end: ['100%', '100%'],
+          },
+          grid: null,
+        });
+        chart.legend(false);
+        chart.coordinate('rect').transpose();
+        chart
+          .interval()
+          .position('type*value')
+          .color('#FF0000')
+          .size(26)
+          // .label('value', {
           //   style: {
-          //     lineWidth: 1,
-          //     fillOpacity: 0,
-          //     strokeOpacity: 1,
-          //     stroke: '#545454',
-          //   }
+          //     fill: '#8d8d8d',
+          //   },
+            // offset: 10,
+            // content: (originData) => {
+            //   return (originData.value + '').replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+            // },
           // });
 
-          chart.interaction('element-active');
+        // chart.annotation().text({
+        //   top: true,
+        //   position: ['椅子', 'min'],
+        //   content: '家具',
+        //   style: {
+        //     fill: '#c0c0c0',
+        //     fontSize: 12,
+        //     fontWeight: '300',
+        //     textAlign: 'center',
+        //   },
+        //   offsetX: -70,
+        //   rotate: Math.PI * -0.5
+        // });
+        // chart.annotation().text({
+        //   top: true,
+        //   position: ['电话', 'min'],
+        //   content: '技术',
+        //   style: {
+        //     fill: '#c0c0c0',
+        //     fontSize: 12,
+        //     fontWeight: '300',
+        //     textAlign: 'center',
+        //   },
+        //   offsetX: -70,
+        //   rotate: Math.PI * -0.5
+        // });
+        // chart.annotation().text({
+        //   top: true,
+        //   position: ['笔', 'min'],
+        //   content: '办公用品',
+        //   style: {
+        //     fill: '#c0c0c0',
+        //     fontSize: 12,
+        //     fontWeight: '300',
+        //     textAlign: 'center',
+        //   },
+        //   offsetX: -70,
+        //   rotate: Math.PI * -0.5
+        // });
+        // chart.annotation().line({
+        //   start: ['-20%', '33.2%'],
+        //   end: ['100%', '33.2%'],
+        //   style: {
+        //     stroke: '#c0c0c0',
+        //     lineDash: [2, 2],
+        //   },
+        // });
+        // chart.annotation().line({
+        //   start: ['-20%', '66.8%'],
+        //   end: ['100%', '66.8%'],
+        //   style: {
+        //     stroke: '#c0c0c0',
+        //     lineDash: [2, 2],
+        //   },
+        // });
+        chart.interaction('element-active');
 
-          chart.render();
+        chart.render();
 
     },
     initReport4 () {
@@ -447,7 +431,7 @@ h1 {
 #c1 {
    /* background-color: darkkhaki; */
    margin-top: 48px;
-   width: calc(50%);
+   width: calc(35%);
    height: 450px;
    float: left;
    text-align:center;
@@ -456,19 +440,19 @@ h1 {
 #c2 {
    margin-top: 48px;
    /* background-color:beige; */
-   width: calc(50%);
+   width: calc(35%);
    height: 450px;
    float: left;
    text-align:center;
    line-height: 30px;
 }
 #c3 {
-   margin-top: 88px;
+   margin-top: 50px;
    /* background-color:coral; */
-   width: calc(100%);
+   width: calc(30%);
    height: 460px;
    float: left;
-   text-align:center;
+   text-align: center;
    line-height: 30px;
 }
 #c4 {
