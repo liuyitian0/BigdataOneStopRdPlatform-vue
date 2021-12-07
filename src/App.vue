@@ -13,7 +13,7 @@
       <router-link class="navItem"
                    to="/index">数据交换</router-link>
       <router-link class="navItem"
-                   to="/operation">数据服务</router-link>
+                   to="/DataServices">数据服务</router-link>
       <router-link class="navItem"
                    to="/index">数据权限</router-link>
       <router-link class="navItem"

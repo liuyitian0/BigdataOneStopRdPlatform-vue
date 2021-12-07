@@ -184,32 +184,35 @@ export default {
 
       } //if
     },
-    recursiveColUP(tab,col){
-      this.jsonERdata = {}; this.resEdge = {}; 
+    recursiveColUP(tab,col,graph){
+       this.jsonERdata = {}; this.resEdge = {}; 
       this.tabjoin = null;  this.tabcol1 = null;
       this.resRectNode1 =null;this.resRectNode2 =null;
+      let cells = []; let reObj = new Map();
       this.jsonERdata = require('../../public/data/er.json');
       this.jsonERdata.forEach((tables)=>{
 
-          if (tables.name === tab){
-              tables.up.forEach((item)=>{
-                      if(col === item.t_col) {
-                      let tabcol1 = item.t_tab + "." + item.t_col;
-                      let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
-                      cells.push(graph.createNode(resRectNode1));
+       if( tables.name === tab){ 
+              tables.down.forEach((item)=>{
+                if(col === item.t_col){
+                  reObj.set(item.s_tab, item.s_col);
+                  let tabcol1 = item.t_tab + "." + item.t_col;
+                  let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
+                  cells.push(graph.createNode(resRectNode1));
 
-                      let tabcol2 = item.s_tab + "." + item.s_col;
-                      let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
-                      cells.push(graph.createNode(resRectNode2));
+                  let tabcol2 = item.s_tab + "." + item.s_col;
+                  let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
+                  cells.push(graph.createNode(resRectNode2));
 
-                      let tabjoin = item.s_tab + "_" + item.t_tab;
-                      let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
- 
-                      cells.push(graph.createEdge(resEdge));
-                      }
-                    });
-          } 
-      }) //forEach(tables)
+                  let tabjoin = item.s_tab + "_" + item.t_tab;
+                  let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
+                  cells.push(graph.createEdge(resEdge));
+                }
+              });
+              // console.log("reObj:",reObj);
+      }  //if
+      }) //forEach
+     return [reObj,cells]
     },
     recursiveColDOWN(tab,col,graph){
       this.jsonERdata = {}; this.resEdge = {}; 
@@ -374,17 +377,34 @@ export default {
        
       let cells = []; let i =1;
       if (selectlabel === '上游'){
-        this.recursiveColUP(tab,col);
-      }else{
-   
-        resNext =  this.recursiveColDOWN(tab,col,graph);
-
+ 
+        resNext =  this.recursiveColUP(tab,col,graph);
         if(resNext.size != 0 ) {
           NextObj = resNext[0];
           cells = resNext[1];
-
           for (i=1; i<selectlevel; i++ ){
-            for (let [key, value] of NextObj) {         //遍历出下一层
+            for (let [key, value] of NextObj) {    //遍历出下一层
+                // console.log(key, value);       
+                resNext =  this.recursiveColUP(key,value,graph);
+                NextObj = resNext[0];
+                // console.log("resNext[1]:",resNext[1])
+                for( let i of resNext[1]) {
+                  cells.push(i)
+                }
+            }
+          }; //for
+        }else{
+          console.log("No Col Lineage")
+        }; //if
+
+      }else{
+   
+        resNext =  this.recursiveColDOWN(tab,col,graph);
+        if(resNext.size != 0 ) {
+          NextObj = resNext[0];
+          cells = resNext[1];
+          for (i=1; i<selectlevel; i++ ){
+            for (let [key, value] of NextObj) {    //遍历出下一层
                 // console.log(key, value);       
                 resNext =  this.recursiveColDOWN(key,value,graph);
                 NextObj = resNext[0];
@@ -398,7 +418,6 @@ export default {
           console.log("No Col Lineage")
         }; //if
       }
-
       // console.log("endcelles:", cells)
       graph.resetCells(cells);
 

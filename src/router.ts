@@ -6,6 +6,7 @@ import Abc from './Abc.vue';
 import Graph from './components/Graph.vue';
 import Scheduler from './Scheduler.vue';
 import Test from './Test.vue';
+import DataServices from './DataServices.vue';
 
 Vue.use(Router);
 
@@ -44,6 +45,11 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: Test,
+    },
+    {
+      path: '/DataServices',
+      name: 'DataServices',
+      component: DataServices,
     },
   ],
 });
