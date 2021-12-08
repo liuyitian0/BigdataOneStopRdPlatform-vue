@@ -81,8 +81,8 @@ export default {
       alldata:{},
       resdata:{},
       activeName: '',
-      tab: "dcl_zssys_web_ply_vhlowner",
-      col: "c_app_no",
+      tab: "added_cmp_crm_ddsupplier_feeback",
+      col: "use_date",
       value: '选项1',
       value_level: '2',
       selectLable: [],
@@ -193,7 +193,8 @@ export default {
       this.jsonERdata.forEach((tables)=>{
 
        if( tables.name === tab){ 
-              tables.down.forEach((item)=>{
+              tables.up.forEach((item)=>{
+                console.log("item",item)
                 if(col === item.t_col){
                   reObj.set(item.s_tab, item.s_col);
                   let tabcol1 = item.t_tab + "." + item.t_col;
@@ -219,29 +220,36 @@ export default {
       this.tabjoin = null;  this.tabcol1 = null;
       this.resRectNode1 =null;this.resRectNode2 =null;
       let cells = []; let reObj = new Map();
-      this.jsonERdata = require('../../public/data/er.json');
-      this.jsonERdata.forEach((tables)=>{
+      // this.jsonERdata = require('../../public/data/er.json');
+     fetch('http://n41400z379.zicp.vip/added_cmp_crm_ddsupplier_feeback',{
+                            hearders:new Headers({  
+                                'Content-Type':'application/x-www-form-urlencoded'  
+                              }),  
+                          })
+                        .then( res => res.json())
+                        .then( tables =>{ console.log(tables)
+       
+      //  if( tables.name === tab){ 
+      //         tables.down.forEach((item)=>{
+      //           if(col === item.s_col){
+      //             reObj.set(item.t_tab, item.t_col);
+      //             let tabcol1 = item.t_tab + "." + item.t_col;
+      //             let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
+      //             cells.push(graph.createNode(resRectNode1));
 
-       if( tables.name === tab){ 
-              tables.down.forEach((item)=>{
-                if(col === item.s_col){
-                  reObj.set(item.t_tab, item.t_col);
-                  let tabcol1 = item.t_tab + "." + item.t_col;
-                  let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
-                  cells.push(graph.createNode(resRectNode1));
+      //             let tabcol2 = item.s_tab + "." + item.s_col;
+      //             let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
+      //             cells.push(graph.createNode(resRectNode2));
 
-                  let tabcol2 = item.s_tab + "." + item.s_col;
-                  let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
-                  cells.push(graph.createNode(resRectNode2));
-
-                  let tabjoin = item.s_tab + "_" + item.t_tab;
-                  let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
-                  cells.push(graph.createEdge(resEdge));
-                }
-              });
-              // console.log("reObj:",reObj);
-      }  //if
-      }) //forEach
+      //             let tabjoin = item.s_tab + "_" + item.t_tab;
+      //             let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
+      //             cells.push(graph.createEdge(resEdge));
+      //           }
+      //         });
+      //         // console.log("reObj:",reObj);
+      // }  //if
+      }) //fetch
+      .catch( error => console.log( error ))
      return [reObj,cells]
     },
 
@@ -347,7 +355,7 @@ export default {
             },
           },
           createEdge() {
-            return new Shape.Edge({
+            return new X6.Shape.Edge({
               attrs: {
                 line: {
                   stroke: '#A2B1C3',
@@ -372,7 +380,7 @@ export default {
           pageVisible: true,
           pageBreak: true,
           pannable: true,
-        },
+        }
       });
        
       let cells = []; let i =1;
@@ -398,7 +406,7 @@ export default {
         }; //if
 
       }else{
-   
+ 
         resNext =  this.recursiveColDOWN(tab,col,graph);
         if(resNext.size != 0 ) {
           NextObj = resNext[0];
@@ -418,11 +426,12 @@ export default {
           console.log("No Col Lineage")
         }; //if
       }
-      // console.log("endcelles:", cells)
+      console.log("endcelles:", cells)
+
       graph.resetCells(cells);
 
 
-    } //canvnsCol
+    }, //canvnsCol
   }
 }
 </script>
