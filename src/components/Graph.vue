@@ -60,7 +60,7 @@
 </template>
 
 <script>
-
+import axios from "axios";
 import { GetDataGraph } from '@/utils/GetDataGraph';
 import { DagreLayout } from '@antv/layout';
 import { GetColRectDataGraph,GetColEdgeDataGraph } from '@/utils/GetColDataGraph';
@@ -221,14 +221,20 @@ export default {
       this.resRectNode1 =null;this.resRectNode2 =null;
       let cells = []; let reObj = new Map();
       // this.jsonERdata = require('../../public/data/er.json');
-     fetch('http://n41400z379.zicp.vip/added_cmp_crm_ddsupplier_feeback',{
-                            hearders:new Headers({  
-                                'Content-Type':'application/x-www-form-urlencoded'  
-                              }),  
-                          })
-                        .then( res => res.json())
-                        .then( tables =>{ console.log(tables)
-       
+    //  fetch('http://n41400z379.zicp.vip/added_cmp_crm_ddsupplier_feeback',{
+    //                         header:{  
+    //                             'Content-Type': "application/x-www-form-urlencoded",
+    //                             'Access-Control-Allow-Origin': '*'
+    //                           },  
+    //                       })
+    //       .then( res => res.Json())
+    //       .then( tables =>{ console.log(tables)} ) 
+    //   .catch( error => console.log( error ))
+
+    axios.get('/getCol').then((res) => {
+        console.log(res)
+    })
+
       //  if( tables.name === tab){ 
       //         tables.down.forEach((item)=>{
       //           if(col === item.s_col){
@@ -248,8 +254,7 @@ export default {
       //         });
       //         // console.log("reObj:",reObj);
       // }  //if
-      }) //fetch
-      .catch( error => console.log( error ))
+
      return [reObj,cells]
     },
 
@@ -469,7 +474,7 @@ export default {
 }
 
 .el-icon-location {
-  margin-left: 150px;
+  margin-left: 100px;
   font-size: 18px;
   font-weight: bold;
   color: green;
