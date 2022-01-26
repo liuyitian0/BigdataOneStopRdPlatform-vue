@@ -28,7 +28,7 @@
                    type="card"
                    closable>
             <el-tab-pane name="first">
-              <span slot="label"><i class="el-icon-s-promotion"></i> 我的模型一</span></el-tab-pane>
+              <span slot="label"><i class="el-icon-s-promotion"></i> 我的任务流</span></el-tab-pane>
           </el-tabs>
         </el-header>
         <el-container>
