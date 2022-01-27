@@ -13,6 +13,19 @@ export default {
    data(){
      return {
        editor: null,
+       sqlvalue: "select rescue  \n " +
+                        "\t    ,count(distinct workorder_id) as cnt  \n" +
+                  "  from (                \n " +
+                  " select get_json_string(columnInfo,'$.update_time') as  update_time      \n " +
+                    "       ,get_json_string(columnInfo,'$.workorder_id') as  workorder_id    \n" +     
+                    "        ,get_json_string(columnInfo,'$.rescue_project') as  rescue_project  \n " +
+                    "       ,get_json_string(columnInfo,'$.starttime') as  starttime             \n " +
+                    "       ,get_json_string(columnInfo,'$.endtime') as  endtime                 \n " +
+                    "       ,get_json_string(columnInfo,'$.policy_name') as  policy_name        \n " +
+                  "   from ods.doris_platform_crm_rescue_order tt       \n " +
+                  "  where SUBSTRING(get_json_string(columnInfo,'$.rescue_handle_date'),1,4)='2022'  \n" +
+                " ) aa  \n" +
+                "group by rescue;\n"
      }
    },
    mounted(){
@@ -21,7 +34,7 @@ export default {
    methods: {
      initEditor(){
        this.editor = monaco.editor.create(document.getElementById('container'),{
-         value: '这里可以写SQL\n',
+         value: this.sqlvalue,
          language: 'sql',
          automaticLayout: true,
          theme: 'vs-dark',
