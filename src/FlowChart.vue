@@ -65,10 +65,6 @@
                   <el-button icon="el-icon-bangzhu"
                              circle></el-button>
                 </el-tooltip>
-                <!-- <el-tooltip content="适应画布">
-                  <el-button icon="el-icon-money"
-                             circle></el-button>
-                </el-tooltip> -->
                 <el-tooltip content="全屏">
                   <el-button icon="el-icon-full-screen"
                              circle></el-button>
