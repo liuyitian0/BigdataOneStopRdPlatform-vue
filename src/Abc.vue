@@ -35,7 +35,7 @@ export default {
    methods: {
      initEditor(){
        this.editor = monaco.editor.create(document.getElementById('container'),{
-         value: '',
+         value: '这里可以写SQL\n',
          language: 'sql',
          automaticLayout: true,
          theme: 'vs-dark',
