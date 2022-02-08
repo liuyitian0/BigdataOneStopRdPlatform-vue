@@ -13,8 +13,9 @@ export default {
    data(){
      return {
        editor: null,
-       sqlvalue: "select rescue  \n " +
-                        "\t    ,count(distinct workorder_id) as cnt  \n" +
+       sqlvalue: " ----# 订单数 \n"   +
+                  "select rescue  \n " +
+                  "\t    ,count(distinct workorder_id) as cnt  \n" +
                   "  from (                \n " +
                   " select get_json_string(columnInfo,'$.update_time') as  update_time      \n " +
                     "       ,get_json_string(columnInfo,'$.workorder_id') as  workorder_id    \n" +     

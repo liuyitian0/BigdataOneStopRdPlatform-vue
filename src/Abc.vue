@@ -6,11 +6,20 @@
     <div class="tree">
       <Tree/>
     </div>
-    <div class="mainblock">
       <div class="workspace">
+          <!-- <div class="head"> -->
+            <!-- <p style="height:32px">目前支持:   SQL / Python / Scala / Java ...</p> -->
+          <!-- </div>  -->
+
           <div class="left">
             <SqlEditor></SqlEditor>
           </div>
+
+          <!-- <div class="bottom">
+            <p>
+            <span>日志</span>
+            </p>
+          </div> -->
           <div class="right">
             <el-aside>
             <el-container id="NodeInfo">
@@ -57,15 +66,7 @@
             <el-button  class="Btn4"> 版本比对 </el-button>
             </el-aside>
           </div>
-
-          <!-- <div class="bottom">
-            <p>
-            <span>日志</span>
-            </p>
-          </div> -->
       </div>
-
-    </div> 
   </el-container>
 </template>
 
@@ -97,35 +98,48 @@ export default {
 </script>
 
 <style lang="scss">
+
 .mainblock {
   width: 100%;
   height: 100%;
-  // display: flex;
-  // background-color: palegreen;
+  background-color: magenta;
+  margin: 10px 20px;
 }
+
 .workspace {
   width: 100%;
   height: 100%;
-  display: flex;
-  // float: right;
-  // background-color:palevioletred;
+  // background-color: lightcoral;
+  display:inline-flex;
+  overflow: hidden;
 }
- .left {
-   width: 80%;
-   height: 70%;
- }
+
+// .head {
+//   width: 80%;
+//   height: 32px;
+//   background-color: lightgreen;
+//   // float: left;
+//   font-size: 16px;
+// }
+
+
+  .left {
+    width: 80%;
+    height: 100%;
+    // background-color:palevioletred;
+  }
 
  .right {
    width: 20%;
-   height: 70%;
-   background-color:mintcream;
+   height: 100%;
+   background-color:rgb(253, 255, 254);
  }
 
- .bottom {
-  width: 10%;
-  height: 20%;
-  background-color: rgba(214, 231, 231, 0.808);
- }
+//  .bottom {
+//   width: 80%;
+//   // height: 25px;
+//   // background-color: rgba(214, 231, 231, 0.808);
+//  }
 
 
   #NodeInfo {
