@@ -34,14 +34,14 @@
           </el-option>
         </el-select>
 
-        <el-select ref='selectLevel' v-model="value_level" placeholder="选择层级">
+        <!-- <el-select ref='selectLevel' v-model="value_level" placeholder="选择层级">
           <el-option
             v-for="item in options_level"
             :key="item.value_level"
             :label="item.label_level"
             :value="item.value_level">
           </el-option>
-        </el-select>
+        </el-select> -->
 
         <el-button type="primary" class="banner_Btn1" @click="getColLineagedata(tab,col)"> 查看血缘 </el-button>
         <i class="el-icon-location"> {{ tab }}.{{ col }} </i>
@@ -81,12 +81,13 @@ export default {
       alldata:{},
       resdata:{},
       activeName: '',
-      tab: "added_cmp_crm_ddsupplier_feeback",
-      col: "use_date",
+      tab: "",
+      col: "",
       value: '选项1',
-      value_level: '2',
+      value_level: '3',
       selectLable: [],
       selectLevel: [],
+      levelcnt: 3,
       options:[
         {
           value: '选项1',
@@ -121,7 +122,8 @@ export default {
       this.tablabel = this.message;
     },
     getColLineagedata (tab,col) {
-      this.canvnsCol(this.tab,this.col,this.$refs.selectLable.selected.label,this.$refs.selectLevel.selected.value);
+      // this.canvnsCol(this.tab,this.col,this.$refs.selectLable.selected.label,this.$refs.selectLevel.selected.value);
+      this.canvnsCol(this.tab,this.col,this.$refs.selectLable.selected.label);
       // console.log("slabel",this.$refs.selectLable.selected.label)
     },
     init(tablelable) {
@@ -195,7 +197,7 @@ export default {
        if( tables.name === tab){ 
               tables.up.forEach((item)=>{
                 console.log("item",item)
-                if(col === item.t_col){
+                // if(col === item.t_col){
                   reObj.set(item.s_tab, item.s_col);
                   let tabcol1 = item.t_tab + "." + item.t_col;
                   let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
@@ -208,9 +210,9 @@ export default {
                   let tabjoin = item.s_tab + "_" + item.t_tab;
                   let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
                   cells.push(graph.createEdge(resEdge));
-                }
+                // }
               });
-              // console.log("reObj:",reObj);
+              console.log("reObj:",reObj);
       }  //if
       }) //forEach
      return [reObj,cells]
@@ -220,7 +222,7 @@ export default {
       this.tabjoin = null;  this.tabcol1 = null;
       this.resRectNode1 =null;this.resRectNode2 =null;
       let cells = []; let reObj = new Map();
-      // this.jsonERdata = require('../../public/data/er.json');
+      this.jsonERdata = require('../../public/data/er.json');
     //  fetch('http://n41400z379.zicp.vip/added_cmp_crm_ddsupplier_feeback',{
     //                         header:{  
     //                             'Content-Type': "application/x-www-form-urlencoded",
@@ -231,34 +233,36 @@ export default {
     //       .then( tables =>{ console.log(tables)} ) 
     //   .catch( error => console.log( error ))
 
-    axios.get('/getCol').then((res) => {
-        console.log(res)
-    })
+    // axios.get('/getCol').then((res) => {
+    //     console.log(res)
+    // })
+      this.jsonERdata.forEach((tables)=>{
+       if( tables.name === tab){ 
+              tables.down.forEach((item)=>{
+                // if(col === item.s_col){
+                  reObj.set(item.t_tab, item.t_col);
+                  let tabcol1 = item.t_tab + "." + item.t_col;
+                  let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
+                  cells.push(graph.createNode(resRectNode1));
 
-      //  if( tables.name === tab){ 
-      //         tables.down.forEach((item)=>{
-      //           if(col === item.s_col){
-      //             reObj.set(item.t_tab, item.t_col);
-      //             let tabcol1 = item.t_tab + "." + item.t_col;
-      //             let resRectNode1 = GetColRectDataGraph(item.t_tab,tabcol1,item.t_col,500,40);
-      //             cells.push(graph.createNode(resRectNode1));
+                  let tabcol2 = item.s_tab + "." + item.s_col;
+                  let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
+                  cells.push(graph.createNode(resRectNode2));
 
-      //             let tabcol2 = item.s_tab + "." + item.s_col;
-      //             let resRectNode2 = GetColRectDataGraph(item.s_tab,tabcol2,item.s_col,10,650);
-      //             cells.push(graph.createNode(resRectNode2));
-
-      //             let tabjoin = item.s_tab + "_" + item.t_tab;
-      //             let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
-      //             cells.push(graph.createEdge(resEdge));
-      //           }
-      //         });
-      //         // console.log("reObj:",reObj);
-      // }  //if
+                  let tabjoin = item.s_tab + "_" + item.t_tab;
+                  let resEdge = GetColEdgeDataGraph(tabjoin,item.s_tab,tabcol2,item.t_tab,tabcol1);
+                  cells.push(graph.createEdge(resEdge));
+                // }
+              });
+              // console.log("reObj:",reObj);
+      }  //if
+      }) //forEach
 
      return [reObj,cells]
     },
 
-    canvnsCol(tab,col,selectlabel,selectlevel) {
+    // canvnsCol(tab,col,selectlabel,selectlevel) {
+    canvnsCol(tab,col,selectlabel) {
       this.jsonERdata = {}; this.resEdge = {}; let resNext= []; let NextObj = {} 
       X6.Graph.registerPortLayout(
         'erPortPosition',
@@ -395,7 +399,7 @@ export default {
         if(resNext.size != 0 ) {
           NextObj = resNext[0];
           cells = resNext[1];
-          for (i=1; i<selectlevel; i++ ){
+          for (i=1; i<=this.levelcnt; i++ ){
             for (let [key, value] of NextObj) {    //遍历出下一层
                 // console.log(key, value);       
                 resNext =  this.recursiveColUP(key,value,graph);
@@ -416,7 +420,7 @@ export default {
         if(resNext.size != 0 ) {
           NextObj = resNext[0];
           cells = resNext[1];
-          for (i=1; i<selectlevel; i++ ){
+          for (i=1; i<=this.levelcnt; i++ ){
             for (let [key, value] of NextObj) {    //遍历出下一层
                 // console.log(key, value);       
                 resNext =  this.recursiveColDOWN(key,value,graph);

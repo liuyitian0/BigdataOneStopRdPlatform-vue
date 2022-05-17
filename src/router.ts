@@ -7,6 +7,7 @@ import Graph from './components/Graph.vue';
 import Scheduler from './Scheduler.vue';
 import Test from './Test.vue';
 import DataServices from './DataServices.vue';
+import Indicators from './Indicators.vue';
 
 Vue.use(Router);
 
@@ -50,6 +51,11 @@ export default new Router({
       path: '/DataServices',
       name: 'DataServices',
       component: DataServices,
+    },
+    {
+      path: '/Indicators',
+      name: 'Indicators',
+      component: Indicators,
     },
   ],
 });
