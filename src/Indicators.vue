@@ -2,7 +2,7 @@
   <el-main>
     <el-tabs type="border-card">
       <el-tab-pane label="指标查询">
-        <el-row>
+        <el-row class="el-row">
           <div class="btn1">
             <el-autocomplete
               v-model="state"
@@ -11,13 +11,91 @@
               @select="handleSelect"
               popper-class="el-autocomplete-suggestion"
               style="width: 300px"
-            ></el-autocomplete>
-            <el-button type="primary">新增指标</el-button>
-            <!-- <el-button type="primary">指标查询</el-button>
-        <el-button type="success">指标查询</el-button> -->
+            >
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-autocomplete>
+
+            <el-button type="primary" @click="dialogAddFotmVisible = true"
+              >新增指标</el-button
+            >
+
+            <el-dialog title="新增指标" :visible.sync="dialogAddFotmVisible">
+              <el-form
+                :model="ruleForm"
+                :rules="rules"
+                ref="ruleForm"
+                label-width="150px"
+                class="demo-ruleForm"
+              >
+                <el-form-item label="指标中文名" prop="name_zn">
+                  <el-input v-model="ruleForm.name_zn"></el-input>
+                </el-form-item>
+                <el-form-item label="指标业务含义" prop="indicator_mean">
+                  <el-input v-model="ruleForm.indicator_mean"></el-input>
+                </el-form-item>
+                <el-form-item label="指标类型" prop="indicator_type">
+                  <el-select
+                    v-model="ruleForm.indicator_type"
+                    placeholder="请选择指标类型"
+                  >
+                    <el-option label="基础指标" value="基础指标"></el-option>
+                    <el-option label="派生指标" value="派生指标"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="指标范围" prop="indicator_scope">
+                  <el-select
+                    v-model="ruleForm.indicator_scope"
+                    placeholder="请选择指标范围"
+                  >
+                    <el-option label="承保" value="承保"></el-option>
+                    <el-option label="理赔" value="理赔"></el-option>
+                    <el-option label="财务" value="财务"></el-option>
+                    <el-option label="渠道" value="渠道"></el-option>
+                    <el-option label="客服" value="客服"></el-option>
+                    <el-option label="收付" value="收付"></el-option>
+                  </el-select>
+                </el-form-item>
+
+                <!-- <el-form-item label="版本" prop="indicator_version">
+                  <el-input v-model="ruleForm.indicator_version"></el-input>
+                </el-form-item> -->
+
+                <el-form-item label="创建维护人" prop="preserve_person">
+                  <el-input v-model="ruleForm.preserve_person"></el-input>
+                </el-form-item>
+
+                <!-- <el-form-item label="创建时间" required>
+                  <el-col :span="11">
+                    <el-form-item prop="create_date">
+                      <el-date-picker
+                        type="datetime"
+                        placeholder="选择日期"
+                        v-model="ruleForm.create_date"
+                        style="width: 100%"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                      ></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                </el-form-item> -->
+                <el-form-item label="统计口径(SQL)" prop="indicator_sql">
+                  <el-input
+                    type="textarea"
+                    :rows="10"
+                    autosize
+                    v-model="ruleForm.indicator_sql"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('ruleForm')"
+                    >立即创建</el-button
+                  >
+                  <el-button @click="resetForm('ruleForm')">重置</el-button>
+                </el-form-item>
+              </el-form>
+            </el-dialog>
           </div>
-          <el-table :data="tableDataDetail" style="width: 100%">
-            <el-table-column label="指标编号" width="80">
+          <el-table :data="tableDataDetail">
+            <el-table-column label="编号" width="80">
               <template slot-scope="scope">
                 <span style="margin-left: 10px">
                   {{ scope.row.indicators_id }}
@@ -54,7 +132,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="指标统计口径" width="120">
+            <el-table-column label="统计口径" width="120">
               <template slot-scope="scope">
                 <el-button type="text" @click="dialogSQLEditorVisible = true">
                   <i class="el-icon-view el-icon--right"></i>
@@ -72,9 +150,7 @@
                   :center="true"
                   top="5vh"
                 >
-                  <div id="container" style="width: 920px; height: 800px">
-                    统计口径:
-                  </div>
+                  <div id="container">统计口径:</div>
                 </el-dialog>
               </template>
             </el-table-column>
@@ -85,7 +161,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="指标所属范围" width="120">
+            <el-table-column label="所属范围" width="120">
               <template slot-scope="scope">
                 <span style="margin-left: 10px">{{
                   scope.row.indicators_scope
@@ -206,16 +282,24 @@
       </el-tab-pane>
 
       <el-tab-pane label="指标术语" style="color: #008fd4">
-        签单: <br /><br />
-        期初/期末/期间: <br /><br />
-        满期保费: <br /><br />
-        未满期保费: <br /><br />
-        再保:<br /><br />
-        共保:
-        一般的保单的话，保险公司会和可会签订一个合同，共保是指多个保险公司,一起去承保一张保单，这样的话，会有一个主共从共之分发生共保业务的原因，一般情况下是因为保单的风险过高，如果，我司收到的保单。我司因为风险问题，把这张保单共保出去，我司无论占共保比例是多是少，我司都是主供方，其他公司是从共方，其他保险公司拿到的单子，分给我司的话，我司就是从共方
-        <br /><br />
-        本币/原币: <br /><br />
-        含税/不含税: <br /><br />
+        <div style="padding: 0 90%">
+          <el-button type="primary" style="margin-right: 10px"
+            >录入术语</el-button
+          >
+        </div>
+
+        <div>
+          签单: <br /><br />
+          期初/期末/期间: <br /><br />
+          满期保费: <br /><br />
+          未满期保费: <br /><br />
+          再保:<br /><br />
+          共保:
+          一般的保单的话，保险公司会和可会签订一个合同，共保是指多个保险公司,一起去承保一张保单，这样的话，会有一个主共从共之分发生共保业务的原因，一般情况下是因为保单的风险过高，如果，我司收到的保单。我司因为风险问题，把这张保单共保出去，我司无论占共保比例是多是少，我司都是主供方，其他公司是从共方，其他保险公司拿到的单子，分给我司的话，我司就是从共方
+          <br /><br />
+          本币/原币: <br /><br />
+          含税/不含税: <br /><br />
+        </div>
       </el-tab-pane>
     </el-tabs>
   </el-main>
@@ -225,6 +309,7 @@
 <script>
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 import "monaco-editor/esm/vs/basic-languages/sql/sql.contribution";
+import qs from "qs";
 
 export default {
   data() {
@@ -232,7 +317,6 @@ export default {
       restaurants: [],
       state: "",
       timeout: null,
-
       gridData: [
         {
           date: "2016-05-02",
@@ -256,6 +340,7 @@ export default {
         },
       ],
       dialogTableVisible: false,
+      dialogAddFotmVisible: false,
       dialogSQLEditorVisible: false,
       editor: null,
       sqlvalue:
@@ -273,7 +358,6 @@ export default {
         "  where SUBSTRING(get_json_string(columnInfo,'$.rescue_handle_date'),1,4)='2022'  \n" +
         " ) aa  \n" +
         "group by rescue;\n",
-      dialogFormVisible: false,
       form: {
         name: "",
         region: "",
@@ -433,7 +517,127 @@ export default {
           create_time: "2022-05-25 13:14:00",
           update_time: "2022-05-25 13:14:00",
         },
+        {
+          indicators_id: "00011",
+          indicators_name_zn: "签单保费原币含税期末未满期保费",
+          indicators_mean: "指的是业务的保费金额",
+          indicators_sql: "SQL逻辑",
+          indicators_type: "基础指标",
+          indicators_scope: "承保",
+          indicators_version: "v.01",
+          preserve_person: "指标大总管",
+          create_time: "2022-05-25 13:14:00",
+          update_time: "2022-05-25 13:14:00",
+        },
+        {
+          indicators_id: "00012",
+          indicators_name_zn: "签单保费原币含税期末未满期保费",
+          indicators_mean: "指的是业务的保费金额",
+          indicators_sql: "SQL逻辑",
+          indicators_type: "基础指标",
+          indicators_scope: "承保",
+          indicators_version: "v.01",
+          preserve_person: "指标大总管",
+          create_time: "2022-05-25 13:14:00",
+          update_time: "2022-05-25 13:14:00",
+        },
+        {
+          indicators_id: "00013",
+          indicators_name_zn: "签单保费原币含税期末未满期保费",
+          indicators_mean: "指的是业务的保费金额",
+          indicators_sql: "SQL逻辑",
+          indicators_type: "基础指标",
+          indicators_scope: "承保",
+          indicators_version: "v.01",
+          preserve_person: "指标大总管",
+          create_time: "2022-05-25 13:14:00",
+          update_time: "2022-05-25 13:14:00",
+        },
+        {
+          indicators_id: "00014",
+          indicators_name_zn: "签单保费原币含税期末未满期保费",
+          indicators_mean: "指的是业务的保费金额",
+          indicators_sql: "SQL逻辑",
+          indicators_type: "基础指标",
+          indicators_scope: "承保",
+          indicators_version: "v.01",
+          preserve_person: "指标大总管",
+          create_time: "2022-05-25 13:14:00",
+          update_time: "2022-05-25 13:14:00",
+        },
+        {
+          indicators_id: "00015",
+          indicators_name_zn: "签单保费原币含税期末未满期保费",
+          indicators_mean: "指的是业务的保费金额",
+          indicators_sql: "SQL逻辑",
+          indicators_type: "基础指标",
+          indicators_scope: "承保",
+          indicators_version: "v.01",
+          preserve_person: "指标大总管",
+          create_time: "2022-05-25 13:14:00",
+          update_time: "2022-05-25 13:14:00",
+        },
+        {
+          indicators_id: "00016",
+          indicators_name_zn: "签单保费原币含税期末未满期保费",
+          indicators_mean: "指的是业务的保费金额",
+          indicators_sql: "SQL逻辑",
+          indicators_type: "基础指标",
+          indicators_scope: "承保",
+          indicators_version: "v.01",
+          preserve_person: "指标大总管",
+          create_time: "2022-05-25 13:14:00",
+          update_time: "2022-05-25 13:14:00",
+        },
       ],
+      ruleForm: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      rules: {
+        name_zn: [
+          { required: true, message: "请录入指标名称", trigger: "blur" },
+          {
+            min: 4,
+            max: 28,
+            message: "长度在 4 到 28 个字符",
+            trigger: "blur",
+          },
+        ],
+        indicator_mean: [
+          { required: true, message: "请录入指标业务含义", trigger: "change" },
+        ],
+        indicator_scope: [
+          { required: true, message: "请选择指标范围", trigger: "change" },
+        ],
+        indicator_type: [
+          { required: true, message: "请选择指标类型", trigger: "change" },
+        ],
+        preserve_person: [
+          {
+            required: true,
+            message: "请录入指标创建维护人",
+            trigger: "change",
+          },
+        ],
+        create_data: [
+          {
+            type: "date",
+            required: true,
+            message: "请选择日期",
+            trigger: "change",
+          },
+        ],
+        indicator_sql: [
+          { required: true, message: "请录入SQL口径", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
@@ -618,6 +822,37 @@ export default {
         acceptSuggertionOnEnter: "on",
       });
     },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.dialogAddFotmVisible = false;
+          let formdata = new FormData();
+          for (let key in this.ruleForm) {
+            formdata.append(key, this.ruleForm[key]);
+            console.log(formdata.get(key));
+          }
+          this.$axios({
+            method: "post",
+            url: "http://127.0.0.1:8081/users/register",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+            data: formData,
+          }).then((response) => {
+            console.log(response);
+          });
+
+          alert("已保存!");
+        } else {
+          console.log("保存失败!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
   },
   mounted() {
     this.restaurants = this.loadAll();
@@ -648,13 +883,25 @@ export default {
   font-size: 16px;
 }
 
+::v-deep .el-table th > .cell {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: large;
+}
+
 ::v-deep .el-table td > .cell {
   line-height: 30px;
 }
 
-#container {
-  /* background-color: lightcoral; */
-  width: 920px;
-  height: 650px;
+::v-deep .el-tabs__nav > .is-top {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: larger;
+}
+
+.el-row {
+  width: 100%;
+  height: 100%;
+  /* margin-bottom: 20px; */
+  /* display: flex; */
+  flex-wrap: wrap;
 }
 </style>
