@@ -70,6 +70,8 @@
                     <el-option label="渠道" value="渠道"></el-option>
                     <el-option label="客服" value="客服"></el-option>
                     <el-option label="收付" value="收付"></el-option>
+                    <el-option label="经营" value="经营"></el-option>
+                    <el-option label="电商" value="电商"></el-option>
                   </el-select>
                 </el-form-item>
 
@@ -124,6 +126,89 @@
                 </el-form-item>
               </el-form>
             </el-dialog>
+
+            <!-- 更新指标数据对话框 -->
+            <el-dialog title="更新指标" :visible.sync="dialogUpdateFotmVisible">
+              <el-form
+                :model="ruleFormUpdate"
+                :rules="rules"
+                ref="ruleFormUpdate"
+                label-width="150px"
+                class="demo-ruleForm-Update"
+              >
+                <el-form-item label="指标中文名" prop="indicators_name_zn">
+                  <el-input
+                    v-model="ruleFormUpdate.indicators_name_zn"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="指标业务含义" prop="indicators_mean">
+                  <el-input v-model="ruleFormUpdate.indicators_mean"></el-input>
+                </el-form-item>
+                <el-form-item label="指标类型" prop="indicators_type">
+                  <el-select
+                    v-model="ruleFormUpdate.indicators_type"
+                    placeholder="请选择指标类型"
+                  >
+                    <el-option label="基础指标" value="基础指标"></el-option>
+                    <el-option label="派生指标" value="派生指标"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="指标范围" prop="indicators_scope">
+                  <el-select
+                    v-model="ruleFormUpdate.indicators_scope"
+                    placeholder="请选择指标范围"
+                  >
+                    <el-option label="承保" value="承保"></el-option>
+                    <el-option label="理赔" value="理赔"></el-option>
+                    <el-option label="财务" value="财务"></el-option>
+                    <el-option label="渠道" value="渠道"></el-option>
+                    <el-option label="客服" value="客服"></el-option>
+                    <el-option label="收付" value="收付"></el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="版本" prop="indicators_version">
+                  <el-select
+                    v-model="ruleFormUpdate.indicators_version"
+                    placeholder="请选择版本"
+                  >
+                    <el-option label="v1.0" value="1.0"></el-option>
+                    <el-option label="v2.0" value="2.0"></el-option>
+                    <el-option label="v3.0" value="3.0"></el-option>
+                    <el-option label="v4.0" value="4.0"></el-option>
+                    <el-option label="v5.0" value="5.0"></el-option>
+                    <el-option label="v6.0" value="6.0"></el-option>
+                    <el-option label="v7.0" value="7.0"></el-option>
+                    <el-option label="v8.0" value="8.0"></el-option>
+                    <el-option label="v9.0" value="9.0"></el-option>
+                    <el-option label="v10.0" value="10.0"></el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="创建维护人" prop="preserve_person">
+                  <el-input v-model="ruleFormUpdate.preserve_person"></el-input>
+                </el-form-item>
+
+                <el-form-item label="统计口径(SQL)" prop="indicators_sql">
+                  <el-input
+                    type="textarea"
+                    :rows="10"
+                    autosize
+                    v-model="ruleFormUpdate.indicators_sql"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button
+                    type="primary"
+                    @click="submitUpdateForm('ruleFormUpdate')"
+                    >更新</el-button
+                  >
+                  <el-button @click="resetForm('ruleFormUpdate')"
+                    >清空</el-button
+                  >
+                </el-form-item>
+              </el-form>
+            </el-dialog>
           </div>
           <el-table :data="tableDataDetail">
             <el-table-column label="指标中文名" width="300">
@@ -168,14 +253,16 @@
 
               <template>
                 <el-dialog
-                  title="SQL逻辑"
+                  :title="DailogIndicatorstitle"
                   :visible.sync="dialogSQLEditorVisible"
                   :append-to-body="true"
                   :destroy-on-close="true"
                   :center="true"
                   top="5vh"
                 >
-                  <div ref="IndicatorsContainer">统计口径:</div>
+                  <div ref="IndicatorsContainer" style="height: 750px">
+                    统计口径:
+                  </div>
                 </el-dialog>
               </template>
             </el-table-column>
@@ -307,7 +394,6 @@
             "
             >新增公式</el-button
           >
-
           <el-dialog
             title="新增公式"
             :visible.sync="dialogAddFotmVisibleFormulas"
@@ -334,6 +420,7 @@
                   <el-option label="客服" value="客服"></el-option>
                   <el-option label="收付" value="收付"></el-option>
                   <el-option label="经营" value="经营"></el-option>
+                  <el-option label="电商" value="电商"></el-option>
                 </el-select>
               </el-form-item>
 
@@ -353,9 +440,66 @@
                 <el-button
                   type="primary"
                   @click="submitFormFormulas('ruleFormFormulas')"
-                  >立即创建</el-button
+                  >新增公式</el-button
                 >
                 <el-button @click="resetForm('ruleFormFormulas')"
+                  >清空</el-button
+                >
+              </el-form-item>
+            </el-form>
+          </el-dialog>
+          <!-- 更新公式对话框 -->
+          <el-dialog
+            title="更新公式"
+            :visible.sync="dialogUpdateFotmVisibleFormulas"
+          >
+            <el-form
+              :model="ruleFormUpdateFormulas"
+              :rules="rulesFormulas"
+              ref="ruleFormUpdateFormulas"
+              label-width="200px"
+              class="demo-ruleFormUpdateFormulas"
+            >
+              <el-form-item
+                label="业务模块(指标所属范围)"
+                prop="indicators_scope"
+              >
+                <el-select
+                  v-model="ruleFormUpdateFormulas.indicators_scope"
+                  placeholder="业务模块"
+                >
+                  <el-option label="承保" value="承保"></el-option>
+                  <el-option label="理赔" value="理赔"></el-option>
+                  <el-option label="财务" value="财务"></el-option>
+                  <el-option label="渠道" value="渠道"></el-option>
+                  <el-option label="客服" value="客服"></el-option>
+                  <el-option label="收付" value="收付"></el-option>
+                  <el-option label="经营" value="经营"></el-option>
+                  <el-option label="电商" value="电商"></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label="专业术语名称" prop="terminology">
+                <el-input
+                  v-model="ruleFormUpdateFormulas.terminology"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="计算公式(逻辑)" prop="indicators_formulas">
+                <el-input
+                  type="textarea"
+                  :rows="10"
+                  autosize
+                  v-model="ruleFormUpdateFormulas.indicators_formulas"
+                ></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button
+                  type="primary"
+                  @click="submitFormUpdateFormulas('ruleFormUpdateFormulas')"
+                  >更新</el-button
+                >
+                <el-button @click="resetForm('ruleFormUpdateFormulas')"
                   >清空</el-button
                 >
               </el-form-item>
@@ -456,6 +600,7 @@ export default {
       formulas_inputSearch: "",
       inputSearch: "",
       timeout: null,
+      DailogIndicatorstitle: "",
       gridData: [
         {
           date: "2016-05-02",
@@ -480,7 +625,9 @@ export default {
       ],
       dialogTableVisible: false,
       dialogAddFotmVisible: false,
+      dialogUpdateFotmVisible: false,
       dialogAddFotmVisibleFormulas: false,
+      dialogUpdateFotmVisibleFormulas: false,
       dialogSQLEditorVisible: false,
       editor: null,
       sqlvalue: "",
@@ -515,15 +662,19 @@ export default {
       tableDataDetailFormulas: [],
       ruleForm: {
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
+        delivery: false,
+      },
+      ruleFormUpdate: {
+        name: "",
+        delivery: false,
+      },
+      ruleFormFormulas: {
         delivery: false,
         type: [],
         resource: "",
         desc: "",
       },
-      ruleFormFormulas: {
+      ruleFormUpdateFormulas: {
         delivery: false,
         type: [],
         resource: "",
@@ -664,7 +815,7 @@ export default {
         url: stringUrl,
       })
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           // this.tableDataDetail = res.data.data;
         })
         .catch((error) => {
@@ -680,7 +831,7 @@ export default {
         url: stringUrl,
       })
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           // this.tableDataDetail = res.data.data;
         })
         .catch((error) => {
@@ -696,7 +847,7 @@ export default {
         url: stringUrl,
       })
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           this.tableDataDetailFormulas = res.data.data;
           // this.sqlvalue = res.data.data[0].indicators_formulas;
         })
@@ -712,6 +863,7 @@ export default {
     },
     initEditor(indicators_name_zn) {
       // console.log("indicators_name_zn", indicators_name_zn);
+      this.DailogIndicatorstitle = indicators_name_zn;
       let stringUrl =
         "http://xx.xx.xx.xx:0000/Indicators/IndicatorsSearch?indicators_name_zn=" +
         indicators_name_zn;
@@ -731,39 +883,67 @@ export default {
         });
     },
     InintContainer() {
-      console.log("this.sqlvalue", this.sqlvalue);
+      // console.log("this.sqlvalue", this.sqlvalue);
       this.editorIndicators = monaco.editor.create(
         // document.getElementById("IndicatorsContainer"),
         this.$refs.IndicatorsContainer,
         {
           value: this.sqlvalue,
           language: "sql",
-          automaticLayout: false,
+          automaticLayout: true,
           theme: "vs-dark",
           selectOnLineNumbers: true, //行号
           fontSize: 16,
-          autoIndent: false,
+          autoIndent: "none",
+          // scrollBeyondLastLine: true,
+          overviewRulerBorder: false,
           quickSuggestionsDelay: 0,
           folding: true,
           renderLineHightlight: "gutter",
           glyphMargin: true,
-          acceptSuggertionOnCommitCharacter: true,
-          acceptSuggertionOnEnter: "on",
+          // acceptSuggertionOnCommitCharacter: true,
+          // acceptSuggertionOnEnter: "on",
           minimap: {
             enabled: false, // 是否启用预览图
           },
-          readOnly: false,
+          readOnly: true,
         }
       );
     },
     addIndicatorsForm() {
-      this.ruleForm.indicators_name_zn = "";
-      this.ruleForm.indicators_mean = "";
-      this.ruleForm.indicators_type = "";
-      this.ruleForm.indicators_scope = "";
-      this.ruleForm.indicators_version = "";
-      this.ruleForm.preserve_person = "";
-      this.ruleForm.indicators_sql = "";
+      this.ruleForm = {};
+    },
+    submitUpdateForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.dialogUpdateFotmVisible = false;
+          axios({
+            method: "post",
+            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAddUpdate",
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+            withCredentials: true,
+            data: {
+              indicators_name_zn: this.ruleFormUpdate.indicators_name_zn,
+              indicators_mean: this.ruleFormUpdate.indicators_mean,
+              indicators_type: this.ruleFormUpdate.indicators_type,
+              indicators_scope: this.ruleFormUpdate.indicators_scope,
+              indicators_version: this.ruleFormUpdate.indicators_version,
+              preserve_person: this.ruleFormUpdate.preserve_person,
+              indicators_sql: this.ruleFormUpdate.indicators_sql,
+              update_time: this.getCurrentTime(),
+            },
+          }).then((response) => {
+            // console.log(response);
+          });
+
+          alert("已更新!");
+        } else {
+          console.log("保存失败!!,请务多次提交");
+          return false;
+        }
+      });
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -799,10 +979,7 @@ export default {
       });
     },
     addFormulas() {
-      // this.dialogAddFotmVisibleFormulas = true;
-      this.ruleFormFormulas.indicators_scope = "";
-      this.ruleFormFormulas.terminology = "";
-      this.ruleFormFormulas.indicators_formulas = "";
+      this.ruleFormFormulas = {};
     },
     submitFormFormulas(formName) {
       this.$refs[formName].validate((valid) => {
@@ -823,6 +1000,35 @@ export default {
               update_time: this.getCurrentTime(),
             },
           }).then((response) => {
+            // console.log(response);
+          });
+
+          alert("已保存!");
+        } else {
+          console.log("保存失败!!,请务多次提交");
+          return false;
+        }
+      });
+    },
+    submitFormUpdateFormulas(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.dialogUpdateFotmVisibleFormulas = false;
+          axios({
+            method: "post",
+            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorUpdateFormulas",
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+            withCredentials: true,
+            data: {
+              indicators_scope: this.ruleFormUpdateFormulas.indicators_scope,
+              terminology: this.ruleFormUpdateFormulas.terminology,
+              indicators_formulas:
+                this.ruleFormUpdateFormulas.indicators_formulas,
+              update_time: this.getCurrentTime(),
+            },
+          }).then((response) => {
             console.log(response);
           });
 
@@ -837,20 +1043,20 @@ export default {
       this.$refs[formName].resetFields();
     },
     handleEdit(index, row) {
-      this.dialogAddFotmVisible = true;
-      this.ruleForm.indicators_name_zn = row.indicators_name_zn;
-      this.ruleForm.indicators_mean = row.indicators_mean;
-      this.ruleForm.indicators_type = row.indicators_type;
-      this.ruleForm.indicators_scope = row.indicators_scope;
-      this.ruleForm.indicators_version = row.indicators_version;
-      this.ruleForm.preserve_person = row.preserve_person;
-      this.ruleForm.indicators_sql = row.indicators_sql;
+      this.dialogUpdateFotmVisible = true;
+      this.ruleFormUpdate.indicators_name_zn = row.indicators_name_zn;
+      this.ruleFormUpdate.indicators_mean = row.indicators_mean;
+      this.ruleFormUpdate.indicators_type = row.indicators_type;
+      this.ruleFormUpdate.indicators_scope = row.indicators_scope;
+      this.ruleFormUpdate.indicators_version = row.indicators_version;
+      this.ruleFormUpdate.preserve_person = row.preserve_person;
+      this.ruleFormUpdate.indicators_sql = row.indicators_sql;
     },
     FormulashandleEdit(index, row) {
-      this.dialogAddFotmVisibleFormulas = true;
-      this.ruleFormFormulas.indicators_scope = row.indicators_scope;
-      this.ruleFormFormulas.terminology = row.terminology;
-      this.ruleFormFormulas.indicators_formulas = row.indicators_formulas;
+      this.dialogUpdateFotmVisibleFormulas = true;
+      this.ruleFormUpdateFormulas.indicators_scope = row.indicators_scope;
+      this.ruleFormUpdateFormulas.terminology = row.terminology;
+      this.ruleFormUpdateFormulas.indicators_formulas = row.indicators_formulas;
     },
     FormulashandleDelete(index, row) {
       this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {

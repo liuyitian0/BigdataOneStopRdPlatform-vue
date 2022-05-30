@@ -8,6 +8,7 @@ import Scheduler from './Scheduler.vue';
 import Test from './Test.vue';
 import DataServices from './DataServices.vue';
 import Indicators from './Indicators.vue';
+import RealTimeScreen from './RealTimeScreen.vue';
 
 Vue.use(Router);
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/Indicators',
       name: 'Indicators',
       component: Indicators,
+    },
+    {
+      path: '/RealTimeScreen',
+      name: 'RealTimeScreen',
+      component: RealTimeScreen,
     },
   ],
 });

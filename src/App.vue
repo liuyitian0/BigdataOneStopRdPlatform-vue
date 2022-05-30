@@ -16,6 +16,7 @@
       <router-link class="navItem" to="/DataLineage">数据血缘</router-link>
       <router-link class="navItem" to="/Abc">运维监控</router-link>
       <router-link class="navItem" to="/Graph">Flink流平台</router-link>
+      <router-link class="navItem" to="/RealTimeScreen">实时大屏</router-link>
       <el-dropdown>
         <span class="el-dropdown-link">
           更多<i class="el-icon-arrow-down el-icon--right"></i>
