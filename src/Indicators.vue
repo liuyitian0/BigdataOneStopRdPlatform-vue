@@ -57,6 +57,7 @@
                   >
                     <el-option label="基础指标" value="基础指标"></el-option>
                     <el-option label="派生指标" value="派生指标"></el-option>
+                    <el-option label="经营指标" value="经营指标"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="指标范围" prop="indicators_scope">
@@ -258,10 +259,17 @@
                   :append-to-body="true"
                   :destroy-on-close="true"
                   :center="true"
-                  top="5vh"
+                  top="3vh"
+                  :fullscreen="fullscreen"
+                  @close="MoncaoDispose"
                 >
-                  <div ref="IndicatorsContainer" style="height: 750px">
-                    统计口径:
+                  <div ref="IndicatorsContainer" style="height: 800px">
+                    <el-button type="primary" @click="DailogFullscreen()"
+                      >全屏</el-button
+                    >
+                    <el-button type="danger" @click="DailogMinscreen()"
+                      >小屏</el-button
+                    >
                   </div>
                 </el-dialog>
               </template>
@@ -329,36 +337,104 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="常用指标"> </el-tab-pane>
-      <el-tab-pane label="指标血缘">
-        <el-button type="text" @click="dialogTableVisible = true"
-          >打开嵌套表格的 Dialog</el-button
-        >
-
-        <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
-          <el-table :data="gridData">
-            <el-table-column
-              property="date"
-              label="日期"
-              width="150"
-            ></el-table-column>
-            <el-table-column
-              property="name"
-              label="姓名"
-              width="200"
-            ></el-table-column>
-            <el-table-column property="address" label="地址"></el-table-column>
-          </el-table>
-        </el-dialog>
-      </el-tab-pane>
-
+      <el-tab-pane label="指标血缘"> </el-tab-pane>
       <el-tab-pane label="指标术语" style="color: #008fd4">
-        <div style="padding: 0 90%">
+        <!-- <div style="padding: 0 90%">
           <el-button type="primary" style="margin-right: 10px"
             >录入术语</el-button
           >
-        </div>
+        </div> -->
 
-        <div>
+        <el-input
+          v-model="Jargon_inputSearch"
+          placeholder="请输入术语名称"
+          style="width: 750px"
+        >
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+
+        <el-button type="primary" @click="SearchJargon()">查询术语</el-button>
+
+        <el-button
+          type="primary"
+          @click="
+            dialogAddJargon = true;
+            addJargon();
+          "
+          >录入术语</el-button
+        >
+
+        <el-dialog title="录入术语" :visible.sync="dialogAddJargon">
+          <el-form
+            :model="ruleFormJargon"
+            :rules="rulesJargon"
+            ref="ruleFormJargon"
+            label-width="200px"
+            class="demo-ruleFormJargon"
+          >
+            <el-form-item label="术语" prop="jargon">
+              <el-input v-model="ruleFormJargon.jargon"></el-input>
+            </el-form-item>
+
+            <el-form-item label="术语解释" prop="jargon_instructions">
+              <el-input v-model="ruleFormJargon.jargon_instructions"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button
+                type="primary"
+                @click="submitFormJargon('ruleFormJargon')"
+                >新增术语</el-button
+              >
+              <el-button @click="resetForm('ruleFormJargon')">清空</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+
+        <el-table :data="tableDataJargon">
+          <el-table-column label="术语" width="300">
+            <template slot-scope="Jargon">
+              <div slot="reference" class="name-wrapper">
+                <span
+                  style="
+                    margin-left: 5px;
+                    font-size: 16px;
+                    font-weight: bolder;
+                    text-decoration: underline;
+                    color: #008fd4;
+                  "
+                >
+                  {{ Jargon.row.jargon }}
+                </span>
+              </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="术语解释" width="1100">
+            <template slot-scope="Jargon">
+              <span style="margin-left: 10px">{{
+                Jargon.row.jargon_instructions
+              }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="操作" width="180">
+            <template slot-scope="Jargon">
+              <el-button
+                type="primary"
+                @click="JargonEdit(Jargon.$index, Jargon.row)"
+                >编辑</el-button
+              >
+              <el-button
+                type="danger"
+                @click="JargonDelete(Jargon.$index, Jargon.row)"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- <div>
           签单: <br /><br />
           期初/期末/期间: <br /><br />
           满期保费: <br /><br />
@@ -369,7 +445,7 @@
           <br /><br />
           本币/原币: <br /><br />
           含税/不含税: <br /><br />
-        </div>
+        </div> -->
       </el-tab-pane>
 
       <el-tab-pane label="指标公式" style="color: #008fd4">
@@ -598,9 +674,11 @@ export default {
     return {
       restaurants: [],
       formulas_inputSearch: "",
+      Jargon_inputSearch: "",
       inputSearch: "",
       timeout: null,
       DailogIndicatorstitle: "",
+      fullscreen: false,
       gridData: [
         {
           date: "2016-05-02",
@@ -658,6 +736,7 @@ export default {
           tag: "公司",
         },
       ],
+      tableDataJargon: [],
       tableDataDetail: [],
       tableDataDetailFormulas: [],
       ruleForm: {
@@ -736,6 +815,28 @@ export default {
           { required: true, message: "请录入SQL口径", trigger: "blur" },
         ],
       },
+
+      dialogAddJargon: false,
+      rulesJargon: {
+        jargon: [
+          { required: true, message: "请录入术语名称", trigger: "blur" },
+          {
+            min: 1,
+            max: 60,
+            message: "长度在 4 到 60 个字符",
+            trigger: "blur",
+          },
+        ],
+        jargon_instructions: [
+          { required: true, message: "请录入术语解释", trigger: "blur" },
+        ],
+      },
+      ruleFormJargon: {
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
     };
   },
   methods: {
@@ -770,6 +871,12 @@ export default {
       // console.log('strDate',strDate)
       return currentTime;
     },
+    DailogFullscreen() {
+      this.fullscreen = true;
+    },
+    DailogMinscreen() {
+      this.fullscreen = false;
+    },
     getCurrentDate() {
       //获取当前天
       var date = new Date();
@@ -791,7 +898,7 @@ export default {
     },
     SearchIndicator() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsSearch?indicators_name_zn=" +
+        "http://10.30.64.240:9988/Indicators/IndicatorsSearch?indicators_name_zn=" +
         this.inputSearch;
       axios({
         method: "get",
@@ -808,7 +915,7 @@ export default {
     },
     IndicatorDeleteByName(Indicators_name_zn) {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsDeleteByname?indicators_name_zn=" +
+        "http://10.30.64.240:9988/Indicators/IndicatorsDeleteByname?indicators_name_zn=" +
         Indicators_name_zn;
       axios({
         method: "get",
@@ -824,7 +931,7 @@ export default {
     },
     IndicatorFormulasDeleteByName(terminology) {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/Indicators/IndicatorFormulasDeleteByName?terminology=" +
+        "http://10.30.64.240:9988/Indicators/IndicatorFormulasDeleteByName?terminology=" +
         terminology;
       axios({
         method: "get",
@@ -840,7 +947,7 @@ export default {
     },
     formulasSearchIndicator() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsSearchFormulas?terminology=" +
+        "http://10.30.64.240:9988/Indicators/IndicatorsSearchFormulas?terminology=" +
         this.formulas_inputSearch;
       axios({
         method: "get",
@@ -865,7 +972,7 @@ export default {
       // console.log("indicators_name_zn", indicators_name_zn);
       this.DailogIndicatorstitle = indicators_name_zn;
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsSearch?indicators_name_zn=" +
+        "http://10.30.64.240:9988/Indicators/IndicatorsSearch?indicators_name_zn=" +
         indicators_name_zn;
       axios({
         method: "get",
@@ -910,6 +1017,20 @@ export default {
         }
       );
     },
+    MoncaoDispose() {
+      console.log("dispose");
+      if (this.editorIndicators) {
+        if (this.editorIndicators.getModel()) {
+          this.editorIndicators.getModel().dispose();
+        }
+        this.editorIndicators.dispose();
+        this.editorIndicators = null;
+        // if(this.provider){
+        //   this.provider.dispose();
+        //   this.provider = null
+        // }
+      }
+    },
     addIndicatorsForm() {
       this.ruleForm = {};
     },
@@ -919,7 +1040,7 @@ export default {
           this.dialogUpdateFotmVisible = false;
           axios({
             method: "post",
-            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAddUpdate",
+            url: "http://10.30.64.240:9988/Indicators/IndicatorAddUpdate",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -951,7 +1072,7 @@ export default {
           this.dialogAddFotmVisible = false;
           axios({
             method: "post",
-            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAdd",
+            url: "http://10.30.64.240:9988/Indicators/IndicatorAdd",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -987,7 +1108,7 @@ export default {
           this.dialogAddFotmVisibleFormulas = false;
           axios({
             method: "post",
-            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAddFormulas",
+            url: "http://10.30.64.240:9988/Indicators/IndicatorAddFormulas",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1016,7 +1137,7 @@ export default {
           this.dialogUpdateFotmVisibleFormulas = false;
           axios({
             method: "post",
-            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorUpdateFormulas",
+            url: "http://10.30.64.240:9988/Indicators/IndicatorUpdateFormulas",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1098,6 +1219,55 @@ export default {
             type: "info",
             message: "已取消删除",
           });
+        });
+    },
+
+    addJargon() {
+      this.ruleFormJargon = {};
+    },
+    submitFormJargon(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.dialogAddJargon = false;
+          axios({
+            method: "post",
+            url: "http://10.30.64.240:9988/Indicators/IndicatorAddJargon",
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+            withCredentials: true,
+            data: {
+              jargon: this.ruleFormJargon.jargon,
+              jargon_instructions: this.ruleFormJargon.jargon_instructions,
+              create_time: this.getCurrentTime(),
+              update_time: this.getCurrentTime(),
+            },
+          }).then((response) => {
+            // console.log(response);
+          });
+
+          alert("已保存!");
+        } else {
+          console.log("保存失败!!,请务多次提交");
+          return false;
+        }
+      });
+    },
+    SearchJargon() {
+      let stringUrl =
+        "http://10.30.64.240:9988/Indicators/JargonSearchAll?jargon=" +
+        this.Jargon_inputSearch;
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          console.log(res.data.data);
+          this.tableDataJargon = res.data.data;
+          // this.sqlvalue = res.data.data[0].indicators_sql;
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
