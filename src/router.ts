@@ -9,6 +9,7 @@ import Test from './Test.vue';
 import DataServices from './DataServices.vue';
 import Indicators from './Indicators.vue';
 import RealTimeScreen from './RealTimeScreen.vue';
+import DataDictionary from './DataDictionary.vue';
 
 Vue.use(Router);
 
@@ -63,5 +64,11 @@ export default new Router({
       name: 'RealTimeScreen',
       component: RealTimeScreen,
     },
+    {
+      path: '/DataDictionary',
+      name: 'DataDictionary',
+      component: DataDictionary,
+    },
+
   ],
 });

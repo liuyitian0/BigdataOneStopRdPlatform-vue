@@ -258,6 +258,7 @@
                   :visible.sync="dialogSQLEditorVisible"
                   :append-to-body="true"
                   :destroy-on-close="true"
+                  :close-on-click-modal="false"
                   :center="true"
                   top="3vh"
                   :fullscreen="fullscreen"
@@ -353,7 +354,12 @@
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
 
-        <el-button type="primary" @click="SearchJargon()">查询术语</el-button>
+        <el-button
+          type="primary"
+          @click="SearchJargon()"
+          style="margin-left: 20px"
+          >查询术语</el-button
+        >
 
         <el-button
           type="primary"
@@ -929,10 +935,11 @@ export default {
           console.log(error);
         });
     },
-    IndicatorFormulasDeleteByName(terminology) {
+    IndicatorFormulasDeleteByName(terminology_id) {
+      // console.log(terminology_id);
       let stringUrl =
-        "http://10.30.64.240:9988/Indicators/IndicatorFormulasDeleteByName?terminology=" +
-        terminology;
+        "http://10.30.64.240:9988/Indicators/IndicatorFormulasDeleteByName?terminology_id=" +
+        terminology_id;
       axios({
         method: "get",
         url: stringUrl,
@@ -1191,7 +1198,7 @@ export default {
             message: "删除成功!",
           });
           //请求接口删除
-          this.IndicatorFormulasDeleteByName(row.terminology);
+          this.IndicatorFormulasDeleteByName(row.terminology_id);
         })
         .catch(() => {
           this.$message({
