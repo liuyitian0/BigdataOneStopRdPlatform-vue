@@ -57,6 +57,14 @@
               </template>
             </el-table-column>
 
+            <el-table-column label="表含义" width="250">
+              <template slot-scope="dataDicResScope">
+                <span style="margin-left: 10px">
+                  {{ dataDicResScope.row.table_comment }}
+                </span>
+              </template>
+            </el-table-column>
+
             <el-table-column label="列名" width="250">
               <template slot-scope="dataDicResScope">
                 <span style="margin-left: 10px">{{
@@ -93,13 +101,13 @@
                 }}</span>
               </template>
             </el-table-column> -->
-            <el-table-column label="是否有效" width="110">
+            <!-- <el-table-column label="是否有效" width="110">
               <template slot-scope="dataDicResScope">
                 <span style="margin-left: 10px">{{
                   dataDicResScope.row.isvalid
                 }}</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="创维人" width="130">
               <template slot-scope="dataDicResScope">
                 <span style="margin-left: 10px">{{
