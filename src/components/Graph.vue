@@ -9,15 +9,44 @@
         <input
           class="banner_input1"
           type="text"
-          v-model.trim="message"
+          v-model.trim="Searchtablename"
           placeholder="表名..."
         />
+
+        <el-select
+          ref="selectDirc"
+          v-model="value_table"
+          placeholder="选择上下游"
+        >
+          <el-option
+            v-for="item in options_dirc"
+            :key="item.value_table"
+            :label="item.label"
+            :value="item.value_table"
+          >
+          </el-option>
+        </el-select>
+
+        <el-select
+          ref="selectLevel"
+          v-model="value_level"
+          placeholder="选择层级"
+        >
+          <el-option
+            v-for="item in options_level"
+            :key="item.value_level"
+            :label="item.label"
+            :value="item.value_level"
+          >
+          </el-option>
+        </el-select>
+
         <el-button
           type="primary"
           class="banner_Btn1"
           @click="getTabLineagedata()"
         >
-          查看血缘
+          查看表血缘
         </el-button>
         <!-- <el-tooltip content="放大" effect="light">
           <el-button icon="el-icon-zoom-in" circle></el-button>
@@ -26,11 +55,11 @@
           <el-button icon="el-icon-zoom-out"  @click="zoomin()" circle></el-button>
         </el-tooltip> -->
 
-        <i class="el-icon-location"> {{ tablabel }}</i>
+        <i class="el-icon-location"> {{ Searchtablename }}</i>
 
         <div>
           <div id="container1"></div>
-          <div ref="miniMapContainerRef" class="miniMap"></div>
+          <div ref="miniMapContainerTab" class="miniMap"></div>
         </div>
       </el-tab-pane>
 
@@ -48,24 +77,19 @@
           placeholder="字段列..."
         />
 
-        <el-select ref="selectLable" v-model="value" placeholder="选择上下游">
+        <el-select
+          ref="selectColDirc"
+          v-model="value_col"
+          placeholder="选择上下游"
+        >
           <el-option
-            v-for="item in options"
-            :key="item.value"
+            v-for="item in options_col_dirc"
+            :key="item.value_col"
             :label="item.label"
-            :value="item.value"
+            :value="item.value_col"
           >
           </el-option>
         </el-select>
-
-        <!-- <el-select ref='selectLevel' v-model="value_level" placeholder="选择层级">
-          <el-option
-            v-for="item in options_level"
-            :key="item.value_level"
-            :label="item.label_level"
-            :value="item.value_level">
-          </el-option>
-        </el-select> -->
 
         <el-button
           type="primary"
@@ -99,17 +123,16 @@ import {
   GetErRect,
   SourceGetErRect,
 } from "@/utils/GetColDataGraph";
-// import GetColPorts from "@/utils/GetColPorts";
+import { GetTabRectNode } from "@/utils/GetTabRect";
 
 const LINE_HEIGHT = 32;
 const NODE_WIDTH = 300;
 
 export default {
   name: "index",
-  props: ["tablabel"],
   data() {
     return {
-      message: null,
+      Searchtablename: null,
       jsondata: [],
       jsonERdata: {},
       node: [],
@@ -120,35 +143,56 @@ export default {
       tab: "dw_crm_supper_case_details",
       col: "rescue_record_date",
       cellsAll: [],
-      value: "选项1",
+      value_table: "down",
+      value_col: "down",
       value_level: "3",
-      selectLable: [],
       selectLevel: [],
+      selectDirc: [],
+      selectColDirc: [],
       levelcnt: 3,
-      options: [
+      options_dirc: [
         {
-          value: "选项1",
+          value_table: "down",
           label: "下游",
         },
         {
-          value: "选项2",
+          value_table: "up",
+          label: "上游",
+        },
+      ],
+      options_col_dirc: [
+        {
+          value_col: "down",
+          label: "下游",
+        },
+        {
+          value_col: "up",
           label: "上游",
         },
       ],
       options_level: [
         {
           value_level: "1",
-          label_level: "1层",
+          label: "1层",
         },
         {
           value_level: "2",
-          label_level: "2层",
+          label: "2层",
         },
         {
           value_level: "3",
-          label_level: "3层",
+          label: "3层",
+        },
+        {
+          value_level: "4",
+          label: "4层",
+        },
+        {
+          value_level: "5",
+          label: "5层",
         },
       ],
+      miniMapContainerTab: null,
     };
   },
   created() {
@@ -157,16 +201,19 @@ export default {
   mounted() {},
   methods: {
     getTabLineagedata() {
-      this.init(this.message);
-      this.tablabel = this.message;
+      // this.GetTab(this.Searchtablename, this.$refs.selectLevel.selected.label); --- old
+      let dirc = this.$refs.selectDirc.selected.label; // 上下游
+      let lvl = this.$refs.selectLevel.selected.value; // 层级
+      this.init(this.Searchtablename, dirc, lvl);
     },
     getColLineagedata(tab, col) {
-      // this.canvnsCol(this.tab,this.col,this.$refs.selectLable.selected.label,this.$refs.selectLevel.selected.value);
-      // document.body.removeChild(document.getElementById("container2"));
-      this.canvnsCol(this.tab, this.col, this.$refs.selectLable.selected.label);
-      // console.log("slabel",this.$refs.selectLable.selected.label)
+      this.canvnsCol(
+        this.tab,
+        this.col,
+        this.$refs.selectColDirc.selected.label
+      );
     },
-    init(tablelable) {
+    GetTab(tablename, lable_level) {
       this.alldata = {};
       this.node = [];
       this.edge = [];
@@ -174,66 +221,162 @@ export default {
       this.graph = {};
       this.miniMapContainerRef = null;
       this.newModel = {};
-
-      // document.getElementById("container2").container = "";
-      // $("#container2").html("");
-      // document.body.removeChild(document.getElementById("container2"));
-
       //调用公共方法,获取单个表的数据
-      this.jsondata = require("../../public/data/base.json");
-      this.jsondata.forEach((item, index) => {
-        if (item.name === tablelable) {
-          this.resdata = item.value;
-          this.resdata.forEach((subitem, index) => {
-            this.node.push(GetDataGraph(subitem.s, subitem.t)[0]);
-            this.edge.push(GetDataGraph(subitem.s, subitem.t)[1]);
-          });
-        }
+      // this.jsondata = require("../../public/data/base.json");
+      // this.jsondata.forEach((item, index) => {
+      //   if (item.name === tablename) {
+      //     // tablelable
+      //     this.resdata = item.value;
+      //     console.log("resdata", this.resdata);
+      //     this.resdata.forEach((subitem, index) => {
+      //       this.node.push(GetDataGraph(subitem.s, subitem.t)[0]);
+      //       this.edge.push(GetDataGraph(subitem.s, subitem.t)[1]);
+      //     });
+      //   }
+      // });
+      // this.alldata.nodes = this.node;
+      // this.alldata.edges = this.edge;
+      // console.log("nodes", this.node);
+      // console.log("edges", this.edges);
+      // if (this.alldata.nodes.length != 0) {
+      //   const miniMapContainerRef = this.$refs.miniMapContainerRef;
+      //   const graph = new X6.Graph({
+      //     container: document.getElementById("container1"),
+      //     width: 4600,
+      //     height: 4600,
+      //     snapline: true,
+      //     background: {
+      //       color: "#ffffff",
+      //     },
+      //     grid: {
+      //       size: 10, // 网格大小 10px
+      //       visible: true, // 渲染网格背景
+      //     },
+      //     scroller: {
+      //       enabled: true,
+      //       pageVisible: true,
+      //       pageBreak: true,
+      //       pannable: true,
+      //     },
+      //     minimap: {
+      //       enabled: true,
+      //       container: miniMapContainerRef,
+      //     },
+      //     // rotating: {
+      //     //   enabled: true, // 是否开启节点旋转
+      //     //   grid: 45 // 每次旋转15度
+      //     // },
+      //   });
+
+      //   const dagreLayout = new DagreLayout({
+      //     type: "dagre",
+      //     rankdir: "LR",
+      //     align: "UR",
+      //     ranksep: 100,
+      //     nodesep: 20,
+      //     controlPoints: true,
+      //   });
+      //   const newModel = dagreLayout.layout(this.alldata);
+
+      //   graph.fromJSON(newModel);
+      // } //if
+
+      // ------------- 以下是新逻辑
+
+      const miniMapContainerRef = this.$refs.miniMapContainerRef;
+      const graphTab = new X6.Graph({
+        container: document.getElementById("container1"),
+        width: 4600,
+        height: 4600,
+        snapline: true,
+        background: {
+          color: "#ffffff",
+        },
+        grid: {
+          size: 10, // 网格大小 10px
+          visible: true, // 渲染网格背景
+        },
+        scroller: {
+          enabled: true,
+          pageVisible: true,
+          pageBreak: true,
+          pannable: true,
+        },
+        // minimap: {
+        //   enabled: true,
+        //   container: miniMapContainerRef,
+        // },
+        // rotating: {
+        //   enabled: true, // 是否开启节点旋转
+        //   grid: 45 // 每次旋转15度
+        // },
       });
-      this.alldata.nodes = this.node;
-      this.alldata.edges = this.edge;
-      if (this.alldata.nodes.length != 0) {
-        const miniMapContainerRef = this.$refs.miniMapContainerRef;
-        const graph = new X6.Graph({
-          container: document.getElementById("container1"),
-          width: 4600,
-          height: 4600,
-          snapline: true,
-          background: {
-            color: "#ffffff",
-          },
-          grid: {
-            size: 10, // 网格大小 10px
-            visible: true, // 渲染网格背景
-          },
-          scroller: {
-            enabled: true,
-            pageVisible: true,
-            pageBreak: true,
-            pannable: true,
-          },
-          minimap: {
-            enabled: true,
-            container: miniMapContainerRef,
-          },
-          // rotating: {
-          //   enabled: true, // 是否开启节点旋转
-          //   grid: 45 // 每次旋转15度
-          // },
-        });
 
-        const dagreLayout = new DagreLayout({
-          type: "dagre",
-          rankdir: "LR",
-          align: "UR",
-          ranksep: 100,
-          nodesep: 20,
-          controlPoints: true,
-        });
-        const newModel = dagreLayout.layout(this.alldata);
+      // const dagreLayout = new DagreLayout({
+      //   type: "dagre",
+      //   rankdir: "LR",
+      //   align: "UR",
+      //   ranksep: 100,
+      //   nodesep: 20,
+      //   controlPoints: true,
+      // });
 
-        graph.fromJSON(newModel);
-      } //if
+      if (lable_level === "上游") {
+        let stringUrl =
+          "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageColumnUp?table_name=" +
+          tablename +
+          "&col_name=" +
+          tablename;
+        axios({
+          method: "get",
+          url: stringUrl,
+        })
+          .then((res) => {
+            this.jsonERdata = res.data.data;
+
+            //     this.resdata.forEach((subitem, index) => {
+            //       this.node.push(GetDataGraph(subitem.s, subitem.t)[0]);
+            //       this.edge.push(GetDataGraph(subitem.s, subitem.t)[1]);
+            //     });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        let stringUrl =
+          "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageTableDown?table_name=" +
+          tablename;
+
+        axios({
+          method: "get",
+          url: stringUrl,
+        })
+          .then((res) => {
+            this.jsonERdata = res.data.data;
+            this.jsonERdata.forEach((res) => {
+              // let stab = res.src_db_nme + "." + res.src_tab_nme;
+              // let ttab = res.tar_db_nme + "." + res.tar_tab_nme;
+              let s = res.src_tab_nme;
+              let t = res.tar_tab_nme;
+              this.node.push(GetTabRectNode(s));
+              // this.node.push(GetTabRectNode(t));
+              // console.log(GetDataGraph(s, t));
+              // this.edge.push(GetDataGraph(subitem.s, subitem.t)[1]);
+              // this.edge.push(GetDataGraph(stab, ttab));
+            });
+            console.log("node", this.node);
+            this.alldata = this.node;
+            // console.log("alldata", this.alldata);
+            // this.alldata.edges = this.edge;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      // console.log("this.alldata", this.alldata);
+      // const newModel = dagreLayout.layout(this.alldata);
+      graphTab.createNode(this.alldata);
+      // graphTab.fromJSON(newModel);
     },
     recursiveColUP(res, graphCol) {
       let resEdge = {};
@@ -620,6 +763,157 @@ export default {
           });
       } //if
     },
+    init(Inputtable, dirc, level) {
+      this.alldata = {};
+      this.node = [];
+      this.edge = [];
+      this.jsondata = [];
+      this.graph = null;
+      this.newModel = {};
+      this.miniMapContainerTab = this.container;
+      // document.getElementById("container2").container = "";
+      // $("#container2").html("");
+      // document.body.removeChild(document.getElementById("container2"));
+      //调用公共方法,获取单个表的数据
+      // this.jsondata = require("../../public/data/base.json");
+      // let tablelable = "mdp_channel_salesperson_basic";
+      let stringUrl =
+        "http://10.30.64.240:8088/table/" + Inputtable.toLowerCase();
+      // axios({
+      //   method: "get",
+      //   url: stringUrl,
+      // })
+      //   .then((res) => {
+      //     // console.log("res", res.data);
+      //     this.jsondata = res.data;
+      //     if (res.data.length == 0) {
+      //       console.log("res.length", res.data.length);
+      //       // 查无表血缘
+      //       alert(`${Inputtable},该表无血缘关系`);
+      //     } //
+      //     else {
+      //       this.jsondata = res.data;
+      //       console.log("jsondata", this.jsondata);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+
+      // this.jsondata.forEach((item, index) => {
+      //   if (item.name === tablelable) {
+      //     this.resdata = item.value;
+      //     this.resdata.forEach((subitem, index) => {
+      //       this.node.push(GetDataGraph(subitem.s, subitem.t)[0]);
+      //       this.edge.push(GetDataGraph(subitem.s, subitem.t)[1]);
+      //     });
+      //   }
+      // });
+      // this.alldata.nodes = this.node;
+      // this.alldata.edges = this.edge;
+
+      // console.log("alldata", this.alldata);
+      // if (this.alldata.nodes.length != 0) {
+      //   const graph = new X6.Graph({
+      //     container: document.getElementById("container1"),
+      //     width: 4600,
+      //     height: 4600,
+      //     snapline: true,
+      //     background: {
+      //       color: "#ffffff",
+      //     },
+      //     grid: {
+      //       size: 10, // 网格大小 10px
+      //       visible: false, // 渲染网格背景
+      //     },
+      //     scroller: {
+      //       enabled: true,
+      //       pageVisible: true,
+      //       pageBreak: true,
+      //       pannable: true,
+      //     },
+      //   });
+      //   const dagreLayout = new DagreLayout({
+      //     type: "dagre",
+      //     rankdir: "LR",
+      //     align: "UR",
+      //     ranksep: 100,
+      //     nodesep: 20,
+      //     controlPoints: true,
+      //   });
+      //   const newModel = dagreLayout.layout(this.alldata);
+      //   graph.fromJSON(newModel);
+      // }
+
+      // console.log("url", stringUrl);
+      fetch(stringUrl, {
+        hearders: new Headers({
+          "Content-Type": "application/x-www-form-urlencoded",
+        }),
+      })
+        .then((res) => res.json())
+        .then((tables) => {
+          // console.log("res", tables);
+          if (dirc == "下游" && tables.length != 0) {
+            tables.down.forEach((item) => {
+              if (item.type <= level) {
+                // 装载指定层级内的数据
+                this.node.push(GetDataGraph(item.s, item.t)[0]);
+                this.edge.push(GetDataGraph(item.s, item.t)[1]);
+              }
+            });
+          } else {
+            tables.up.forEach((item) => {
+              if (item.type <= level) {
+                // 装载指定层级内的数据
+                this.node.push(GetDataGraph(item.t, item.s)[0]);
+                this.edge.push(GetDataGraph(item.s, item.t)[1]);
+              }
+            });
+          }
+
+          this.alldata.nodes = this.node;
+          this.alldata.edges = this.edge;
+          // console.log("alldata", this.alldata);
+          if (this.alldata.nodes.length != 0) {
+            this.miniMapContainerTab = this.$refs.miniMapContainerTab;
+            const graph = new X6.Graph({
+              container: document.getElementById("container1"),
+              width: 3000,
+              height: 3000,
+              snapline: true,
+              background: {
+                color: "#ffffff",
+              },
+              grid: {
+                size: 10, // 网格大小 10px
+                visible: false, // 渲染网格背景
+              },
+              scroller: {
+                enabled: true,
+                pageVisible: true,
+                pageBreak: true,
+                pannable: true,
+              },
+              minimap: {
+                enabled: true,
+                container: this.miniMapContainerTab,
+              },
+            });
+            const dagreLayout = new DagreLayout({
+              type: "dagre",
+              rankdir: "LR",
+              align: "UR",
+              ranksep: 100,
+              nodesep: 20,
+              controlPoints: true,
+            });
+            const newModel = dagreLayout.layout(this.alldata);
+            graph.fromJSON(newModel);
+            // graph.centerContent();
+          }
+        }); //fetch
+    }, //init
   },
 };
 </script>
