@@ -24,7 +24,7 @@
             </el-table-column>
             <el-table-column prop="source_type" label="资产分类" width="100">
             </el-table-column>
-            <el-table-column prop="md_rule" label="主数据/规则" width="580">
+            <el-table-column prop="md_rule" label="主数据/规则" width="680">
               <template #default="{ row }">
                 <span
                   v-if="row.md_rule"
@@ -1019,7 +1019,7 @@ export default {
 
 .box-card2 {
   font-size: 16px;
-  width: 580px;
+  width: 700px;
   background-color: lightsalmon;
 }
 

@@ -904,7 +904,7 @@ export default {
     },
     SearchIndicator() {
       let stringUrl =
-        "http://10.30.64.240:9988/Indicators/IndicatorsSearch?indicators_name_zn=" +
+        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsSearch?indicators_name_zn=" +
         this.inputSearch;
       axios({
         method: "get",
@@ -921,7 +921,7 @@ export default {
     },
     IndicatorDeleteByName(Indicators_name_zn) {
       let stringUrl =
-        "http://10.30.64.240:9988/Indicators/IndicatorsDeleteByname?indicators_name_zn=" +
+        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsDeleteByname?indicators_name_zn=" +
         Indicators_name_zn;
       axios({
         method: "get",
@@ -938,7 +938,7 @@ export default {
     IndicatorFormulasDeleteByName(terminology_id) {
       // console.log(terminology_id);
       let stringUrl =
-        "http://10.30.64.240:9988/Indicators/IndicatorFormulasDeleteByName?terminology_id=" +
+        "http://xx.xx.xx.xx:0000/Indicators/IndicatorFormulasDeleteByName?terminology_id=" +
         terminology_id;
       axios({
         method: "get",
@@ -954,7 +954,7 @@ export default {
     },
     formulasSearchIndicator() {
       let stringUrl =
-        "http://10.30.64.240:9988/Indicators/IndicatorsSearchFormulas?terminology=" +
+        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsSearchFormulas?terminology=" +
         this.formulas_inputSearch;
       axios({
         method: "get",
@@ -979,7 +979,7 @@ export default {
       // console.log("indicators_name_zn", indicators_name_zn);
       this.DailogIndicatorstitle = indicators_name_zn;
       let stringUrl =
-        "http://10.30.64.240:9988/Indicators/IndicatorsSearch?indicators_name_zn=" +
+        "http://xx.xx.xx.xx:0000/Indicators/IndicatorsSearch?indicators_name_zn=" +
         indicators_name_zn;
       axios({
         method: "get",
@@ -1047,7 +1047,7 @@ export default {
           this.dialogUpdateFotmVisible = false;
           axios({
             method: "post",
-            url: "http://10.30.64.240:9988/Indicators/IndicatorAddUpdate",
+            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAddUpdate",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1079,7 +1079,7 @@ export default {
           this.dialogAddFotmVisible = false;
           axios({
             method: "post",
-            url: "http://10.30.64.240:9988/Indicators/IndicatorAdd",
+            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAdd",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1115,7 +1115,7 @@ export default {
           this.dialogAddFotmVisibleFormulas = false;
           axios({
             method: "post",
-            url: "http://10.30.64.240:9988/Indicators/IndicatorAddFormulas",
+            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAddFormulas",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1144,7 +1144,7 @@ export default {
           this.dialogUpdateFotmVisibleFormulas = false;
           axios({
             method: "post",
-            url: "http://10.30.64.240:9988/Indicators/IndicatorUpdateFormulas",
+            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorUpdateFormulas",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1238,7 +1238,7 @@ export default {
           this.dialogAddJargon = false;
           axios({
             method: "post",
-            url: "http://10.30.64.240:9988/Indicators/IndicatorAddJargon",
+            url: "http://xx.xx.xx.xx:0000/Indicators/IndicatorAddJargon",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1262,7 +1262,7 @@ export default {
     },
     SearchJargon() {
       let stringUrl =
-        "http://10.30.64.240:9988/Indicators/JargonSearchAll?jargon=" +
+        "http://xx.xx.xx.xx:0000/Indicators/JargonSearchAll?jargon=" +
         this.Jargon_inputSearch;
       axios({
         method: "get",

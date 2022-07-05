@@ -287,8 +287,8 @@ export default {
       // .then((data) => {
       //   console.log("data:",data);
 
-      let resTablejson = require("../public/data/abc.json");
-      console.log("resTablejson:", resTablejson);
+      // let resTablejson = require("../public/data/abc.json");
+      // console.log("resTablejson:", resTablejson);
 
       const container = document.getElementById("c4");
       const s2DataConfig = {
