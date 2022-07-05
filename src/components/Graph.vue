@@ -798,7 +798,7 @@ export default {
       this.newModel = {};
       this.miniMapContainerTab = this.container;
       let stringUrl =
-        "http://10.30.64.240:8088/table/" + Inputtable.toLowerCase();
+        "http://xx.xx.xx.xx:8088/table/" + Inputtable.toLowerCase();
 
       fetch(stringUrl, {
         hearders: new Headers({
