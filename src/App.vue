@@ -13,7 +13,7 @@
       <router-link class="navItem" to="/Indicatorss">数据指标</router-link>
       <router-link class="navItem" to="/DataDictionary">数据治理</router-link>
       <router-link class="navItem" to="/Test">alg平台</router-link>
-      <router-link class="navItem" to="/DataLineage">数据血缘</router-link>
+      <!-- <router-link class="navItem" to="/DataLineage">数据血缘</router-link> -->
       <router-link class="navItem" to="/Abcc">运维监控</router-link>
       <router-link class="navItem" to="/Graph">Flink流平台</router-link>
       <router-link class="navItem" to="/RealTimeScreen">实时大屏</router-link>
