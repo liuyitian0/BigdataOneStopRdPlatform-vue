@@ -68,7 +68,7 @@
               <el-input
                 v-model="inputSearch"
                 placeholder="请输入数仓表名..."
-                style="width: 520px"
+                style="width: 510px"
               >
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
@@ -99,34 +99,70 @@
                 >
               </div>
             </div>
+            <div class="dw-btn4">
+              <el-input
+                v-model="inputSearch_tablename"
+                placeholder="表名...(模糊匹配)"
+                style="margin-left: 8px; width: 350px"
+              >
+              </el-input>
+              <div>
+                <el-button
+                  type="primary"
+                  @click="searchtableByNameZS()"
+                  style="margin-left: 12px"
+                  >按表名</el-button
+                >
+                <el-checkbox
+                  v-model="checked3"
+                  label="精准匹配"
+                  size="mini"
+                ></el-checkbox>
+              </div>
+            </div>
+
             <div class="dw-btn2">
               <el-input
                 v-model="inputSearch_field_mean"
                 placeholder="字段含义...(模糊匹配)"
-                style="margin-left: 4px; width: 300px"
+                style="margin-left: 8px; width: 350px"
               >
               </el-input>
-              <el-button
-                type="primary"
-                @click="searchtableByFieldMean()"
-                style="margin-left: 12px"
-                >按字段含义查询</el-button
-              >
+              <div class="dw-btn2-group">
+                <el-button
+                  type="primary"
+                  @click="searchtableByFieldMean()"
+                  style="margin-left: 12px"
+                  >按字段含义查询</el-button
+                >
+                <el-checkbox
+                  v-model="checked1"
+                  label="精准匹配"
+                  size="mini"
+                ></el-checkbox>
+              </div>
             </div>
 
             <div class="dw-btn3">
               <el-input
                 v-model="inputSearch_field"
                 placeholder="字段...(模糊匹配)"
-                style="margin-left: 4px; width: 300px"
+                style="margin-left: 8px; width: 350px"
               >
               </el-input>
-              <el-button
-                type="primary"
-                @click="searchtableByField()"
-                style="margin-left: 12px"
-                >按字段查询</el-button
-              >
+              <div>
+                <el-button
+                  type="primary"
+                  @click="searchtableByField()"
+                  style="margin-left: 12px"
+                  >按字段查询</el-button
+                >
+                <el-checkbox
+                  v-model="checked2"
+                  label="精准匹配"
+                  size="mini"
+                ></el-checkbox>
+              </div>
             </div>
           </div>
 
@@ -670,6 +706,7 @@ export default {
       inputSearch: "",
       inputSearch_field_mean: "",
       inputSearch_field: "",
+      inputSearch_tablename: "",
       MdinputSearch: "",
       MdinputSearchSub: "",
       MdinputSearchSubMean: "",
@@ -907,6 +944,9 @@ export default {
       levelcnt: 3,
 
       miniMapContainerTab: null,
+      checked1: false,
+      checked2: false,
+      checked3: false,
     };
   },
 
@@ -1683,11 +1723,18 @@ export default {
       } // if
     },
     searchtableByFieldMean() {
-      let stringUrl =
-        "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledMean?column_mean=" +
-        this.inputSearch_field_mean;
-      console.log("option", stringUrl);
-
+      let stringUrl = "";
+      if (this.checked1 === true) {
+        // console.log("checked1被选中");
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledMean?column_mean=" +
+          this.inputSearch_field_mean;
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledMeanLike?column_mean=" +
+          this.inputSearch_field_mean;
+      }
+      // console.log(stringUrl);
       axios({
         method: "get",
         url: stringUrl,
@@ -1701,9 +1748,65 @@ export default {
         });
     },
     searchtableByField() {
-      let stringUrl =
-        "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledName?column_name=" +
-        this.inputSearch_field;
+      let stringUrl = "";
+      if (this.checked2 === true) {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledName?column_name=" +
+          this.inputSearch_field;
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledNameLike?column_name=" +
+          this.inputSearch_field;
+      }
+
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.DataDictableDataDetail = res.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    searchtableByName() {
+      let stringUrl = "";
+      if (this.checked3 === true) {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledName?column_name=" +
+          this.inputSearch_field;
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledNameLike?column_name=" +
+          this.inputSearch_field;
+      }
+
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.DataDictableDataDetail = res.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    searchtableByNameZS() {
+      let stringUrl = "";
+      if (this.checked3 === true) {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledNameLikeZs?table_comment=" +
+          this.inputSearch_tablename;
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledNameLikeZs?table_comment=" +
+          this.inputSearch_tablename;
+      }
+      console.log(stringUrl);
       axios({
         method: "get",
         url: stringUrl,
@@ -1865,7 +1968,26 @@ export default {
 .dw-btn2 {
   margin-left: 10px;
   margin-bottom: 2px;
-  width: 480px;
+  width: 450px;
+  border-radius: 4px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
+  /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); */
+  text-align: center;
+  border: 1.5px ridge azure;
+  /* background-color: azure; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .dw-btn2-group {
+  background-color: blanchedalmond;
+} */
+
+.dw-btn3 {
+  margin-left: 10px;
+  margin-bottom: 2px;
+  width: 400px;
   border-radius: 4px;
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
   /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); */
@@ -1877,10 +1999,10 @@ export default {
   align-items: center;
 }
 
-.dw-btn3 {
+.dw-btn4 {
   margin-left: 10px;
   margin-bottom: 2px;
-  width: 450px;
+  width: 400px;
   border-radius: 4px;
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
   /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); */
