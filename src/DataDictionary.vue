@@ -63,43 +63,77 @@
 
       <el-tab-pane label="数仓字典">
         <el-row class="el-row">
-          <div class="btn1">
-            <el-input
-              v-model="inputSearch"
-              placeholder="请输入数仓表名..."
-              style="width: 750px"
-            >
-              <i slot="prefix" class="el-input__icon el-icon-search"></i>
-            </el-input>
-
-            <template>
-              <el-select
-                ref="SelectDB"
-                v-model="value"
-                placeholder="请选择数仓库..."
-                style="margin-left: 20px; width: 188px"
+          <div class="btn">
+            <div class="dw-btn1">
+              <el-input
+                v-model="inputSearch"
+                placeholder="请输入数仓表名..."
+                style="width: 520px"
               >
-                <el-option
-                  v-for="item in SelectOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </template>
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
 
-            <el-button
-              type="primary"
-              style="margin-left: 20px"
-              @click="searchtable()"
-              >查询数仓表</el-button
-            >
+              <div class="dw-btn1-1">
+                <template>
+                  <el-select
+                    ref="SelectDB"
+                    v-model="value"
+                    placeholder="选择库..."
+                    style="padding-left: 0px; width: 65%"
+                  >
+                    <el-option
+                      v-for="item in SelectOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </template>
+
+                <el-button
+                  type="primary"
+                  style="margin-left: 20px"
+                  @click="searchtable()"
+                  >查询数仓表</el-button
+                >
+              </div>
+            </div>
+            <div class="dw-btn2">
+              <el-input
+                v-model="inputSearch_field_mean"
+                placeholder="字段含义...(模糊匹配)"
+                style="margin-left: 4px; width: 300px"
+              >
+              </el-input>
+              <el-button
+                type="primary"
+                @click="searchtableByFieldMean()"
+                style="margin-left: 12px"
+                >按字段含义查询</el-button
+              >
+            </div>
+
+            <div class="dw-btn3">
+              <el-input
+                v-model="inputSearch_field"
+                placeholder="字段...(模糊匹配)"
+                style="margin-left: 4px; width: 300px"
+              >
+              </el-input>
+              <el-button
+                type="primary"
+                @click="searchtableByField()"
+                style="margin-left: 12px"
+                >按字段查询</el-button
+              >
+            </div>
           </div>
+
           <el-table :data="DataDictableDataDetail">
             <el-table-column label="表名" width="350">
               <template slot-scope="dataDicResScope">
-                <span
+                <!-- <span
                   style="
                     margin-left: 10px;
                     font-size: 16px;
@@ -107,8 +141,8 @@
                     text-decoration: underline;
                     color: #008fd4;
                   "
-                  >{{ dataDicResScope.row.table_name }}</span
-                >
+                  >{{ dataDicResScope.row.table_name }}</span> -->
+                {{ dataDicResScope.row.table_name }}
               </template>
             </el-table-column>
 
@@ -634,6 +668,8 @@ export default {
     return {
       activeName: 0,
       inputSearch: "",
+      inputSearch_field_mean: "",
+      inputSearch_field: "",
       MdinputSearch: "",
       MdinputSearchSub: "",
       MdinputSearchSubMean: "",
@@ -932,7 +968,7 @@ export default {
     },
     searchtable() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/DataMiddleOffice/DataDicSearchTable?table_name=" +
+        "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTable?table_name=" +
         this.inputSearch +
         "&db_name=" +
         this.$refs.SelectDB.selected.label;
@@ -951,7 +987,7 @@ export default {
     },
     DsgSearchTable() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/DataMiddleOffice/DsgSearchTableDetail?table_name=" +
+        "http://10.30.64.240:9988/DataMiddleOffice/DsgSearchTableDetail?table_name=" +
         this.DsginputSearch;
       axios({
         method: "get",
@@ -966,7 +1002,7 @@ export default {
         });
     },
     ScrollLoad() {
-      let stringUrl = "http://xx.xx.xx.xx:0000/DataMiddleOffice/MdmTypeList";
+      let stringUrl = "http://10.30.64.240:9988/DataMiddleOffice/MdmTypeList";
       axios({
         method: "get",
         url: stringUrl,
@@ -993,7 +1029,7 @@ export default {
     },
     MdSearchParentCde() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/DataMiddleOffice/MdSearchParentCde?md_parent_cde=" +
+        "http://10.30.64.240:9988/DataMiddleOffice/MdSearchParentCde?md_parent_cde=" +
         this.MdinputSearch;
       axios({
         method: "get",
@@ -1009,7 +1045,7 @@ export default {
     },
     MdSearchSubCde() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/DataMiddleOffice/MdSearchSubCde?md_sub_cde=" +
+        "http://10.30.64.240:9988/DataMiddleOffice/MdSearchSubCde?md_sub_cde=" +
         this.MdinputSearchSub;
       axios({
         method: "get",
@@ -1025,7 +1061,7 @@ export default {
     },
     MdSearchSubCdeMean() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/DataMiddleOffice/MdinputSearchSubMean?md_sub_nme=" +
+        "http://10.30.64.240:9988/DataMiddleOffice/MdinputSearchSubMean?md_sub_nme=" +
         this.MdinputSearchSubMean;
       axios({
         method: "get",
@@ -1041,7 +1077,7 @@ export default {
     },
     MdSearchMdMean() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/DataMiddleOffice/MdSearchMdMean?md_parent_nme=" +
+        "http://10.30.64.240:9988/DataMiddleOffice/MdSearchMdMean?md_parent_nme=" +
         this.MdinputSearchMdMean;
       axios({
         method: "get",
@@ -1067,7 +1103,7 @@ export default {
           this.dialogAddMdSubCde = false;
           axios({
             method: "post",
-            url: "http://xx.xx.xx.xx:0000//DataMiddleOffice/MdAddSubCode",
+            url: "http://10.30.64.240:9988//DataMiddleOffice/MdAddSubCode",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1099,7 +1135,7 @@ export default {
           this.dialogAddMd = false;
           axios({
             method: "post",
-            url: "http://xx.xx.xx.xx:0000//DataMiddleOffice/MdAddMd",
+            url: "http://10.30.64.240:9988//DataMiddleOffice/MdAddMd",
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -1127,7 +1163,7 @@ export default {
     },
     loadAllAssets() {
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/DataMiddleOffice/ListingOfAllAssets";
+        "http://10.30.64.240:9988/DataMiddleOffice/ListingOfAllAssets";
       axios({
         method: "get",
         url: stringUrl,
@@ -1156,7 +1192,7 @@ export default {
       this.newModel = {};
       this.miniMapContainerTab = this.container;
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/table/" + Inputtable.toLowerCase();
+        "http://10.30.64.240:8088/table/" + Inputtable.toLowerCase();
 
       fetch(stringUrl, {
         hearders: new Headers({
@@ -1375,7 +1411,7 @@ export default {
 
       if (selectlabel === "上游一层") {
         let stringUrl =
-          "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageColumnUp?table_name=" +
+          "http://10.30.64.240:9988/DataMiddleOffice/LineageColumnUp?table_name=" +
           tab +
           "&col_name=" +
           col;
@@ -1397,7 +1433,7 @@ export default {
           });
       } else {
         let stringUrl =
-          "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageColumnDown?table_name=" +
+          "http://10.30.64.240:9988/DataMiddleOffice/LineageColumnDown?table_name=" +
           tab +
           "&col_name=" +
           col;
@@ -1646,6 +1682,40 @@ export default {
         this.all_col_edges.push(resEdge);
       } // if
     },
+    searchtableByFieldMean() {
+      let stringUrl =
+        "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledMean?column_mean=" +
+        this.inputSearch_field_mean;
+      console.log("option", stringUrl);
+
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.DataDictableDataDetail = res.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    searchtableByField() {
+      let stringUrl =
+        "http://10.30.64.240:9988/DataMiddleOffice/DataDicSearchTableByFiledName?column_name=" +
+        this.inputSearch_field;
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.DataDictableDataDetail = res.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   mounted() {
     this.loadAllAssets();
@@ -1768,5 +1838,57 @@ export default {
   width: 150px;
   height: 36px;
   border-radius: 10px;
+}
+
+.btn {
+  display: flex;
+  height: 110px;
+}
+.dw-btn1 {
+  margin: 2px 0 0 5px;
+  padding-top: 6px;
+  width: 530px;
+  border-radius: 4px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
+  /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); */
+  text-align: center;
+  border: 1.5px ridge azure;
+  /* background-color: azure; */
+}
+
+.dw-btn1-1 {
+  width: 100%;
+  display: flex;
+  margin-top: 6px;
+}
+
+.dw-btn2 {
+  margin-left: 10px;
+  margin-bottom: 2px;
+  width: 480px;
+  border-radius: 4px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
+  /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); */
+  text-align: center;
+  border: 1.5px ridge azure;
+  /* background-color: azure; */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dw-btn3 {
+  margin-left: 10px;
+  margin-bottom: 2px;
+  width: 450px;
+  border-radius: 4px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
+  /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); */
+  text-align: center;
+  border: 1.5px ridge azure;
+  /* background-color: azure; */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

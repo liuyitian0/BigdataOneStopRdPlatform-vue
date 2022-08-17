@@ -323,7 +323,7 @@ export default {
 
     //   if (lable_level === "上游") {
     //     let stringUrl =
-    //       "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageColumnUp?table_name=" +
+    //       "http://10.30.64.240:9988/DataMiddleOffice/LineageColumnUp?table_name=" +
     //       tablename +
     //       "&col_name=" +
     //       tablename;
@@ -344,7 +344,7 @@ export default {
     //       });
     //   } else {
     //     let stringUrl =
-    //       "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageTableDown?table_name=" +
+    //       "http://10.30.64.240:9988/DataMiddleOffice/LineageTableDown?table_name=" +
     //       tablename;
 
     //     axios({
@@ -724,9 +724,9 @@ export default {
         true
       );
 
-      if (selectlabel === "上游") {
+      if (selectlabel === "上游一层") {
         let stringUrl =
-          "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageColumnUp?table_name=" +
+          "http://10.30.64.240:9988/DataMiddleOffice/LineageColumnUp?table_name=" +
           tab +
           "&col_name=" +
           col;
@@ -748,7 +748,7 @@ export default {
           });
       } else {
         let stringUrl =
-          "http://xx.xx.xx.xx:0000/DataMiddleOffice/LineageColumnDown?table_name=" +
+          "http://10.30.64.240:9988/DataMiddleOffice/LineageColumnDown?table_name=" +
           tab +
           "&col_name=" +
           col;
@@ -798,7 +798,7 @@ export default {
       this.newModel = {};
       this.miniMapContainerTab = this.container;
       let stringUrl =
-        "http://xx.xx.xx.xx:0000/table/" + Inputtable.toLowerCase();
+        "http://10.30.64.240:8088/table/" + Inputtable.toLowerCase();
 
       fetch(stringUrl, {
         hearders: new Headers({

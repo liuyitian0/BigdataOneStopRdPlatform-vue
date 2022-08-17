@@ -10,7 +10,7 @@
         <el-link
           class="href1"
           type="primary"
-          href="http://xx.xx.xx.xx:0000/dolphinscheduler/ui/#/home"
+          href="http://10.30.64.240:12345/dolphinscheduler/ui/#/home"
           >进入调度系统</el-link
         >
       </div>
@@ -36,7 +36,7 @@
         <div id="c10">
           <el-link
             type="primary"
-            href="http://xx.xx.xx.xx:0000/dolphinscheduler/ui/#/home"
+            href="http://10.30.64.240:12345/dolphinscheduler/ui/#/home"
             >进入调度系统</el-link
           >
         </div>

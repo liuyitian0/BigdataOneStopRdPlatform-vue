@@ -10,6 +10,7 @@ import DataServices from './DataServices.vue';
 import Indicators from './Indicators.vue';
 import RealTimeScreen from './RealTimeScreen.vue';
 import DataDictionary from './DataDictionary.vue';
+import DataSync from './DataSync.vue';
 
 Vue.use(Router);
 
@@ -69,6 +70,12 @@ export default new Router({
       name: 'DataDictionary',
       component: DataDictionary,
     },
+    {
+      path: '/DataSync',
+      name: 'DataSync',
+      component: DataSync,
+    },
+
 
   ],
 });

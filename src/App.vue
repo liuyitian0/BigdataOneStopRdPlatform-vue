@@ -7,14 +7,14 @@
         >IDE</router-link
       >
       <router-link class="navItem" to="/scheduler">调度中心</router-link>
-      <router-link class="navItem" to="/index">数据交换</router-link>
+      <router-link class="navItem" to="/DataSync">数据同步</router-link>
       <router-link class="navItem" to="/DataServices">数据服务</router-link>
       <router-link class="navItem" to="/index">数据权限</router-link>
       <router-link class="navItem" to="/Indicatorss">数据指标</router-link>
       <router-link class="navItem" to="/DataDictionary">数据治理</router-link>
       <router-link class="navItem" to="/Test">alg平台</router-link>
       <!-- <router-link class="navItem" to="/DataLineage">数据血缘</router-link> -->
-      <router-link class="navItem" to="/Abcc">运维监控</router-link>
+      <router-link class="navItem" to="/magic-editor">运维监控</router-link>
       <router-link class="navItem" to="/Graph">Flink流平台</router-link>
       <router-link class="navItem" to="/RealTimeScreen">实时大屏</router-link>
       <el-dropdown>
