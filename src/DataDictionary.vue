@@ -102,7 +102,7 @@
             <div class="dw-btn4">
               <el-input
                 v-model="inputSearch_tablename"
-                placeholder="表名...(模糊匹配)"
+                placeholder="表含义...(模糊匹配)"
                 style="margin-left: 8px; width: 350px"
               >
               </el-input>
@@ -111,7 +111,7 @@
                   type="primary"
                   @click="searchtableByNameZS()"
                   style="margin-left: 12px"
-                  >按表名</el-button
+                  >按表含义</el-button
                 >
                 <el-checkbox
                   v-model="checked3"
