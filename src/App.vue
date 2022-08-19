@@ -8,15 +8,19 @@
       >
       <router-link class="navItem" to="/scheduler">调度中心</router-link>
       <router-link class="navItem" to="/DataSync">数据同步</router-link>
-      <router-link class="navItem" to="/DataServices">数据服务</router-link>
+      <!-- <router-link class="navItem" to="/DataServices">数据服务</router-link>
       <router-link class="navItem" to="/index">数据权限</router-link>
-      <router-link class="navItem" to="/Indicatorss">数据指标</router-link>
+      <router-link class="navItem" to="/Indicatorss">数据指标</router-link> -->
       <router-link class="navItem" to="/DataDictionary">数据治理</router-link>
-      <router-link class="navItem" to="/Test">alg平台</router-link>
+      <router-link class="navItem" to="/DataMap">数据地图</router-link>
+      <router-link class="navItem" to="/DataAssetHologram"
+        >数据资产全息图</router-link
+      >
+      <!-- <router-link class="navItem" to="/Test">alg平台</router-link> -->
       <!-- <router-link class="navItem" to="/DataLineage">数据血缘</router-link> -->
-      <router-link class="navItem" to="/magic-editor">运维监控</router-link>
+      <!-- <router-link class="navItem" to="/magic-editor">运维监控</router-link>
       <router-link class="navItem" to="/Graph">Flink流平台</router-link>
-      <router-link class="navItem" to="/RealTimeScreen">实时大屏</router-link>
+      <router-link class="navItem" to="/RealTimeScreen">实时大屏</router-link> -->
       <el-dropdown>
         <span class="el-dropdown-link">
           更多<i class="el-icon-arrow-down el-icon--right"></i>

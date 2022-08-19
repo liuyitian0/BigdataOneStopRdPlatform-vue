@@ -11,6 +11,8 @@ import Indicators from './Indicators.vue';
 import RealTimeScreen from './RealTimeScreen.vue';
 import DataDictionary from './DataDictionary.vue';
 import DataSync from './DataSync.vue';
+import DataMap from './DataMap.vue';
+import DataAssetHologram from './DataAssetHologram.vue';
 
 Vue.use(Router);
 
@@ -75,7 +77,16 @@ export default new Router({
       name: 'DataSync',
       component: DataSync,
     },
-
+    {
+      path: '/DataMap',
+      name: 'DataMap',
+      component: DataMap,
+    },
+    {
+      path: '/DataAssetHologram',
+      name: 'DataAssetHologram',
+      component: DataAssetHologram,
+    },
 
   ],
 });
