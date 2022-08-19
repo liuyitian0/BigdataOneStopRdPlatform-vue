@@ -9,7 +9,24 @@
 
     <div class="content">
       <div class="content-1">content-left</div>
-      <div class="content-2">content-mid</div>
+      <div class="content-2">
+        <div class="dw-arc">
+          <div class="ck">CK</div>
+          <div class="doris">Doris</div>
+        </div>
+        <div class="dw-all">
+          <div class="dw-lvl">
+            <div class="dw-left">
+              <div class="mdp">Mdp</div>
+              <div class="dw">Dw</div>
+              <div class="dcl">Dcl</div>
+              <div class="ods">Ods</div>
+            </div>
+            <div class="dw-right">Dim</div>
+          </div>
+          <div class="dw-bottom">Oracle</div>
+        </div>
+      </div>
       <div class="content-3">content-right</div>
     </div>
   </div>
@@ -123,5 +140,108 @@ export default {
   border: 0.1px ridge rgb(6, 7, 7);
   /* border: 1.5px ridge rgb(6, 6, 7);
   background-color: rgb(227, 234, 248); */
+}
+
+.dw-arc {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  /* background-color: aquamarine; */
+}
+
+.ck {
+  width: 50%;
+  margin: 5px 5px 5px 5px;
+  background-color: rgb(132, 219, 51);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+.doris {
+  width: 50%;
+  margin: 5px 5px 5px 0;
+  background-color: rgb(100, 211, 36);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.dw-lvl {
+  width: 100%;
+  height: 270px;
+  display: flex;
+  /* background-color: darkgray; */
+}
+
+.dw-left {
+  width: 65%;
+}
+
+.dw-right {
+  width: 35%;
+  background-color: rgb(226, 152, 68);
+  height: 255px;
+  margin: 5px 5px 0 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.mdp {
+  width: 95%;
+  height: 60px;
+  margin: 5px 5px 5px 5px;
+  background-color: rgb(235, 232, 57);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.dw {
+  width: 95%;
+  height: 60px;
+  margin: 5px 5px 5px 5px;
+  background-color: rgb(81, 70, 238);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.dcl {
+  width: 95%;
+  height: 60px;
+  margin: 5px 5px 5px 5px;
+  background-color: rgb(228, 146, 23);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.ods {
+  width: 95%;
+  height: 60px;
+  margin: 5px 5px 5px 5px;
+  background-color: rgb(28, 98, 131);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.dw-bottom {
+  width: 99%;
+  height: 55px;
+  margin: 0 5px 5px 5px;
+  background-color: rgb(112, 112, 235);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 </style>
