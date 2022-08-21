@@ -8,26 +8,38 @@
     </div>
 
     <div class="content">
-      <div class="content-1">content-left</div>
+      <div class="content-1">标签</div>
       <div class="content-2">
         <div class="dw-arc">
-          <div class="ck">CK</div>
-          <div class="doris">Doris</div>
+          <div class="ck">CK:{{ CKCnt }} 表</div>
+          <div class="doris">Doris:{{ DorisCnt }}表</div>
         </div>
         <div class="dw-all">
           <div class="dw-lvl">
             <div class="dw-left">
-              <div class="mdp">Mdp</div>
-              <div class="dw">Dw</div>
-              <div class="dcl">Dcl</div>
-              <div class="ods">Ods</div>
+              <div class="mdp">Mdp: {{ MdpCnt }}表</div>
+              <div class="dw">Dw: {{ DwCnt }}表</div>
+              <div class="dcl">Dcl:{{ DclCnt }}表</div>
+              <div class="ods">Ods:{{ OdsCnt }}表</div>
             </div>
-            <div class="dw-right">Dim</div>
+            <div class="dw-right">Dim:{{ DimCnt }}表</div>
           </div>
-          <div class="dw-bottom">Oracle</div>
+          <div class="dw-bottom">Oracle:{{ OracleCnt }}表</div>
         </div>
       </div>
-      <div class="content-3">content-right</div>
+      <div class="content-3">
+        指标
+        <div id="indicators_id"></div>
+        <!-- <div class="dw-all">
+          <div class="dw-lvl">
+            <div class="dw-left">
+              <div class="mdp">Mdp: {{ MdpCnt }}表</div>
+            </div>
+            <div class="dw-right">Dim:{{ DimCnt }}表</div>
+          </div>
+          <div class="dw-bottom">Oracle:{{ OracleCnt }}表</div>
+        </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -35,8 +47,87 @@
 
 <script>
 export default {
-  data() {},
-  methods: {},
+  data() {
+    return {
+      CKCnt: 78,
+      DorisCnt: 24,
+      MdpCnt: 455,
+      DwCnt: 578,
+      DclCnt: 578,
+      OdsCnt: 578,
+      OracleCnt: 578,
+      DimCnt: 89,
+      resTablejson: Promise,
+    };
+  },
+  methods: {
+    indicators() {
+      const chartdata = [
+        { item: "经营分析类", count: 40, percent: 0.4 },
+        { item: "客服考核类", count: 21, percent: 0.21 },
+        { item: "核心指标类", count: 17, percent: 0.17 },
+        { item: "派生指标类", count: 13, percent: 0.13 },
+        { item: "综合成本类", count: 9, percent: 0.09 },
+      ];
+
+      const chart = new G2.Chart({
+        container: "indicators_id",
+        autoFit: true,
+        height: 385,
+      });
+
+      chart.data(chartdata);
+
+      chart.coordinate("theta", {
+        radius: 0.85,
+      });
+
+      chart.scale("percent", {
+        formatter: (val) => {
+          val = val * 100 + "%";
+          return val;
+        },
+      });
+      chart.tooltip({
+        showTitle: false,
+        showMarkers: false,
+      });
+      chart.axis(false); // 关闭坐标轴
+      const interval = chart
+        .interval()
+        .adjust("stack")
+        .position("percent")
+        .color("item")
+        .label("percent", {
+          offset: -40,
+          style: {
+            textAlign: "center",
+            shadowBlur: 2,
+            shadowColor: "rgba(0, 0, 0, .45)",
+            fill: "#fff",
+          },
+        })
+        .tooltip("item*percent", (item, percent) => {
+          percent = percent * 100 + "%";
+          return {
+            name: item,
+            value: percent,
+          };
+        })
+        .style({
+          lineWidth: 1,
+          stroke: "#fff",
+        });
+      chart.interaction("element-single-selected");
+      chart.render();
+
+      // 默认选择
+      // interval.elements[0].setState('selected', true);
+    },
+  },
+  mounted() {
+    this.indicators();
+  },
 };
 </script>
 
@@ -123,21 +214,21 @@ export default {
   height: 410px;
   border-radius: 0px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-  border: 0.1px ridge rgb(6, 7, 7);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
+  /* border: 0.1px ridge rgb(6, 7, 7); */
   /* border: 1.5px ridge rgb(6, 6, 7);
   background-color: rgb(227, 234, 248); */
 }
 
 .content-3 {
   margin: 20px 0 0 25px;
-  padding-top: 6px;
+  padding-top: 0px;
   width: 530px;
   height: 410px;
   border-radius: 0px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-  border: 0.1px ridge rgb(6, 7, 7);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); */
+  /* border: 0.1px ridge rgb(6, 7, 7); */
   /* border: 1.5px ridge rgb(6, 6, 7);
   background-color: rgb(227, 234, 248); */
 }
