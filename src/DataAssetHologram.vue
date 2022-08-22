@@ -11,34 +11,25 @@
       <div class="content-1">标签</div>
       <div class="content-2">
         <div class="dw-arc">
-          <div class="ck">CK:{{ CKCnt }} 表</div>
-          <div class="doris">Doris:{{ DorisCnt }}表</div>
+          <div class="ck">ClickHouse:{{ CKCnt }} 张表</div>
+          <div class="doris">Doris:{{ DorisCnt }}张表</div>
         </div>
         <div class="dw-all">
           <div class="dw-lvl">
             <div class="dw-left">
-              <div class="mdp">Mdp: {{ MdpCnt }}表</div>
-              <div class="dw">Dw: {{ DwCnt }}表</div>
-              <div class="dcl">Dcl:{{ DclCnt }}表</div>
-              <div class="ods">Ods:{{ OdsCnt }}表</div>
+              <div class="mdp">Mdp: {{ MdpCnt }}张表</div>
+              <div class="dw">Dw: {{ DwCnt }}张表</div>
+              <div class="dcl">Dcl:{{ DclCnt }}张表</div>
+              <div class="ods">Ods:{{ OdsCnt }}张表</div>
             </div>
-            <div class="dw-right">Dim:{{ DimCnt }}表</div>
+            <div class="dw-right">Dim:{{ DimCnt }}张表</div>
           </div>
-          <div class="dw-bottom">Oracle:{{ OracleCnt }}表</div>
+          <div class="dw-bottom">Oracle:{{ OracleCnt }}张表</div>
         </div>
       </div>
       <div class="content-3">
         指标
         <div id="indicators_id"></div>
-        <!-- <div class="dw-all">
-          <div class="dw-lvl">
-            <div class="dw-left">
-              <div class="mdp">Mdp: {{ MdpCnt }}表</div>
-            </div>
-            <div class="dw-right">Dim:{{ DimCnt }}表</div>
-          </div>
-          <div class="dw-bottom">Oracle:{{ OracleCnt }}表</div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -247,7 +238,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .doris {
   width: 50%;
@@ -256,7 +247,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .dw-lvl {
@@ -278,7 +269,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .mdp {
@@ -289,7 +280,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .dw {
@@ -300,7 +291,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .dcl {
@@ -311,7 +302,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .ods {
@@ -322,7 +313,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .dw-bottom {
@@ -333,6 +324,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>
