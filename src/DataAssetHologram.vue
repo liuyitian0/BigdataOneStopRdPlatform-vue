@@ -37,17 +37,19 @@
 
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      CKCnt: 78,
-      DorisCnt: 24,
-      MdpCnt: 455,
-      DwCnt: 578,
-      DclCnt: 578,
-      OdsCnt: 578,
-      OracleCnt: 578,
-      DimCnt: 89,
+      CKCnt: 0,
+      DorisCnt: 0,
+      MdpCnt: 0,
+      DwCnt: 0,
+      DclCnt: 0,
+      OdsCnt: 0,
+      OracleCnt: 0,
+      DimCnt: 0,
       resTablejson: Promise,
     };
   },
@@ -115,9 +117,36 @@ export default {
       // 默认选择
       // interval.elements[0].setState('selected', true);
     },
+    GetDataAssetHologramDwLvlTableCnt() {
+      let stringUrl =
+        "http://10.30.64.240:9988/DataMiddleOffice/DataAssetHologramDwLvlTableTotal";
+
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          let resdw = res.data.data;
+          resdw.forEach((item) => {
+            console.log(item);
+            if (item["dw_lvl"] == "dw") this.DwCnt = item["tab_cnt"];
+            if (item["dw_lvl"] == "mdp") this.MdpCnt = item["tab_cnt"];
+            if (item["dw_lvl"] == "dcl") this.DclCnt = item["tab_cnt"];
+            if (item["dw_lvl"] == "ods") this.OdsCnt = item["tab_cnt"];
+            if (item["dw_lvl"] == "dim") this.DimCnt = item["tab_cnt"];
+            if (item["dw_lvl"] == "ck") this.CKCnt = item["tab_cnt"];
+            if (item["dw_lvl"] == "doris") this.DorisCnt = item["tab_cnt"];
+            if (item["dw_lvl"] == "oracle") this.OracleCnt = item["tab_cnt"];
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   mounted() {
     this.indicators();
+    this.GetDataAssetHologramDwLvlTableCnt();
   },
 };
 </script>

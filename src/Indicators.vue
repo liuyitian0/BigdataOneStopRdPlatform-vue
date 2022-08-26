@@ -439,21 +439,7 @@
             </template>
           </el-table-column>
         </el-table>
-
-        <!-- <div>
-          签单: <br /><br />
-          期初/期末/期间: <br /><br />
-          满期保费: <br /><br />
-          未满期保费: <br /><br />
-          再保:<br /><br />
-          共保:
-          一般的保单的话，保险公司会和可会签订一个合同，共保是指多个保险公司,一起去承保一张保单，这样的话，会有一个主共从共之分发生共保业务的原因，一般情况下是因为保单的风险过高，如果，我司收到的保单。我司因为风险问题，把这张保单共保出去，我司无论占共保比例是多是少，我司都是主供方，其他公司是从共方，其他保险公司拿到的单子，分给我司的话，我司就是从共方
-          <br /><br />
-          本币/原币: <br /><br />
-          含税/不含税: <br /><br />
-        </div> -->
       </el-tab-pane>
-
       <el-tab-pane label="指标公式" style="color: #008fd4">
         <div class="btn2">
           <el-input
@@ -665,6 +651,425 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
+
+      <el-tab-pane label="提数管理" style="color: #008fd4">
+        <div>
+          <el-dialog
+            title="新增提数"
+            :visible.sync="dialogPickDataVisibleFormulas"
+          >
+            <el-form
+              :model="FormPickData"
+              :rules="rulesPickData"
+              ref="FormPickData"
+              label-width="200px"
+              class="demo-ruleFormPickData"
+            >
+              <el-form-item label="提数标题" prop="pickdata_title">
+                <el-input v-model="FormPickData.pickdata_title"></el-input>
+              </el-form-item>
+
+              <el-form-item label="需求内容" prop="pickdata_content">
+                <el-input
+                  type="textarea"
+                  :rows="10"
+                  autosize
+                  v-model="FormPickData.pickdata_content"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item
+                label="提取的指标(度量/统计口径)"
+                prop="pickdata_indicators"
+              >
+                <el-input
+                  type="textarea"
+                  :rows="10"
+                  autosize
+                  v-model="FormPickData.pickdata_indicators"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item
+                label="提取的维度(过滤条件)"
+                prop="pickdata_dimension"
+              >
+                <el-input
+                  type="textarea"
+                  :rows="10"
+                  autosize
+                  v-model="FormPickData.pickdata_dimension"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="SQL逻辑" prop="pickdata_sql">
+                <el-input
+                  type="textarea"
+                  :rows="10"
+                  autosize
+                  v-model="FormPickData.pickdata_sql"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="指标逻辑理解补充" prop="added_explain">
+                <el-input
+                  type="textarea"
+                  :rows="10"
+                  autosize
+                  v-model="FormPickData.added_explain"
+                ></el-input>
+              </el-form-item>
+
+              <div class="dialg_div1">
+                <el-form-item label="需求负责人" prop="demand_person">
+                  <el-input
+                    v-model="FormPickData.demand_person"
+                    style="width: 240px; margin: 2px 0 4px"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="提数负责人" prop="dev_person">
+                  <el-input
+                    v-model="FormPickData.dev_person"
+                    style="width: 200px; margin: 2px 0 4px 0"
+                  ></el-input>
+                </el-form-item>
+              </div>
+
+              <div class="dialg_div1">
+                <el-form-item label="需求类型" prop="pickdata_type">
+                  <el-select
+                    v-model="FormPickData.pickdata_type"
+                    placeholder="需求类型"
+                    style="width: 240px; margin: 2px 0 4px 0"
+                  >
+                    <el-option label="一次性" value="一次性"></el-option>
+                    <el-option label="周期(周/月/年)" value="周期"></el-option>
+                    <el-option label="每天" value="每天"></el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="状态" prop="pickdata_type">
+                  <el-select
+                    v-model="pickdata_status"
+                    placeholder="状态"
+                    style="width: 200px; margin: 2px 0 4px 0"
+                  >
+                    <el-option label="发起" value="发起"></el-option>
+                    <el-option label="已分配" value="已分配"></el-option>
+                    <el-option label="提数中" value="提数中"></el-option>
+                    <el-option label="完成" value="完成"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+
+              <el-form-item label="期望反馈时间" prop="expected_feedback_time">
+                <el-date-picker
+                  v-model="FormPickData.expected_feedback_time"
+                  align="right"
+                  type="date"
+                  placeholder="选择日期"
+                  :picker-options="pickerOptions"
+                >
+                </el-date-picker>
+              </el-form-item>
+
+              <el-form-item>
+                <el-button
+                  type="primary"
+                  @click="submitFormAddPickData('FormPickData')"
+                  >新增提数任务</el-button
+                >
+                <el-button @click="resetForm('FormPickData')">清空</el-button>
+              </el-form-item>
+            </el-form>
+          </el-dialog>
+        </div>
+
+        <div class="btn">
+          <div class="dw-btn1">
+            <div>
+              <el-input
+                v-model="PickDatainputSearch1"
+                placeholder="按照提数标题检索"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+
+              <el-input
+                v-model="PickDatainputSearch2"
+                placeholder="按照内容检索"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+            </div>
+
+            <div>
+              <el-button
+                type="primary"
+                @click="GetPickDataSearch()"
+                style="height: 85px; margin: 5px"
+                >历史提数</el-button
+              >
+            </div>
+          </div>
+          <div class="dw-btn1">
+            <div>
+              <el-input
+                v-model="PickDatainputSearch3"
+                placeholder="按照需求负责人"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+
+              <el-input
+                v-model="PickDatainputSearch4"
+                placeholder="按照提数负责人"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+            </div>
+
+            <div>
+              <el-button
+                type="primary"
+                @click="GetPickDataSearchByPerson()"
+                style="height: 85px; margin: 5px"
+                >按人查询</el-button
+              >
+            </div>
+          </div>
+          <div class="dw-btn1">
+            <div>
+              <el-input
+                v-model="PickDatainputSearch5"
+                placeholder="按照需求类型"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+
+              <el-input
+                v-model="PickDatainputSearch6"
+                placeholder="按照状态"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+            </div>
+
+            <div>
+              <el-button
+                type="primary"
+                @click="GetPickDataSearchByStatusType()"
+                style="height: 85px; margin: 5px"
+                >类型/状态</el-button
+              >
+            </div>
+          </div>
+          <div class="dw-btn1">
+            <div>
+              <el-input
+                v-model="PickDatainputSearch7"
+                placeholder="按照创建时间"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+
+              <el-input
+                v-model="PickDatainputSearch8"
+                placeholder="按照期望反馈时间"
+                style="margin: 5px 0 0 0"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              </el-input>
+            </div>
+
+            <div>
+              <el-button
+                type="primary"
+                @click="GetPickDataSearchByTime()"
+                style="height: 85px; margin: 5px"
+                >按时间</el-button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="banner">
+          <el-button
+            type="success"
+            @click="dialogPickDataVisibleFormulas = true"
+            style="margin: 10px 20px; font-size: 18px; float: right"
+            >创建提数</el-button
+          >
+        </div>
+
+        <div style="margin: 25px">
+          <el-table :data="PickDatatableDataDetailFormulas">
+            <el-table-column label="提数标题" width="150">
+              <template slot-scope="PickDataFormulasscope">
+                <div slot="reference" class="name-wrapper">
+                  <span
+                    style="
+                      margin-left: 5px;
+                      font-size: 16px;
+                      font-weight: bolder;
+                      text-decoration: underline;
+                      color: #008fd4;
+                    "
+                  >
+                    {{ PickDataFormulasscope.row.pickdata_title }}
+                  </span>
+                </div>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="需求内容" width="150">
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.pickdata_content
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="提取的指标(度量/统计口径)" width="330">
+              <template slot-scope="PickDataFormulasscope">
+                {{ PickDataFormulasscope.row.pickdata_indicators }}
+              </template>
+            </el-table-column>
+
+            <el-table-column label="提取的维度(过滤条件)" width="220">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.pickdata_dimension
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="SQL逻辑" width="120">
+              <template>
+                <el-button type="primary" @click="GetPickDataTitleSql()">
+                  <i class="el-icon-view el-icon--right"></i>
+                  <span>SQL</span>
+                </el-button>
+              </template>
+
+              <template>
+                <el-dialog
+                  :title="DailogPickDatatitle"
+                  :visible.sync="PickDatadialogSQLEditorVisible"
+                  :append-to-body="true"
+                  :destroy-on-close="true"
+                  :close-on-click-modal="false"
+                  :center="true"
+                  top="3vh"
+                  :fullscreen="fullscreen"
+                  @close="PickDataMoncaoDispose"
+                >
+                  <div ref="PickDataSqlContainer" style="height: 800px">
+                    <el-button type="primary" @click="DailogFullscreen()"
+                      >全屏</el-button
+                    >
+                    <el-button type="danger" @click="DailogMinscreen()"
+                      >小屏</el-button
+                    >
+                  </div>
+                </el-dialog>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="需求类型" width="180">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.pickdata_type
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="需求负责人" width="180">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.demand_person
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="提数负责人" width="180">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.dev_person
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="状态" width="180">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.pickdata_status
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="指标逻辑理解补充" width="180">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.added_explain
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="期望反馈时间" width="180">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.expected_feedback_time
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="创建时间" width="180">
+              <i class="el-icon-time"></i>
+              <template slot-scope="PickDataFormulasscope">
+                <span style="margin-left: 10px">{{
+                  PickDataFormulasscope.row.create_time
+                }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="操作" width="180">
+              <template slot-scope="PickDataFormulasscope">
+                <el-button
+                  type="primary"
+                  @click="
+                    FormulashandleEdit(
+                      PickDataFormulasscope.$index,
+                      PickDataFormulasscope.row
+                    )
+                  "
+                  >编辑</el-button
+                >
+                <el-button
+                  type="danger"
+                  @click="
+                    FormulashandleDelete(
+                      PickDataFormulasscope.$index,
+                      PickDataFormulasscope.row
+                    )
+                  "
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </el-main>
 </template>
@@ -711,6 +1116,7 @@ export default {
       dialogAddFotmVisible: false,
       dialogUpdateFotmVisible: false,
       dialogAddFotmVisibleFormulas: false,
+      dialogPickDataVisibleFormulas: false,
       dialogUpdateFotmVisibleFormulas: false,
       dialogSQLEditorVisible: false,
       editor: null,
@@ -745,6 +1151,7 @@ export default {
       tableDataJargon: [],
       tableDataDetail: [],
       tableDataDetailFormulas: [],
+      PickDatatableDataDetailFormulas: [],
       ruleForm: {
         name: "",
         delivery: false,
@@ -843,6 +1250,116 @@ export default {
         resource: "",
         desc: "",
       },
+      pickdata_status: "发起",
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            },
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            },
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            },
+          },
+        ],
+      },
+      FormPickData: {
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      rulesPickData: {
+        pickdata_title: [
+          { required: true, message: "请录入需求标题名称", trigger: "blur" },
+          {
+            min: 8,
+            max: 100,
+            message: "长度在 8 到 100 个字符",
+            trigger: "blur",
+          },
+        ],
+        pickdata_content: [
+          {
+            required: true,
+            message: "请尽量描述更多提数需求细节",
+            trigger: "blur",
+          },
+          {
+            min: 20,
+            max: 400,
+            message: "长度在 20 到 400 个字符",
+            trigger: "blur",
+          },
+        ],
+        pickdata_indicators: [
+          {
+            required: true,
+            message: "请尽量描述更多提取的指标",
+            trigger: "blur",
+          },
+          {
+            min: 20,
+            max: 400,
+            message: "长度在 20 到 400 个字符",
+            trigger: "blur",
+          },
+        ],
+
+        pickdata_dimension: [
+          {
+            required: true,
+            message: "请尽量描述更多提取指标的维度",
+            trigger: "blur",
+          },
+          {
+            min: 20,
+            max: 400,
+            message: "长度在 20 到 400 个字符",
+            trigger: "blur",
+          },
+        ],
+        demand_person: [
+          {
+            required: true,
+            message: "请填写需求负责人",
+            trigger: "blur",
+          },
+          {
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
+            trigger: "blur",
+          },
+        ],
+      },
+      PickDatainputSearch1: "",
+      PickDatainputSearch2: "",
+      PickDatainputSearch3: "",
+      PickDatainputSearch4: "",
+      PickDatainputSearch5: "",
+      PickDatainputSearch6: "",
+      PickDatainputSearch7: "",
+      PickDatainputSearch8: "",
+      DailogPickDatatitle: "",
+      PickDatadialogSQLEditorVisible: false,
     };
   },
   methods: {
@@ -989,20 +1506,20 @@ export default {
           // console.log(res.data.data[0]);
           // console.log(res.data.data[0]);
           this.sqlvalue = res.data.data[0].indicators_sql;
-          this.InintContainer();
+          this.InintContainer(this.sqlvalue);
           // console.log(this.sqlvalue);
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    InintContainer() {
+    InintContainer(Sql) {
       // console.log("this.sqlvalue", this.sqlvalue);
       this.editorIndicators = monaco.editor.create(
         // document.getElementById("IndicatorsContainer"),
         this.$refs.IndicatorsContainer,
         {
-          value: this.sqlvalue,
+          value: Sql,
           language: "sql",
           automaticLayout: true,
           theme: "vs-dark",
@@ -1277,6 +1794,197 @@ export default {
           console.log(error);
         });
     },
+    submitFormAddPickData(pickformdata) {
+      this.$refs[pickformdata].validate((valid) => {
+        if (valid) {
+          this.dialogPickDataVisibleFormulas = false;
+          axios({
+            method: "post",
+            url: "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataAdd",
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+            withCredentials: true,
+            data: {
+              pickdata_title: this.FormPickData.pickdata_title,
+              pickdata_content: this.FormPickData.pickdata_content,
+              pickdata_indicators: this.FormPickData.pickdata_indicators,
+              pickdata_dimension: this.FormPickData.pickdata_dimension,
+              pickdata_sql: this.FormPickData.pickdata_sql,
+              pickdata_type: this.FormPickData.pickdata_type,
+              demand_person: this.FormPickData.demand_person,
+              dev_person: this.FormPickData.dev_person,
+              pickdata_status: this.FormPickData.pickdata_status,
+              added_explain: this.FormPickData.added_explain,
+              expected_feedback_time: this.FormPickData.expected_feedback_time,
+              added_explain: this.FormPickData.added_explain,
+              create_time: this.getCurrentTime(),
+              update_time: this.getCurrentTime(),
+            },
+          }).then((response) => {
+            // console.log(response);
+          });
+
+          alert("已保存!");
+        } else {
+          console.log("保存失败!!,请务多次提交");
+          return false;
+        }
+      });
+    },
+    GetPickDataSearch() {
+      let stringUrl = "";
+      if (this.PickDatainputSearch1) {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByTitleContent?pickdata_title=" +
+          this.PickDatainputSearch1;
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByTitleContent?pickdata_content=" +
+          this.PickDatainputSearch2;
+      }
+
+      // console.log(stringUrl);
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          this.PickDatatableDataDetailFormulas = res.data.data;
+          console.log(this.PickDatatableDataDetailFormulas);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    GetPickDataTitleSql() {
+      this.DailogPickDatatitle =
+        this.PickDatatableDataDetailFormulas[0].pickdata_title;
+
+      let stringUrl =
+        "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchSqlByTitle?pickdata_title=" +
+        this.DailogPickDatatitle;
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          let resSql = res.data.data[0].pickdata_sql;
+          this.PickDataInintContainer(resSql);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      this.PickDatadialogSQLEditorVisible = true;
+    },
+
+    PickDataInintContainer(Sql) {
+      this.editorPickData = monaco.editor.create(
+        this.$refs.PickDataSqlContainer,
+        {
+          value: Sql,
+          language: "sql",
+          automaticLayout: true,
+          theme: "vs-dark",
+          selectOnLineNumbers: true, //行号
+          fontSize: 16,
+          autoIndent: "none",
+          overviewRulerBorder: false,
+          quickSuggestionsDelay: 0,
+          folding: true,
+          renderLineHightlight: "gutter",
+          glyphMargin: true,
+          minimap: {
+            enabled: false, // 是否启用预览图
+          },
+          readOnly: true,
+        }
+      );
+    },
+    PickDataMoncaoDispose() {
+      if (this.editorPickData) {
+        if (this.editorPickData.getModel()) {
+          this.editorPickData.getModel().dispose();
+        }
+        this.editorPickData.dispose();
+        this.editorPickData = null;
+      }
+    },
+    GetPickDataSearchByPerson() {
+      let stringUrl = "";
+      if (this.PickDatainputSearch3) {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByPerson?demand_person=" +
+          this.PickDatainputSearch3;
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByTitleContent?dev_person=" +
+          this.PickDatainputSearch4;
+      }
+
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          this.PickDatatableDataDetailFormulas = res.data.data;
+          // console.log(this.PickDatatableDataDetailFormulas);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    GetPickDataSearchByStatusType() {
+      let stringUrl = "";
+      if (this.PickDatainputSearch5) {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByStatusType?pickdata_type=" +
+          this.PickDatainputSearch5;
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByStatusType?pickdata_status=" +
+          this.PickDatainputSearch6;
+      }
+
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          this.PickDatatableDataDetailFormulas = res.data.data;
+          // console.log(this.PickDatatableDataDetailFormulas);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    GetPickDataSearchByTime() {
+      let stringUrl = "";
+      if (this.PickDatainputSearch7) {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByTime?create_time=" +
+          this.PickDatainputSearch7 +
+          "&expected_feedback_time=1900-01-01";
+      } else {
+        stringUrl =
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByTime?expected_feedback_time=" +
+          this.PickDatainputSearch8 +
+          "&create_time=1";
+      }
+
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          this.PickDatatableDataDetailFormulas = res.data.data;
+          // console.log(this.PickDatatableDataDetailFormulas);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   mounted() {},
 };
@@ -1292,11 +2000,20 @@ export default {
 
 .btn1 {
   display: flex;
+  width: 100%;
+}
+
+.banner {
+  width: 100%;
+  height: 60px;
+  /* background-color: darkorange; */
+  justify-content: center;
+  align-items: center;
 }
 
 .btn1 ::v-deep .el-button {
   border-radius: 6px;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   width: 150px;
   height: 40px;
   justify-content: center;
@@ -1310,7 +2027,7 @@ export default {
 
 .btn2 ::v-deep .el-button {
   border-radius: 6px;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   width: 150px;
   height: 40px;
   justify-content: center;
@@ -1342,7 +2059,14 @@ export default {
   background-color: steelblue;
 }
 
-/* .el-dialog__wrapper {
-  height: 850px;
-} */
+.dw-btn1 {
+  width: 450px;
+  /* box-sizing: border-box; */
+  display: flex;
+  padding-left: 5px;
+}
+
+.dialg_div1 {
+  display: flex;
+}
 </style>

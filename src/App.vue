@@ -9,8 +9,8 @@
       <router-link class="navItem" to="/scheduler">调度中心</router-link>
       <router-link class="navItem" to="/DataSync">数据同步</router-link>
       <!-- <router-link class="navItem" to="/DataServices">数据服务</router-link>
-      <router-link class="navItem" to="/index">数据权限</router-link>
-      <router-link class="navItem" to="/Indicatorss">数据指标</router-link> -->
+      <router-link class="navItem" to="/index">数据权限</router-link> -->
+      <router-link class="navItem" to="/Indicators">数据指标</router-link>
       <router-link class="navItem" to="/DataDictionary">数据治理</router-link>
       <router-link class="navItem" to="/DataMap">数据地图</router-link>
       <router-link class="navItem" to="/DataAssetHologram"

@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Index from './Index.vue';
 import DataLineage from './DataLineage.vue';
-import Abc from './Abc.vue';
 import Graph from './components/Graph.vue';
 import Scheduler from './Scheduler.vue';
 import Test from './Test.vue';
@@ -31,11 +30,6 @@ export default new Router({
       path: '/dataLineage',
       name: 'dataLineage',
       component: DataLineage,
-    },
-    {
-      path: '/abc',
-      name: 'abc',
-      component: Abc,
     },
     {
       path: '/graph',
