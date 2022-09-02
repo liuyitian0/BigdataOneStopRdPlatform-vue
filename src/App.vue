@@ -6,7 +6,7 @@
       <router-link class="navItem" active-class="active" to="/index"
         >IDE</router-link
       >
-      <router-link class="navItem" to="/scheduler">调度中心</router-link>
+      <!-- <router-link class="navItem" to="/scheduler">调度中心</router-link> -->
       <router-link class="navItem" to="/DataSync">数据同步</router-link>
       <!-- <router-link class="navItem" to="/DataServices">数据服务</router-link>
       <router-link class="navItem" to="/index">数据权限</router-link> -->

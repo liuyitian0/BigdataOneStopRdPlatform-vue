@@ -337,40 +337,35 @@
           </el-table>
         </el-row>
       </el-tab-pane>
-      <el-tab-pane label="常用指标"> </el-tab-pane>
-      <el-tab-pane label="指标血缘"> </el-tab-pane>
-      <el-tab-pane label="指标术语" style="color: #008fd4">
-        <!-- <div style="padding: 0 90%">
-          <el-button type="primary" style="margin-right: 10px"
-            >录入术语</el-button
-          >
-        </div> -->
+      <!-- <el-tab-pane label="常用指标"> </el-tab-pane> -->
+      <!-- <el-tab-pane label="指标血缘"> </el-tab-pane> -->
+      <!-- <el-tab-pane label="指标术语" style="color: #008fd4"> -->
 
-        <el-input
+      <!-- <el-input
           v-model="Jargon_inputSearch"
           placeholder="请输入术语名称"
           style="width: 750px"
         >
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
+        </el-input> -->
 
-        <el-button
+      <!-- <el-button
           type="primary"
           @click="SearchJargon()"
           style="margin-left: 20px"
           >查询术语</el-button
-        >
+        > -->
 
-        <el-button
+      <!-- <el-button
           type="primary"
           @click="
             dialogAddJargon = true;
             addJargon();
           "
           >录入术语</el-button
-        >
+        > -->
 
-        <el-dialog title="录入术语" :visible.sync="dialogAddJargon">
+      <!-- <el-dialog title="录入术语" :visible.sync="dialogAddJargon">
           <el-form
             :model="ruleFormJargon"
             :rules="rulesJargon"
@@ -395,9 +390,9 @@
               <el-button @click="resetForm('ruleFormJargon')">清空</el-button>
             </el-form-item>
           </el-form>
-        </el-dialog>
+        </el-dialog> -->
 
-        <el-table :data="tableDataJargon">
+      <!-- <el-table :data="tableDataJargon">
           <el-table-column label="术语" width="300">
             <template slot-scope="Jargon">
               <div slot="reference" class="name-wrapper">
@@ -438,31 +433,31 @@
               >
             </template>
           </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="指标公式" style="color: #008fd4">
-        <div class="btn2">
-          <el-input
+        </el-table> -->
+      <!-- </el-tab-pane> -->
+      <!-- <el-tab-pane label="指标公式" style="color: #008fd4"> -->
+      <!-- <div class="btn2"> -->
+      <!-- <el-input
             v-model="formulas_inputSearch"
             placeholder="请输入术语名称"
             style="width: 750px"
           >
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          </el-input>
+          </el-input> -->
 
-          <el-button type="primary" @click="formulasSearchIndicator()"
+      <!-- <el-button type="primary" @click="formulasSearchIndicator()"
             >查询公式</el-button
-          >
+          > -->
 
-          <el-button
+      <!-- <el-button
             type="primary"
             @click="
               dialogAddFotmVisibleFormulas = true;
               addFormulas();
             "
             >新增公式</el-button
-          >
-          <el-dialog
+          > -->
+      <!-- <el-dialog
             title="新增公式"
             :visible.sync="dialogAddFotmVisibleFormulas"
           >
@@ -515,9 +510,9 @@
                 >
               </el-form-item>
             </el-form>
-          </el-dialog>
-          <!-- 更新公式对话框 -->
-          <el-dialog
+          </el-dialog> -->
+      <!-- 更新公式对话框 -->
+      <!-- <el-dialog
             title="更新公式"
             :visible.sync="dialogUpdateFotmVisibleFormulas"
           >
@@ -572,10 +567,10 @@
                 >
               </el-form-item>
             </el-form>
-          </el-dialog>
-        </div>
+          </el-dialog> -->
+      <!-- </div> -->
 
-        <el-table :data="tableDataDetailFormulas">
+      <!-- <el-table :data="tableDataDetailFormulas">
           <el-table-column label="业务模块" width="300">
             <template slot-scope="Formulasscope">
               <div slot="reference" class="name-wrapper">
@@ -649,8 +644,8 @@
               >
             </template>
           </el-table-column>
-        </el-table>
-      </el-tab-pane>
+        </el-table> -->
+      <!-- </el-tab-pane> -->
 
       <el-tab-pane label="提数管理" style="color: #008fd4">
         <div>
@@ -952,8 +947,16 @@
             </el-table-column>
 
             <el-table-column label="SQL逻辑" width="120">
-              <template>
-                <el-button type="primary" @click="GetPickDataTitleSql()">
+              <template slot-scope="PickDataFormulasscope">
+                <el-button
+                  type="primary"
+                  @click="
+                    GetPickDataTitleSql(
+                      PickDataFormulasscope.$index,
+                      PickDataFormulasscope.row.pickdata_title
+                    )
+                  "
+                >
                   <i class="el-icon-view el-icon--right"></i>
                   <span>SQL</span>
                 </el-button>
@@ -1047,28 +1050,158 @@
               <template slot-scope="PickDataFormulasscope">
                 <el-button
                   type="primary"
-                  @click="
-                    FormulashandleEdit(
-                      PickDataFormulasscope.$index,
-                      PickDataFormulasscope.row
-                    )
-                  "
+                  @click="PickDataFormEdit(PickDataFormulasscope.row)"
                   >编辑</el-button
                 >
                 <el-button
                   type="danger"
-                  @click="
-                    FormulashandleDelete(
-                      PickDataFormulasscope.$index,
-                      PickDataFormulasscope.row
-                    )
-                  "
+                  @click="submitPickDataFormDelete(PickDataFormulasscope.row)"
                   >删除</el-button
                 >
               </template>
             </el-table-column>
           </el-table>
         </div>
+
+        <el-dialog
+          title="更新提数"
+          :visible.sync="dialogUpdatePickDataVisibleForm"
+        >
+          <el-form
+            :model="FormUpdatePickData"
+            :rules="rulesPickData"
+            ref="FormUpdatePickData"
+            label-width="200px"
+            class="demo-FormUpdatePickData"
+          >
+            <el-form-item label="提数标题" prop="pickdata_title">
+              <el-input v-model="FormUpdatePickData.pickdata_title"></el-input>
+            </el-form-item>
+
+            <el-form-item label="需求内容" prop="pickdata_content">
+              <el-input
+                type="textarea"
+                :rows="10"
+                autosize
+                v-model="FormUpdatePickData.pickdata_content"
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item
+              label="提取的指标(度量/统计口径)"
+              prop="pickdata_indicators"
+            >
+              <el-input
+                type="textarea"
+                :rows="10"
+                autosize
+                v-model="FormUpdatePickData.pickdata_indicators"
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item
+              label="提取的维度(过滤条件)"
+              prop="pickdata_dimension"
+            >
+              <el-input
+                type="textarea"
+                :rows="10"
+                autosize
+                v-model="FormUpdatePickData.pickdata_dimension"
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item label="SQL逻辑" prop="pickdata_sql">
+              <el-input
+                type="textarea"
+                :rows="10"
+                autosize
+                v-model="FormUpdatePickData.pickdata_sql"
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item label="指标逻辑理解补充" prop="added_explain">
+              <el-input
+                type="textarea"
+                :rows="10"
+                autosize
+                v-model="FormUpdatePickData.added_explain"
+              ></el-input>
+            </el-form-item>
+
+            <div class="dialg_div1">
+              <el-form-item label="需求负责人" prop="demand_person">
+                <el-input
+                  v-model="FormUpdatePickData.demand_person"
+                  style="width: 240px; margin: 2px 0 4px"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="提数负责人" prop="dev_person">
+                <el-input
+                  v-model="FormUpdatePickData.dev_person"
+                  style="width: 200px; margin: 2px 0 4px 0"
+                ></el-input>
+              </el-form-item>
+            </div>
+
+            <div class="dialg_div1">
+              <el-form-item label="需求类型" prop="pickdata_type">
+                <el-select
+                  v-model="FormUpdatePickData.pickdata_type"
+                  placeholder="需求类型"
+                  style="width: 240px; margin: 2px 0 4px 0"
+                >
+                  <el-option label="一次性" value="一次性"></el-option>
+                  <el-option label="周期(周/月/年)" value="周期"></el-option>
+                  <el-option label="每天" value="每天"></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label="状态" prop="pickdata_status">
+                <el-select
+                  v-model="FormUpdatePickData.pickdata_status"
+                  placeholder="状态"
+                  style="width: 200px; margin: 2px 0 4px 0"
+                >
+                  <el-option label="发起" value="发起"></el-option>
+                  <el-option label="已分配" value="已分配"></el-option>
+                  <el-option label="提数中" value="提数中"></el-option>
+                  <el-option label="完成" value="完成"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+
+            <el-form-item label="期望反馈时间" prop="expected_feedback_time">
+              <el-date-picker
+                v-model="FormUpdatePickData.expected_feedback_time"
+                align="right"
+                type="date"
+                placeholder="选择日期"
+                :picker-options="pickerOptions"
+              >
+              </el-date-picker>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button
+                type="primary"
+                @click="
+                  submitFormUpdatePickData(
+                    'FormUpdatePickData',
+                    FormUpdatePickData.pickdata_id,
+                    FormUpdatePickData.pickdata_type,
+                    FormUpdatePickData.dev_person,
+                    FormUpdatePickData.pickdata_status
+                  )
+                "
+                >保存</el-button
+              >
+              <el-button @click="resetForm('FormUpdatePickData')"
+                >清空</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </el-dialog>
       </el-tab-pane>
     </el-tabs>
   </el-main>
@@ -1360,6 +1493,10 @@ export default {
       PickDatainputSearch8: "",
       DailogPickDatatitle: "",
       PickDatadialogSQLEditorVisible: false,
+      dialogUpdatePickDataVisibleForm: false,
+      FormUpdatePickData: {
+        delivery: false,
+      },
     };
   },
   methods: {
@@ -1814,7 +1951,7 @@ export default {
               pickdata_type: this.FormPickData.pickdata_type,
               demand_person: this.FormPickData.demand_person,
               dev_person: this.FormPickData.dev_person,
-              pickdata_status: this.FormPickData.pickdata_status,
+              pickdata_status: this.pickdata_status,
               added_explain: this.FormPickData.added_explain,
               expected_feedback_time: this.FormPickData.expected_feedback_time,
               added_explain: this.FormPickData.added_explain,
@@ -1857,19 +1994,24 @@ export default {
           console.log(error);
         });
     },
-    GetPickDataTitleSql() {
-      this.DailogPickDatatitle =
-        this.PickDatatableDataDetailFormulas[0].pickdata_title;
-
+    GetPickDataTitleSql(index, title) {
+      let resSql = "";
       let stringUrl =
-        "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchSqlByTitle?pickdata_title=" +
-        this.DailogPickDatatitle;
+        "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchSqlByTitle";
       axios({
         method: "get",
         url: stringUrl,
       })
         .then((res) => {
-          let resSql = res.data.data[0].pickdata_sql;
+          res.data.data.forEach((item, index) => {
+            // console.log(item, index);
+            if (item.pickdata_title === title) {
+              console.log("item,title", item.pickdata_title, title);
+              console.log("pickdata_sql", item.pickdata_sql);
+              resSql = item.pickdata_sql;
+              this.DailogPickDatatitle = item.pickdata_title;
+            }
+          });
           this.PickDataInintContainer(resSql);
         })
         .catch((error) => {
@@ -1919,7 +2061,7 @@ export default {
           this.PickDatainputSearch3;
       } else {
         stringUrl =
-          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByTitleContent?dev_person=" +
+          "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataSearchByPerson?dev_person=" +
           this.PickDatainputSearch4;
       }
 
@@ -1983,6 +2125,98 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+        });
+    },
+    submitFormUpdatePickData(
+      pickformdata,
+      pickdata_id,
+      pickdata_type,
+      dev_person,
+      pickdata_status
+    ) {
+      // console.log("pickdata_id:", pickdata_id);
+      // console.log("pickdata_type:", pickdata_type);
+      // console.log("dev_person:", dev_person);
+      // console.log("pickdata_status:", pickdata_status);
+
+      this.$refs[pickformdata].validate((valid) => {
+        if (valid) {
+          this.dialogUpdatePickDataVisibleForm = false;
+          axios({
+            method: "post",
+            url: "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataFormUpdateByPickdataId",
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+            withCredentials: true,
+            data: {
+              pickdata_id: pickdata_id,
+              pickdata_type: pickdata_type,
+              dev_person: dev_person,
+              pickdata_status: pickdata_status,
+              update_time: this.getCurrentTime(),
+            },
+          }).then((response) => {
+            // console.log(response);
+          });
+
+          alert("已保存!");
+        } else {
+          console.log("保存失败!!,请务多次提交");
+          return false;
+        }
+      });
+    },
+    PickDataFormEdit(row) {
+      this.dialogUpdatePickDataVisibleForm = true;
+      this.FormUpdatePickData.pickdata_id = row.pickdata_id;
+      this.FormUpdatePickData.pickdata_title = row.pickdata_title;
+      this.FormUpdatePickData.pickdata_content = row.pickdata_content;
+      this.FormUpdatePickData.pickdata_indicators = row.pickdata_indicators;
+      this.FormUpdatePickData.pickdata_dimension = row.pickdata_dimension;
+      this.FormUpdatePickData.pickdata_sql = row.pickdata_sql;
+      this.FormUpdatePickData.added_explain = row.added_explain;
+      this.FormUpdatePickData.demand_person = row.demand_person;
+      // this.FormUpdatePickData.dev_person = row.dev_person;
+      this.FormUpdatePickData.pickdata_type = row.pickdata_type;
+      // this.pickdata_status = this.pickdata_status;
+      this.FormUpdatePickData.expected_feedback_time =
+        row.expected_feedback_time;
+    },
+    PickDataFormDeleteByPickdataId(pickdata_id) {
+      let stringUrl =
+        "http://10.30.64.240:9988/DataMiddleOffice/PickData/PickDataFormDeleteByPickdataId?pickdata_id=" +
+        pickdata_id;
+      axios({
+        method: "get",
+        url: stringUrl,
+      })
+        .then((res) => {
+          console.log("Delete.id:", pickdata_id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    submitPickDataFormDelete(row) {
+      this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          //请求接口删除
+          this.PickDataFormDeleteByPickdataId(row.pickdata_id);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
         });
     },
   },
